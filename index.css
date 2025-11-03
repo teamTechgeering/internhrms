@@ -1,0 +1,426 @@
+/* ==========================================================
+   1. GLOBAL STYLES
+========================================================== */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d1321;
+  color: #e4e4e4;
+}
+
+/* ==========================================================
+   2. SIDEBAR STYLES
+========================================================== */
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #131a2b;
+  position: fixed; /* Fixed sidebar */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #0d1321;
+  z-index: 1000;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: #0d1321;
+}
+
+/* Logo */
+.logo-box {
+  background: #ffcc00;
+  color: #000;
+  font-weight: 700;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 50px 0px;
+  top: -18px;
+  position: relative;
+}
+.worksuite-header {
+  align-items: flex-start;
+}
+
+/* Dashboard Title (immediately below WorkSuit) */
+.sidebar .d-flex.mb-4 {
+  margin-bottom: 0 !important;
+}
+
+/* ===========================
+   NAV LINKS
+=========================== */
+.sidebar .nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar .nav-item {
+  width: 100%;
+}
+.sidebar .nav-link {
+  color: #a8b2d1;
+  text-decoration: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 108%;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  background: transparent;
+}
+.sidebar .nav-link i {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #a8b2d1;
+  transition: color 0.3s ease;
+}
+.sidebar .nav-link::after {
+  display: none;
+}
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+.sidebar hr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 8px 0px;
+}
+
+/* ==========================================================
+   3. DROPDOWN STYLES (Sidebar)
+========================================================== */
+.dropdown-toggle-icon {
+  cursor: pointer;
+  font-size: 13px;
+  transition: transform 0.3s ease;
+}
+.dropdown-toggle-icon.rotate {
+  transform: rotate(180deg);
+}
+.dropdown-submenu {
+  display: none;
+  margin-left: 5px;
+  margin-top: 5px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding-left: 10px;
+  transition: all 0.3s ease;
+}
+.dropdown-submenu.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+.dropdown-submenu a {
+  color: #bfbfbf;
+  font-size: 14px;
+  padding: 6px 0;
+  display: block;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+.dropdown-submenu a:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.nav-item .fa-chevron-right {
+  transition: transform 0.3s ease;
+}
+.nav-item.active .fa-chevron-right {
+  transform: rotate(90deg);
+}
+
+/* ==========================================================
+   4. PROFILE DROPDOWN (FIXED)
+========================================================== */
+.top-nav,
+.header,
+.navbar {
+  /* overflow: visible !important; */
+  position: relative;
+  z-index: 500;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 55px;
+  right: 0;                      /* Align with the profile icon */
+  background-color: #1b2945;
+  width: 220px;
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 99999;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: visible;
+  
+}
+
+.profile-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-dropdown ul li {
+  list-style: none;
+  color: #cdd4e2;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+}
+
+.profile-dropdown ul li:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .profile-dropdown {
+    right: 10px;
+  }
+}
+
+/* ==========================================================
+   5. TOP NAVBAR
+========================================================== */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #151a2f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.top-nav-tabs {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 50%;
+}
+.top-nav-tabs li {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+.top-nav-tabs li:last-child {
+  border-right: none;
+}
+.top-nav-tabs a {
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 0;
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.top-nav-tabs a::after {
+  display: none;
+}
+.top-nav-tabs a:hover,
+.top-nav-tabs a.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================
+   6. RIGHT ICON AREA
+========================================================== */
+.top-right {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+.divider {
+  height: 20px;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-right: 15px;
+}
+.settings-icon {
+  font-size: 16px;
+  color: #a8b2d1;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.settings-icon:hover {
+  color: #4ea1ff;
+}
+
+/* ==========================================================
+   7. MAIN CONTENT AREA
+========================================================== */
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  overflow-x: hidden;
+  background-color: #0d1321;
+}
+
+/* ==========================================================
+   9. DARK & LIGHT MODE
+========================================================== */
+body.dark-mode {
+  background-color: #0d1321;
+  color: #e4e4e4;
+}
+body.dark-mode .sidebar {
+  background-color: #131a2b;
+}
+body.dark-mode .stat-card,
+body.dark-mode .chart-card,
+body.dark-mode header {
+  background-color: #1d2436;
+  color: #e4e4e4;
+}
+body.dark-mode .nav-link {
+  color: #a8b2d1;
+}
+body.dark-mode .nav-link.active,
+body.dark-mode .nav-link:hover {
+  color: #fff;
+}
+body.light-mode {
+  color: #212529;
+}
+body.light-mode .stat-card,
+body.light-mode .chart-card,
+body.light-mode header {
+  color: #212529;
+}
+body.light-mode .nav-link {
+  color: #555;
+}
+
+p {
+  font-size: 12px;
+}
+
+/* Container */
+.dashboard-container {
+  background-color: #131a2b;
+  min-height: 100vh !important;
+}
+
+/* Card Styles */
+.custom-card {
+  background-color: #151a33 !important;
+  border: 1px solid rgba(255, 255, 255, 0.062) !important;
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  color: rgb(139, 137, 137) !important;
+}
+
+/* Shift Table Scroll */
+.shift-table {
+  max-height: 390px;
+  overflow-y: auto;
+}
+.shift-table::-webkit-scrollbar {
+  width: 6px;
+}
+.shift-table::-webkit-scrollbar-thumb {
+  background: #18203c !important;
+  border-radius: 10px;
+}
+
+
+/* Buttons */
+.btn-outline-light:hover,
+.btn-outline-info:hover {
+  transform: scale(1.05);
+}
+
+/* Text Colors */
+.text-secondary {
+  color: #0d1321;
+}
+
+.task-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0 15px !important;
+}
+.task-table thead {
+  border-bottom: 1px solid var(--bs-secondary);
+  color: var(--bs-secondary);
+}
+.task-table tbody tr {
+  border-bottom: 1px solid var(--bs-secondary);
+}
+.task-table th,
+.task-table td {
+  padding: 12px 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+}
+
+/* Dashboard Cards */
+.dashboard-section {
+  padding: 20px;
+}
+.custom-card {
+  background-color: #151a33;
+  border: 1px solid #1f2345;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  min-height: 150px;
+  position: relative;
+}
+.custom-card h6 {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.custom-card i {
+  font-size: 30px;
+  color: #93a2dd;
+  display: block;
+  margin: 15px 0;
+}
+.no-record {
+  color: #9aa0b9;
+  font-size: 0.9rem;
+}
+.custom-card hr {
+  border-color: #222a54;
+  opacity: 0.3;
+}
+.text-muted {
+  color: #9aa0b9 !important;
+}
+.card-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+}
