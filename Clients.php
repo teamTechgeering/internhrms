@@ -477,5 +477,10 @@
 
   </div>
 </div>
+      </div>  <!-- CLOSE .content -->
+    </div>    <!-- CLOSE .content-page -->
+
 
 <?php include 'common/footer.php'; ?>
+</body>
+</html>

@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Document</title>
-
-  <link href="assets/css/vendor/jquery-jvectormap-1.2.2.css" rel="stylesheet" />
   <link href="assets/css/icons.min.css" rel="stylesheet" />
   <link href="assets/css/app.min.css" rel="stylesheet" id="app-style" />
 

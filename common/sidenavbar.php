@@ -13,7 +13,7 @@
           <ul class="side-nav">
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link" href="index.php">
                 <i class="fa-solid fa-house"></i>
                 <span> Dashboard </span>
               </a>
