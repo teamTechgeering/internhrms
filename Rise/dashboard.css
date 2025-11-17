@@ -1,0 +1,80 @@
+body{background:#f7f8fa;font-family:Inter;}
+.card{border-radius:12px;border:1px solid #e9edf2;}
+.metric-card{
+    padding:18px;
+    min-height:105px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.icon-box{
+    width:50px;
+    height:50px;
+    margin-left: -80px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:22px;
+}
+.text-muted2{color:#6d7788;font-size:15px;}
+.progress-wrapper{border:2px solid #4ebc95;border-radius:30px;padding:3px;}
+.progress-bar-custom{height:25px;border-radius:30px;background:#98dfc5;width:30%;}
+.invoice-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+.task-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+/* Project Timeline */
+    .timeline-wrapper { max-height: 450px; overflow-y: auto; width: 490px; }
+    .timeline-box { border-radius: 8px; }
+    .timeline-item:hover { background: #f5f5f5; cursor: pointer; transition: 0.2s; }
+    .task-link, .project-link { cursor: pointer; }
+    .modal-dialog { max-width: 950px; margin-left: 2%; }
+    .modal-body { max-height: 75vh; overflow-y: auto; }
+    .label-bug { background-color: #f14c61; color: #fff; border-radius: 5px; padding: 2px 8px; font-size: .8rem; }
+    .btn-timer, .btn-stop { color: #fff; border: none; width: 100%; }
+    .btn-timer { background-color: #1ab394; }
+    .btn-stop { background-color: #dc3545; }
+    .comment-box { background: #f9f9f9; border-radius: 6px; padding: 10px; }
+    .comment-item { border-bottom: 1px solid #eee; padding: 10px 0; position: relative; }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-avatar-right { position: absolute; right: 0; top: 10px; }
+    .btn-post { background-color: #6379f4; color: white; }
+    .activity-box { border: 1px solid #e0e0e0; border-radius: 6px; padding: 10px; background: #fff; }
+    .reminder-form { display: none; margin-top: 10px; }
+/* Events */
+.card {border-radius: 10px;border: 1px solid #e9ecef;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);}
+.card h6 {font-weight: 600;color: #495057;display: flex;align-items: center;gap: 8px;}
+#eventContainer .event-item {display: flex;align-items: flex-start;gap: 10px;padding: 10px 0;border-bottom: 1px solid #f1f3f5;}
+#eventContainer .event-item:last-child {border-bottom: none;}
+#eventContainer .event-item i {font-size: 1.1rem;color: #6c63ff; /* soft purple-blue like screenshot */}
+#eventContainer .event-item strong {font-size: 0.9rem;color: #212529;}
+#eventContainer .event-item small {color: #868e96;}
+/* Open Project Items */
+#openProjectContainer .project-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f3f5;
+}
+#openProjectContainer .project-card:last-child {border-bottom: none;}
+#openProjectContainer .project-card img {width: 38px;height: 38px;border-radius: 50%;}
+#openProjectContainer .project-info strong {font-size: 0.9rem;color: #212529;}
+#openProjectContainer .project-info small {color: #868e96;}
+.progress {height: 6px;}
+.progress-bar {background-color: #6c63ff;}
+/* Modal */
+.modal-dialog {max-width: 950px;}
+.modal-body {max-height: 75vh;overflow-y: auto;}

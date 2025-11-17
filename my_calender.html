@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+  <style>
+    *body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d1321;
+  color: #e4e4e4;
+}
+
+/* ==========================================================
+   2. SIDEBAR STYLES
+========================================================== */
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #131a2b;
+  position: fixed; /* Fixed sidebar */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #0d1321;
+  z-index: 1000;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: #0d1321;
+}
+
+/* Logo */
+.logo-box {
+  background: #ffcc00;
+  color:white;
+  font-weight: 700;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 50px 0px;
+  top: -18px;
+  position: relative;
+}
+.worksuite-header {
+  align-items: flex-start;
+}
+
+/* Dashboard Title (immediately below WorkSuit) */
+.sidebar .d-flex.mb-4 {
+  margin-bottom: 0 !important;
+}
+
+/* ===========================
+   NAV LINKS
+=========================== */
+.sidebar .nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar .nav-item {
+  width: 100%;
+}
+.sidebar .nav-link {
+  color: #a8b2d1;
+  text-decoration: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 108%;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  background: transparent;
+}
+.sidebar .nav-link i {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #a8b2d1;
+  transition: color 0.3s ease;
+}
+.sidebar .nav-link::after {
+  display: none;
+}
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+.sidebar hr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 8px 0px;
+}
+
+/* ==========================================================
+   3. DROPDOWN STYLES (Sidebar)
+========================================================== */
+.dropdown-toggle-icon {
+  cursor: pointer;
+  font-size: 13px;
+  transition: transform 0.3s ease;
+}
+.dropdown-toggle-icon.rotate {
+  transform: rotate(180deg);
+}
+.dropdown-submenu {
+  display: none;
+  margin-left: 5px;
+  margin-top: 5px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding-left: 10px;
+  transition: all 0.3s ease;
+}
+.dropdown-submenu.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+.dropdown-submenu a {
+  color: #bfbfbf;
+  font-size: 14px;
+  padding: 6px 0;
+  display: block;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+.dropdown-submenu a:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.nav-item .fa-chevron-right {
+  transition: transform 0.3s ease;
+}
+.nav-item.active .fa-chevron-right {
+  transform: rotate(90deg);
+}
+
+/* ==========================================================
+   4. PROFILE DROPDOWN (FIXED)
+========================================================== */
+.top-nav,
+.header,
+.navbar {
+  /* overflow: visible !important; */
+  position: relative;
+  z-index: -2;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 55px;                    
+  background-color: #1b2945;
+  width: 220px;
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 99999;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: visible;
+  display: none; 
+}
+.profile-dropdown.show {
+  display: block;
+}
+
+.profile-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-dropdown ul li {
+  list-style: none;
+  color: #cdd4e2;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+}
+
+.profile-dropdown ul li:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .profile-dropdown {
+    right: 10px;
+  }
+}
+
+/* ==========================================================
+   5. TOP NAVBAR
+========================================================== */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #151a2f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.top-nav-tabs {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 50%;
+}
+.top-nav-tabs li {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+.top-nav-tabs li:last-child {
+  border-right: none;
+}
+.top-nav-tabs a {
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 0;
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.top-nav-tabs a::after {
+  display: none;
+}
+.top-nav-tabs a:hover,
+.top-nav-tabs a.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================
+   6. RIGHT ICON AREA
+========================================================== */
+.top-right {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+.divider {
+  height: 20px;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-right: 15px;
+}
+.settings-icon {
+  font-size: 16px;
+  color: #a8b2d1;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.settings-icon:hover {
+  color: #4ea1ff;
+}
+
+/* ==========================================================
+   7. MAIN CONTENT AREA
+========================================================== */
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  overflow-x: hidden;
+   background-color: #0f182c;
+}
+
+/* ==========================================================
+   9. DARK & LIGHT MODE
+========================================================== */
+body.dark-mode {
+  
+  color: #e4e4e4;
+}
+body.dark-mode .sidebar {
+  background-color: #131a2b;
+}
+body.dark-mode .stat-card,
+body.dark-mode .chart-card,
+body.dark-mode header {
+  background-color: #1d2436;
+  color: #e4e4e4;
+}
+body.dark-mode .nav-link {
+  color: #a8b2d1;
+}
+body.dark-mode .nav-link.active,
+body.dark-mode .nav-link:hover {
+  color: #fff;
+}
+body.light-mode {
+  color: #212529;
+}
+body.light-mode .stat-card,
+body.light-mode .chart-card,
+body.light-mode header {
+  color: #212529;
+}
+body.light-mode .nav-link {
+  color: #555;
+}
+
+p {
+  font-size: 12px;
+}
+
+/* Container */
+.dashboard-container {
+  background-color: #131a2b;
+  min-height: 100vh !important;
+}
+
+/* Card Styles */
+.custom-card {
+  background-color: #151a33 !important;
+  border: 1px solid rgba(255, 255, 255, 0.062) !important;
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  color: rgb(139, 137, 137) !important;
+}
+
+
+
+/* Responsive */
+@media (max-width: 992px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+}
+
+  </style>
+  <!-- Bootstrap CSS -->
+
+
+<!-- Font Awesome -->
+
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+ 
+</head>
+
+<body class="dark-mode">
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <nav class="sidebar p-3">
+      
+      <!-- Worksuite Header with Dropdown -->
+      <div class="d-flex align-items-center justify-content-between mb-4 position-relative">
+        <div class="worksuite-header d-flex align-items-center gap-3" id="profileToggle">
+          <h5 class="text-white m-0">Worksuite
+            <p class="text-secondary d-flex align-items-center gap-2">
+          <i class="fa-solid fa-circle text-success" style="font-size: 8px;"></i>
+          Violette West
+            </p>
+          </h5>
+          
+          <i class="fa-solid fa-chevron-down text-light small"></i>
+          <div class="logo-box">W</div>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <div class="profile-dropdown shadow" id="profileMenu">
+          <div class="profile-header d-flex align-items-center justify-content-between p-3 border-bottom">
+            <div class="d-flex align-items-center">
+              <img src="https://i.pravatar.cc/300?u=admin@example.com" alt="User" class="rounded-circle me-2" width="45" height="45">
+              <div>
+                <h6 class="text-white mb-0">Violette West</h6>
+                <p class="mb-0 f-12 text-dark-grey">Project Manager</p>
+              </div>
+            </div>
+            <i class="fa-regular fa-pen-to-square text-light edit-icon"></i>
+          </div>
+
+          <ul class="list-unstyled m-0">
+            <li class="d-flex justify-content-between align-items-center px-3 py-2">
+              <span>Invite member to Worksuite</span>
+              <i class="fa-solid fa-user-plus text-light"></i>
+            </li>
+            <li class="d-flex justify-content-between align-items-center px-3 py-2">
+              <span><i class="fa-solid fa-moon me-2"></i>Dark Mode</span>
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" id="darkModeToggle" checked>
+              </div>
+            </li>
+            <li class="d-flex justify-content-between align-items-center px-3 py-2">
+              <span>Logout</span>
+              <i class="fa-solid fa-power-off text-light"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+       <ul class="nav flex-column mt-0">
+        
+        <!-- Dashboard dropdown -->
+        
+      <li class="nav-item dropdown ">
+  <a href="#" class="nav-link d-flex align-items-center justify-content-between " id="dashboardToggle">
+    <span>Dashboard</span>
+    <i class="fa-solid fa-chevron-right small"></i>
+  </a>
+
+  <ul class="dropdown-submenu list-unstyled ps-4 mt-2" id="dashboardDropdown" style="display: none;">
+    <li><a href="index.html" class="nav-link">Private Dashboard</a></li>
+    <li><a href="dashboard.html" class="nav-link">Advanced Dashboard</a></li>
+  </ul>
+</li>
+
+
+
+      <ul class="nav flex-column mt-1">
+      <li class="nav-item"><a href="mycalender.html" class="nav-link"><i class="fa-regular fa-calendar"></i><span>My Calendar</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-regular fa-id-badge"></i><span>Leads</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-building"></i><span>Clients</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-users"></i><span>HR</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-briefcase"></i><span>Work</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-dollar-sign"></i><span>Finance</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-headphones"></i><span>Tickets</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-regular fa-calendar-check"></i><span>Events</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-regular fa-comment"></i><span>Messages</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-regular fa-clipboard"></i><span>Notice Board</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-regular fa-file-lines"></i><span>Knowledge Base</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-display"></i><span>Assets</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-link"></i><span>Biolinks</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-fingerprint"></i><span>Biometric</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-regular fa-envelope"></i><span>Letter</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i><span>Payroll</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i><span>Performance</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-box"></i><span>Purchase</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-qrcode"></i><span>QR Code</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-user-tie"></i><span>Recruit</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-server"></i><span>Server Manager</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i><span>Reports</span></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+    </ul>
+
+      </ul>
+      
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content flex-grow-1">
+      <!-- Navbar -->
+      <header class="d-flex justify-content-between align-items-center p-3 border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <h4 class="text-white mb-0">My Calender</h4>
+          <span class="text-secondary small">Home • My Calender</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+  <i class="fa fa-search f-16 text-dark-grey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Search"></i>
+  <i class="fa fa-sticky-note f-16 text-dark-grey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notes"></i>
+  <i class="fa fa-clock f-16 text-dark-grey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Recent Activity"></i>
+  <i class="fa fa-plus-circle f-16 text-dark-grey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add New"></i>
+  <i class="fa fa-bell f-16 text-dark-grey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notifications"></i>
+  <i class="fa fa-power-off f-16 text-dark-grey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout"></i>
+</div>
+
+      </header>
+        <div class="container-fluid dashboard-container py-2">
+     <div class="col-12">
+        <div class="card custom-card h-500 ">
+          <h5 class="text-light mb-3">My Calendar</h5>
+          <div id="calendar"></div>
+        </div>
+        
+      </div>
+      
+     
+      
+    </div>
+   <script>
+     // dashboard.js — cleaned, safe, and organized
+document.addEventListener("DOMContentLoaded", () => {
+  // --- Helpers ---
+  const $id = (id) => document.getElementById(id);
+
+  // --- Elements ---
+  const profileToggle = $id("profileToggle");
+  const profileMenu = $id("profileMenu");
+
+  const darkModeToggle = $id("darkModeToggle");
+
+  const dropdownToggle = $id("dropdownToggle");       // Worksuite chevron
+  const worksuiteDropdown = $id("worksuiteDropdown"); // Worksuite dropdown box
+
+  const dashboardMenu = $id("dashboardMenu");         // Sidebar Dashboard menu item
+  const dashboardDropdown = $id("dashboardDropdown"); // Sidebar Dashboard submenu
+
+ 
+  // --- Profile dropdown toggle ---
+  if (profileToggle && profileMenu) {
+    profileToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // prevent global click handler from immediately closing it
+      profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+    });
+  }
+
+  // --- Worksuite (header) dropdown toggle ---
+  if (dropdownToggle && worksuiteDropdown) {
+    dropdownToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      worksuiteDropdown.classList.toggle("active");
+    });
+  }
+
+  // --- Sidebar Dashboard submenu toggle ---
+  if (dashboardMenu && dashboardDropdown) {
+    dashboardMenu.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dashboardDropdown.classList.toggle("show");
+    });
+  }
+
+  // --- Dark mode initial state & toggle ---
+  if (darkModeToggle) {
+    // set initial state based on checkbox
+    if (darkModeToggle.checked) {
+      document.body.classList.add("dark-mode");
+      document.body.classList.remove("light-mode");
+    } else {
+      document.body.classList.add("light-mode");
+      document.body.classList.remove("dark-mode");
+    }
+
+    darkModeToggle.addEventListener("change", () => {
+      const enabled = darkModeToggle.checked;
+      document.body.classList.toggle("dark-mode", enabled);
+      document.body.classList.toggle("light-mode", !enabled);
+    });
+  }
+
+  // --- Global click to close open menus when clicking outside ---
+  window.addEventListener("click", (e) => {
+    // Close profile menu
+    if (profileMenu && profileMenu.style.display === "block") {
+      if (!profileToggle.contains(e.target) && !profileMenu.contains(e.target)) {
+        profileMenu.style.display = "none";
+      }
+    }
+
+    // Close worksuite dropdown
+    if (worksuiteDropdown && worksuiteDropdown.classList.contains("active")) {
+      if (!dropdownToggle.contains(e.target) && !worksuiteDropdown.contains(e.target)) {
+        worksuiteDropdown.classList.remove("active");
+      }
+    }
+
+    // Close sidebar dashboard submenu
+    if (dashboardDropdown && dashboardDropdown.classList.contains("show")) {
+      if (!dashboardMenu.contains(e.target) && !dashboardDropdown.contains(e.target)) {
+        dashboardDropdown.classList.remove("show");
+      }
+    }
+  });
+
+});
+  document.addEventListener("DOMContentLoaded", function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  });
+
+  const dashboardToggle = document.getElementById("dashboardToggle");
+  const dashboardDropdown = document.getElementById("dashboardDropdown");
+
+  dashboardToggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    const parent = this.parentElement;
+
+    parent.classList.toggle("active"); // adds rotation effect
+
+    // toggle dropdown visibility
+    if (dashboardDropdown.style.display === "none" || dashboardDropdown.style.display === "") {
+      dashboardDropdown.style.display = "block";
+    } else {
+      dashboardDropdown.style.display = "none";
+    }
+  });
+  // Example: Hover tooltip animation or card effect
+document.querySelectorAll('.custom-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'all 0.3s ease';
+  });
+});
+document.addEventListener('DOMContentLoaded', function () {
+  const calendarEl = document.getElementById('calendar');
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    height: 800,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    },
+    views: {
+      dayGridMonth: { buttonText: 'month' },
+      timeGridWeek: { buttonText: 'week' },
+      timeGridDay: { buttonText: 'day' },
+      listWeek: { buttonText: 'list' }
+    },
+    themeSystem: 'standard',
+    events: [
+      {
+        title: 'There was no time.',
+        start: '2025-10-27T18:02:00',
+        color: '#e74c3c'
+      },
+      {
+        title: 'There was no time.',
+        start: '2025-10-26',
+        end: '2025-10-28',
+        color: '#e74c3c',
+        allDay: true
+      },
+      {
+        title: 'There was no time.',
+        start: '2025-10-28',
+        end: '2025-10-30',
+        color: '#e74c3c',
+        allDay: true
+      },
+     
+     
+    ]
+  });
+
+  calendar.render();
+});
+
+
+
+
+
+</script>
+
+
+
+
+
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 // dashboard.js — arranged & compact without removing logic
 document.addEventListener("DOMContentLoaded", () => {
   const $id = (id) => document.getElementById(id);
@@ -19,18 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
     profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
   });
 
-  // Worksuite dropdown (header)
-  dropdownToggle?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    worksuiteDropdown.classList.toggle("active");
-  });
-
   // Sidebar submenu
   dashboardMenu?.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
     dashboardDropdown.classList.toggle("show");
   });
+
+  // Universal Dropdown
+  document.querySelectorAll(".sidebar-dropdown-toggle").forEach(toggle => {
+  toggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    const parent = toggle.parentElement;
+    const submenu = parent.querySelector(".dropdown-submenu");
+
+    submenu.classList.toggle("show");
+    toggle.querySelector(".fa-chevron-down")?.classList.toggle("rotate");
+  });
+});
+
+
 
   // Dark Mode (default ON)
   if (darkModeToggle) {
@@ -45,20 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Close dropdowns on outside click
-  window.addEventListener("click", (e) => {
-    if (profileMenu?.style.display === "block" &&
-        !profileToggle.contains(e.target) &&
-        !profileMenu.contains(e.target)) profileMenu.style.display = "none";
-
-    if (worksuiteDropdown?.classList.contains("active") &&
-        !dropdownToggle.contains(e.target) &&
-        !worksuiteDropdown.contains(e.target)) worksuiteDropdown.classList.remove("active");
-
-    if (dashboardDropdown?.classList.contains("show") &&
-        !dashboardMenu.contains(e.target) &&
-        !dashboardDropdown.contains(e.target)) dashboardDropdown.classList.remove("show");
-  });
 
   // Charts
   if (!window.Chart) return;
@@ -115,4 +110,39 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // ✅ Load Pending Tasks from JSON
+  fetch("pending_task.json")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("taskContainer");
+      container.innerHTML = ""; // clear old HTML
+
+      data.tasks.forEach(task => {
+        const statusColor =
+          task.status === "Incomplete" ? "red" :
+          task.status === "Doing" ? "blue" :
+          task.status === "To Do" ? "yellow" : "red";
+
+        container.innerHTML += `
+          <div class="section2-task-row">
+            <div>
+              <p class="task-title">${task.title}</p>
+              <span class="task-sub">${task.sub}</span>
+            </div>
+            <div class="task-user-date">
+              <img src="${task.avatar}" class="task-avatar">
+              <span class="task-date ${task.date === 'Today' ? 'today' : ''}">${task.date}</span>
+            </div>
+            <div class="task-status-box">
+              <span class="status-dot ${statusColor}"></span>
+              <span class="task-status">${task.status}</span>
+            </div>
+          </div>
+        `;
+      });
+    })
+    .catch(err => console.error("Task Load Error:", err));
+
+  
 });
