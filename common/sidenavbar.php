@@ -34,7 +34,7 @@
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link" href="projects.php">
                 <i class="fa-solid fa-diagram-project me-2"></i>
                 <span>Projects</span>
               </a>

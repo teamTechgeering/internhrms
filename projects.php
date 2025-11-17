@@ -1,17 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Projects — Replica</title>
+<?php include 'common/header.php'; ?>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<?php include 'common/sidenavbar.php'; ?>
 
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<div class="content-page">
+  <div class="content">
+
+   <?php include 'common/topnavbar.php'; ?>
 
   <div class="container-fluid p-4">
     <div class="card shadow-sm border-0">
@@ -339,12 +333,11 @@
     </div>
   </div>
 </div>
+ </div>  <!-- CLOSE .content -->
+    </div>    <!-- CLOSE .content-page -->
 
 
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="project.js"></script>
+<?php include 'common/footer.php'; ?>
   
-</body>
+
 </html>

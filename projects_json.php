@@ -1,15 +1,21 @@
+<?php
+// client.php
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *'); // allow cross-origin requests for testing tools like Thunder Client
+
+echo <<<'JSON'
 [
   {
     "id":17,
-  "title":"WordPress Plugin Development",
-  "client":"-",
-  "price":"-",
-  "start_date":"15-09-2025",
-  "deadline":"03-11-2025",
-  "deadline_alert":true,
-  "progress":45,
-  "status":"Open"
-},
+    "title":"WordPress Plugin Development",
+    "client":"-",
+    "price":"-",
+    "start_date":"15-09-2025",
+    "deadline":"03-11-2025",
+    "deadline_alert":true,
+    "progress":45,
+    "status":"Open"
+  },
   {
     "id":19,
     "title":"Website Maintenance and Updates",
@@ -253,3 +259,4 @@
     "status":"Upcoming"
   }
 ]
+JSON;

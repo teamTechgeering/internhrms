@@ -9,7 +9,7 @@ const projectId = parseInt(urlParams.get('id'), 10);
 -------------------------------------- */
 async function loadProject() {
   try {
-    const res = await fetch('projects.json', { cache: 'no-store' });
+    const res = await fetch('projects_json.php', { cache: 'no-store' }); // ✅ UPDATED
     const data = await res.json();
     const projects = Array.isArray(data) ? data : data.projects;
     const project = projects.find(p => p.id === projectId);
@@ -92,19 +92,16 @@ async function loadProject() {
 loadProject();
 
 /* --------------------------------------
-   🔹 LOAD TASKLIST FROM tasklist.json (FIXED)
+   🔹 LOAD TASKLIST FROM tasklist.php
 -------------------------------------- */
 async function loadTaskList() {
   try {
-    const res = await fetch("tasklist.json", { cache: "no-store" });
+    const res = await fetch("tasklist.php", { cache: "no-store" }); // ✅ UPDATED
     const data = await res.json();
-    // expect data.tasks to be an array
     const tasks = Array.isArray(data) ? data : (data.tasks || []);
     const tbody = document.querySelector("#taskTable tbody");
 
     tbody.innerHTML = tasks.map(t => {
-      // Use <span> for title so it looks like normal text (text-dark, no underline)
-      // data-* attributes keep the meta for the modal.
       return `
         <tr>
           <td>${t.id}</td>
@@ -120,7 +117,7 @@ async function loadTaskList() {
               data-status="${escapeAttr(t.status || '')}"
               data-milestone="${escapeAttr(t.milestone || '')}"
               data-collab="${escapeAttr(t.collaborators || '')}"
-              >${escapeHtml(t.title)}</span>
+            >${escapeHtml(t.title)}</span>
           </td>
           <td>${t.start_date || "-"}</td>
           <td class="${t.deadline_color || ""}">${t.deadline || "-"}</td>
@@ -141,14 +138,14 @@ async function loadTaskList() {
     }).join("");
 
     attachModalEvents();
-    attachRowButtons(); // wire edit/delete buttons
+    attachRowButtons();
   } catch (err) {
     console.error("Tasklist load error:", err);
   }
 }
 
 /* --------------------------------------
-   🔹 UTILS — safe escaping for attributes / html
+   🔹 UTILS
 -------------------------------------- */
 function escapeAttr(s) {
   if (!s) return "";
@@ -168,44 +165,39 @@ function escapeHtml(s) {
 }
 
 /* --------------------------------------
-   🔹 ATTACH MODAL TO TITLES (FIXED)
+   🔹 ATTACH MODAL TO TITLES
 -------------------------------------- */
 function attachModalEvents() {
-  // Use event delegation in case you re-render rows later
   const tbody = document.querySelector("#taskTable tbody");
   if (!tbody) return;
 
   tbody.querySelectorAll(".task-title").forEach(title => {
-    // Remove any old handler to avoid duplicates
     title.onclick = null;
     title.addEventListener("click", function (e) {
-      // no default to stop any anchor behavior (not necessary for span but safe)
       if (e && e.preventDefault) e.preventDefault();
 
-      // populate modal fields from data- attributes
       const ds = this.dataset;
+
       document.querySelector("#modalTaskTitle").innerText = ds.title || "";
       document.querySelector("#modalTaskDesc").innerText = ds.desc || "";
       document.querySelector("#modalUserName").innerText = ds.user || "";
-      // If you have specific modal elements for deadline/milestone etc:
+
       const projectNameEl = document.querySelector("#modalProjectName");
       if (projectNameEl) projectNameEl.innerText = ds.milestone || "";
+
       const statusBadge = document.querySelector("#modalStatusBadge");
       if (statusBadge) {
         statusBadge.innerText = ds.status || "";
-        // give it a bootstrap badge class if you want, e.g. bg-secondary when empty
-        statusBadge.className = 'badge ' + (ds.status ? 'bg-secondary' : '');
+        statusBadge.className = "badge " + (ds.status ? "bg-secondary" : "");
       }
 
-      // show modal
-      const modalEl = document.querySelector("#taskModal");
-      if (modalEl) new bootstrap.Modal(modalEl).show();
+      new bootstrap.Modal(document.querySelector("#taskModal")).show();
     });
   });
 }
 
 /* --------------------------------------
-   🔹 EDIT / DELETE ROW BUTTONS (simple handlers)
+   🔹 EDIT / DELETE ROW BUTTONS
 -------------------------------------- */
 function attachRowButtons() {
   document.querySelectorAll("#taskTable .btn-delete").forEach(btn => {
@@ -220,9 +212,8 @@ function attachRowButtons() {
   document.querySelectorAll("#taskTable .btn-edit").forEach(btn => {
     btn.onclick = null;
     btn.addEventListener("click", function () {
-      // you already have an edit modal elsewhere — trigger it here or reuse taskModal
       const id = this.dataset.id;
-      alert("Edit task " + id + " — hook your edit modal here.");
+      alert("Edit task " + id);
     });
   });
 }
@@ -231,9 +222,6 @@ function attachRowButtons() {
    🔹 INITIAL CALL
 -------------------------------------- */
 loadTaskList();
-
-
-
 
 /* --------------------------------------
    🔹 TAB ACTIVE COLOR SWITCH
@@ -317,7 +305,6 @@ saveBtn.addEventListener('click', () => {
 /* --------------------------------------
    🔹 TASKLIST — ALL FUNCTIONS FIXED
 -------------------------------------- */
-
 function addTask() {
   alert("Open Add Task Modal Here");
 }
@@ -340,13 +327,11 @@ function editTask(btn) {
   alert("Open Edit Task Modal for: " + btn.closest("tr").children[1].innerText);
 }
 
-// Modal Functions
 function openLabelManager() {
   let modal = new bootstrap.Modal(document.getElementById("manageLabelsModal"));
   modal.show();
 }
 
-// Open edit modal and fill data
 function editTask(button) {
   const row = button.closest("tr");
   const cells = row.getElementsByTagName("td");
@@ -362,7 +347,6 @@ function editTask(button) {
   new bootstrap.Modal(document.getElementById("editTaskModal")).show();
 }
 
-// Save updates back to table
 document.getElementById("saveEditedTask").addEventListener("click", function () {
   const id = document.getElementById("edit-task-id").value;
 

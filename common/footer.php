@@ -9,6 +9,7 @@
 
 <!-- XLSX -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.19.3/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Vendor JS -->
 <script src="assets/js/vendor.min.js"></script>
@@ -16,5 +17,9 @@
 <!-- App JS -->
 <script src="assets/js/app.min.js"></script>
 <script src=assets/js/script.js></script>
+<script src=assets/js/project.js></script>
+<script src=assets/js/project_detail.js></script>
+
+
 
 

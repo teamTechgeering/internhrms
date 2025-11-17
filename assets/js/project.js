@@ -16,7 +16,7 @@
     // fetch projects.json
     async function loadProjects() {
       try {
-        const res = await fetch('projects.json', {cache: 'no-store'});
+        const res = await fetch('projects_json.php', {cache: 'no-store'});
         if (!res.ok) throw new Error('Failed to load projects.json: ' + res.status);
         // support both { "projects": [...] } and plain array
         const data = await res.json();
@@ -60,11 +60,12 @@
           tr.innerHTML = `
             <td>${p.id ?? ''}</td>
 <td class="small">
-  <a href="project_detail.html?id=${p.id}" class="text-decoration-none text-blue">
+  <a href="project_detail.php?id=${encodeURIComponent(p.id)}" class="text-decoration-none text-blue">
     ${escapeHtml(p.title ?? '')}
   </a>
   ${renderLabel(p.label)}
 </td>
+
             <td>${escapeHtml(p.client ?? '-')}</td>
             <td>${escapeHtml(p.price ?? '-')}</td>
             <td>${escapeHtml(p.start_date ?? '-')}</td>
