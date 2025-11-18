@@ -482,5 +482,44 @@
 
 
 <?php include 'common/footer.php'; ?>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const printBtn = document.getElementById("printTable");
+    const table = document.getElementById("clientsTable");
+
+    if (!printBtn) {
+        console.log("❌ printTable button not found");
+        return;
+    }
+
+    printBtn.addEventListener("click", function () {
+        if (!table) {
+            alert("Table not found!");
+            return;
+        }
+
+        let win = window.open("", "", "width=900,height=700");
+        win.document.write(`
+            <html>
+            <head>
+                <title>Print Clients</title>
+                <style>
+                    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+                    th, td { border: 1px solid #333; padding: 8px; }
+                    th { background: #f2f2f2; }
+                </style>
+            </head>
+            <body>
+                ${table.outerHTML}
+            </body>
+            </html>
+        `);
+
+        win.document.close();
+        win.print();
+    });
+});
+</script>
+
 </body>
 </html>

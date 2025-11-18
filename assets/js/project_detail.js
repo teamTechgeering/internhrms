@@ -9,10 +9,12 @@ const projectId = parseInt(urlParams.get('id'), 10);
 -------------------------------------- */
 async function loadProject() {
   try {
-    const res = await fetch('projects.json', { cache: 'no-store' });
+    const res = await fetch('projects_json.php?id=' + projectId, { cache: 'no-store' });
     const data = await res.json();
-    const projects = Array.isArray(data) ? data : data.projects;
-    const project = projects.find(p => p.id === projectId);
+
+    const project = data.find(p => p.id === projectId) || data || null;
+    
+    
 
     if (!project) {
       document.body.innerHTML = '<div class="text-center mt-5 text-danger">Project not found</div>';
@@ -77,7 +79,9 @@ async function loadProject() {
         <div class="d-flex align-items-start border-bottom py-2">
           <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="36" height="36" class="rounded-circle me-2">
           <div>
-            <div class="fw-semibold">${a.name} <span class="text-muted small">Today 08:09am</span></div>
+            <div class="fw-semibold">${a.name} 
+              <span class="text-muted small">Today 08:09am</span>
+            </div>
             <span class="badge bg-light text-primary border me-1">Added</span>
             ${a.task}
           </div>
@@ -85,22 +89,23 @@ async function loadProject() {
       ).join('');
 
   } catch (err) {
-    console.error(err);
+    console.error("Project load error:", err);
   }
 }
 
-loadProject();  
+loadProject();
+ 
 
 /* --------------------------------------
    🔹 LOAD TASKLIST FROM tasklist.php
 -------------------------------------- */
 async function loadTaskList() {
   try {
-    const res = await fetch("tasklist.php", { cache: "no-store" }); // ✅ UPDATED
+    const res = await fetch("tasklist.php", { cache: "no-store" }); // correct
     const data = await res.json();
     const tasks = Array.isArray(data) ? data : (data.tasks || []);
-    const tbody = document.querySelector("#taskTable tbody");
 
+    const tbody = document.querySelector("#taskTable tbody");
     tbody.innerHTML = tasks.map(t => {
       return `
         <tr>
@@ -139,10 +144,14 @@ async function loadTaskList() {
 
     attachModalEvents();
     attachRowButtons();
+
   } catch (err) {
     console.error("Tasklist load error:", err);
   }
 }
+
+loadTaskList();
+
 
 /* --------------------------------------
    🔹 UTILS

@@ -1,7 +1,6 @@
 <?php
-// client.php
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *'); // allow cross-origin requests for testing tools like Thunder Client
+header('Access-Control-Allow-Origin: *');
 
 echo <<<'JSON'
 [
