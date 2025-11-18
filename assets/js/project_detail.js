@@ -9,7 +9,7 @@ const projectId = parseInt(urlParams.get('id'), 10);
 -------------------------------------- */
 async function loadProject() {
   try {
-    const res = await fetch('projects_json.php', { cache: 'no-store' }); // ✅ UPDATED
+    const res = await fetch('projects.json', { cache: 'no-store' });
     const data = await res.json();
     const projects = Array.isArray(data) ? data : data.projects;
     const project = projects.find(p => p.id === projectId);
@@ -89,7 +89,7 @@ async function loadProject() {
   }
 }
 
-loadProject();
+loadProject();  
 
 /* --------------------------------------
    🔹 LOAD TASKLIST FROM tasklist.php
