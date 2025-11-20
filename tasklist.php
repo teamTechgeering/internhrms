@@ -27,7 +27,7 @@ echo json_encode([
             "assigned_to" => "Mark Thomas",
             "collaborators" => "-",
             "status" => "In progress"
-        ],
+        ]
     ]
 ], JSON_PRETTY_PRINT);
 
