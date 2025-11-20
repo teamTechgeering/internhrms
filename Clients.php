@@ -100,7 +100,7 @@
               <!-- three status cards -->
               <div class="row g-3 mt-3">
                 <div class="col-md-4">
-                  <div class="card shadow-sm h-100">
+                  <div class="card shadow-sm h-100 open-client-tab">
                     <div class="card-body">
                       <div class="d-flex justify-content-between align-items-start">
                         <div>
@@ -118,14 +118,14 @@
                 </div>
 
                 <div class="col-md-4">
-                  <div class="card shadow-sm h-100">
+                  <div class="card shadow-sm h-100 open-client-tab">
                     <div class="card-body">
                       <div class="d-flex justify-content-between align-items-start">
                         <div>
                           <h6 class="mb-1">Clients has partially paid invoices</h6>
                           <small class="text-muted">10% of total clients</small>
                         </div>
-                        <div class="h3 mb-0 text-muted">5</div>
+                        <div class="h3 mb-0 text-muted">4</div>
                       </div>
                       <div class="progress mt-3" style="height:6px;">
                         <div class="progress-bar bg-primary" role="progressbar" style="width:22%" aria-valuenow="22"
@@ -136,7 +136,7 @@
                 </div>
 
                 <div class="col-md-4">
-                  <div class="card shadow-sm h-100">
+                  <div class="card shadow-sm h-100 open-client-tab">
                     <div class="card-body">
                       <div class="d-flex justify-content-between align-items-start">
                         <div>
@@ -162,7 +162,7 @@
                     <div class="card-body">
                       <h6 class="mb-3">Projects</h6>
                       <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Clients has open
+                        <li class="list-group-item d-flex justify-content-between align-items-center open-client-tab">Clients has open
                           projects <span class="badge bg-secondary rounded-pill">17</span></li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">Clients has
                           completed projects <span class="badge bg-success rounded-pill">5</span></li>
@@ -519,6 +519,20 @@ document.addEventListener("DOMContentLoaded", function () {
         win.print();
     });
 });
+document.addEventListener("DOMContentLoaded", function() {
+
+    document.querySelectorAll(".open-client-tab").forEach(card => {
+        card.style.cursor = "pointer";
+        card.addEventListener("click", () => {
+            document.getElementById("clients-tab").click();
+        });
+    });
+
+});
+
+
+
+
 </script>
 
 </body>
