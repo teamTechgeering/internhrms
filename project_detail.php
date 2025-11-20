@@ -13,20 +13,11 @@
         <i class="bi bi-grid fs-5 me-2"></i>
         <h5 class="mb-0 me-2" id="projectTitle">Project Title</h5>
         <i class="bi bi-star text-warning"></i>
-
         <div class="ms-auto d-flex flex-wrap align-items-center gap-2">
-            <button class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#remindersModal">
-                <i class="bi bi-clock me-1"></i>Reminders
-            </button>
-
-            <button class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#settingsModal">
-                <i class="bi bi-gear me-1"></i>Settings
-            </button>
-
+            <button class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#remindersModal"><i class="bi bi-clock me-1"></i>Reminders</button>
+            <button class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-gear me-1"></i>Settings</button>
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="bi bi-link-45deg me-1"></i>Actions
-                </button>
+                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-link-45deg me-1"></i>Actions</button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="#"><i class="bi bi-check2-circle"></i> Marked Project As Completed</a></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-pause-circle"></i> Marked Project As Hold</a></li>
@@ -40,27 +31,638 @@
             </button>
         </div>
     </div>
-    <!-- ===================== MAIN TABS ===================== -->
-    <ul class="nav nav-underline nav-fill border-bottom mb-4">
-        <li class="nav-item"><a class="nav-link text-secondary active" data-bs-toggle="tab" href="#overview">Overview</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#tasklist">Task List</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#taskkanban">Task Kanban</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#milestones">Milestones</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#gantt">Gantt</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#notes">Notes</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#files">Files</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#comments">Comments</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#feedback">Customer Feedback</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#timesheets">Timesheets</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#invoices">Invoices</a></li>
-    </ul>
-    <!-- ===================== SUB-TABS ===================== -->
-    <ul class="nav nav-underline border-bottom mb-4">
-        <li class="nav-item"><a class="nav-link text-secondary active" data-bs-toggle="tab" href="#payments">Payments</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#expenses">Expenses</a></li>
-        <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#contracts">Contracts</a></li>
-    </ul>
-    <!-- ===================== REMINDERS MODAL ===================== -->
+<!-- ===================== MAIN TABS ===================== -->
+<ul class="nav nav-underline nav-fill border-bottom mb-4">
+    <li class="nav-item"><a class="nav-link text-secondary active" data-bs-toggle="tab" href="#overview">Overview</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#tasklist">Task List</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#taskkanban">Task Kanban</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#milestones">Milestones</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#gantt">Gantt</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#notes">Notes</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#files">Files</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#comments">Comments</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#feedback">Customer Feedback</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#timesheets">Timesheets</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#invoices">Invoices</a></li>
+</ul>
+<!-- ===================== MAIN TAB CONTENT ===================== -->
+<div class="tab-content">
+
+ <!-- ================================= OVERVIEW ================================= -->
+<div class="tab-pane fade show active" id="overview">
+
+                <div class="row g-2">
+                    <!-- Progress -->
+                    <div class="col-lg-3">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <canvas id="progressChart" style="max-height:160px;"></canvas>
+
+                                <p class="text-secondary mb-1">
+                                    Start date: <span id="startDate" class="text-dark"></span>
+                                </p>
+                                <p class="text-secondary mb-1">
+                                    Deadline: <span id="deadline" class="text-dark"></span>
+                                </p>
+                                <p class="text-secondary mb-0">
+                                    Client: <span id="client" class="text-primary"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Donut -->
+                    <div class="col-lg-3">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body text-center mb-0">
+                                <canvas id="donutChart" style="max-height:255px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Activity -->
+                    <div class="col-lg-5 ms-lg-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="fw-semibold mb-3">Activity</h6>
+                                <div id="activityList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ROW 2 -->
+                <div class="row g-2 mt-1">
+                    <!-- Hours worked -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm mb-2">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                <i class="bi bi-clock fs-1 text-secondary"></i>
+                                <div class="text-end">
+                                    <h4 class="mb-0" id="hoursWorked">48.75</h4>
+                                    <p class="mb-0 text-secondary">Total hours worked</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Project members -->
+                        <div class="card border-0 shadow-sm mb-2">
+                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-semibold">Project members</h6>
+                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addMemberModal"><i class="bi bi-plus-lg me-1"></i>Add member</button>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" width="40" height="40" class="rounded-circle me-3">
+                                        <div>
+                                            <div class="fw-semibold">John Doe</div>
+                                            <div class="text-secondary small">Admin</div>
+                                        </div>
+                                    </div>
+                                    <i class="bi bi-x text-secondary"></i>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png" width="40" height="40" class="rounded-circle me-3">
+                                        <div>
+                                            <div class="fw-semibold">Mark Thomas</div>
+                                            <div class="text-secondary small">Web Developer</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <i class="bi bi-envelope me-2 text-secondary"></i>
+                                        <i class="bi bi-x text-secondary"></i>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140040.png" width="40" height="40" class="rounded-circle me-3">
+                                        <div>
+                                            <div class="fw-semibold">Michael Wood</div>
+                                            <div class="text-secondary small">Project Manager</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <i class="bi bi-envelope me-2 text-secondary"></i>
+                                        <i class="bi bi-x text-secondary"></i>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Client contacts -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-semibold">Client contacts</h6>
+                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addContactModal"><i class="bi bi-plus-lg me-1"></i>Add contact</button>
+                            </div>
+                            <div class="card-body text-center text-secondary small">No record found.</div>
+                        </div>
+                    </div>
+                </div>
+                
+</div><!-- END OVERVIEW main tab -->
+
+    <!-- ================================= TASK LIST ================================= -->
+     <div class="tab-pane fade" id="tasklist">
+        <div class="container-fluid mt-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-semibold">Tasks</h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#manageLabelsModal"><i class="bi bi-tag"></i> Manage labels</button>
+                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addMultipleTasksModal">
+                                <i class="bi bi-plus-circle"></i> Add multiple tasks
+                            </button>
+                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle"></i> Add task</button>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                        <button class="btn btn-sm"><i class="bi bi-layout-split"></i></button>
+                        <div class="dropdown">
+                            <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-funnel"></i> Filters</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">All Tasks</a></li>
+                                <li><a class="dropdown-item" href="#">Bug</a></li>
+                                <li><a class="dropdown-item" href="#">My Task</a></li>
+                                <li><a class="dropdown-item" href="#">Recently Updated</a></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-sm"><i class="bi bi-plus"></i></button>
+                        <button class="btn btn-sm">All tasks</button>
+                        <button class="btn btn-sm">Bug</button>
+                        <button class="btn btn-sm"><i class="bi bi-person"></i></button>
+                        <button class="btn btn-sm"><i class="bi bi-gear"></i></button>
+                        <div class="ms-auto d-flex gap-2">
+                            <button class="btn btn-sm" onclick="exportExcel()">Excel</button>
+                            <button class="btn btn-sm" onclick="printTable()">Print</button>
+                            <div class="input-group input-group-sm" style="width:200px;">
+                                <input type="text" class="form-control" placeholder="Search" onkeyup="searchTask(this.value)">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle" id="taskTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Start date</th>
+                                    <th>Deadline</th>
+                                    <th>Milestone</th>
+                                    <th>Assigned to</th>
+                                    <th>Collaborators</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================================= TASK KANBAN ================================= -->
+     <div class="tab-pane fade show active p-0" id="taskkanban">
+    <div class="container-fluid">
+        <!-- Top Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-semibold">Tasks Kanban</h5>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#manageLabelsModal"><i class="bi bi-tags"></i> Manage labels</button>
+                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#multipleTasksModal"><i class="bi bi-plus-lg"></i> Add multiple tasks</button>
+                <button class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg"></i> Add task
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-repeat"></i>
+                </button>
+                <div class="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-funnel"></i> Filters</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">All Tasks</a></li>
+                                <li><a class="dropdown-item" href="#">Bug</a></li>
+                                <li><a class="dropdown-item" href="#">My Task</a></li>
+                                <li><a class="dropdown-item" href="#">Recently Updated</a></li>
+                            </ul>
+                        </div>
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-plus"></i>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">All tasks</button>
+                <button class="btn btn-outline-secondary btn-sm">Bug</button>
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-people"></i>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-brightness-high"></i>
+                </button>
+            </div>
+
+            <input type="text" class="form-control form-control-sm" placeholder="Search" style="width:200px;">
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="row g-3">
+            <!-- Column 1 -->
+            <div class="col-3">
+                <div class="border rounded bg-white p-3">
+
+                    <div class="d-flex justify-content-between">
+                        <h6 class="fw-semibold">To do</h6>
+                        <span class="text-muted">2</span>
+                    </div>
+
+                    <div class="bg-warning mt-2 mb-3" style="height:3px;"></div>
+
+                    <div class="border rounded p-3 mb-3 bg-white">
+                        <small>3642. Add company logo and contact details</small>
+                    </div>
+
+                    <div class="border rounded p-3 bg-white">
+                        <small>3651. Analyze competitor business card designs</small>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-3">
+                <div class="border rounded bg-white p-3">
+
+                    <div class="d-flex justify-content-between">
+                        <h6 class="fw-semibold">In progress</h6>
+                        <span class="text-muted">2</span>
+                    </div>
+
+                    <div class="bg-primary mt-2 mb-3" style="height:3px;"></div>
+
+                    <div class="border rounded p-3 mb-3">
+                        <small>3649. Design matching email signature</small><br>
+                        <span class="badge bg-success mt-1">Design</span>
+                    </div>
+
+                    <div class="border rounded p-3">
+                        <small>3646. Collaborate with printing companies</small>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-3">
+                <div class="border rounded bg-white p-3">
+
+                    <div class="d-flex justify-content-between">
+                        <h6 class="fw-semibold">Review</h6>
+                        <span class="text-muted">5</span>
+                    </div>
+
+                    <div class="bg-info mt-2 mb-3" style="height:3px;"></div>
+
+                    <div class="border rounded p-3 mb-3">
+                        <small>3645. Incorporate brand colors and fonts</small>
+                    </div>
+
+                    <div class="border rounded p-3">
+                        <small>3648. Update business card design based on feedback</small>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="col-3">
+                <div class="border rounded bg-white p-3">
+
+                    <div class="d-flex justify-content-between">
+                        <h6 class="fw-semibold">Done</h6>
+                        <span class="text-muted">2</span>
+                    </div>
+
+                    <div class="bg-success mt-2 mb-3" style="height:3px;"></div>
+
+                    <div class="border rounded p-3 mb-3">
+                        <small>3650. Create digital stationery templates</small>
+                        <span class="badge bg-success mt-1">Design</span>
+                    </div>
+                    <div class="border rounded p-3">
+                        <small>3640. Understand client brand identity</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- ================================= MILESTONES (YOUR PART 4) ================================= -->
+    <div class="tab-pane fade" id="milestones">
+
+    <!-- Milestone Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold">Milestones</h5>
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMilestoneModal"><i class="bi bi-plus-lg me-1"></i> Add milestone</button>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <button class="btn btn-outline-secondary btn-sm" id="printMilestonesBtn">Print</button>
+
+        <div class="input-group" style="max-width: 220px;">
+            <input type="text" id="milestoneSearch" class="form-control form-control-sm" placeholder="Search">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+        </div>
+    </div>
+
+    <!-- Table Header -->
+    <div class="row fw-semibold border-bottom pb-2 small text-secondary">
+        <div class="col-3">Due date</div>
+        <div class="col-5">Title</div>
+        <div class="col-3 text-center">Progress</div>
+        <div class="col-1 text-end"><i class="bi bi-list"></i></div>
+    </div>
+
+    <!-- CONTAINER FOR ALL MILESTONE ITEMS -->
+    <div id="milestoneList">
+
+        <!-- Milestone Item #1 -->
+        <div class="milestone-item row py-3 border-bottom align-items-center">
+            <div class="col-3">
+                <div class="text-center border rounded p-2">
+                    <span class="badge bg-danger mb-1">November</span>
+                    <div class="h3 m-0 fw-bold">10</div>
+                    <div class="small text-muted">Monday</div>
+                </div>
+            </div>
+
+            <div class="col-5">
+                <div class="fw-semibold">Release</div>
+            </div>
+
+            <div class="col-3 text-center">
+                <div class="small mb-1">5/8</div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar" style="width: 63%;"></div>
+                </div>
+                <div class="small mt-1">63%</div>
+            </div>
+
+            <div class="col-1 text-end">
+                <button class="btn btn-light btn-sm border"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-light btn-sm border"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </div>
+
+        <!-- Milestone Item #2 -->
+        <div class="milestone-item row py-3 border-bottom align-items-center">
+            <div class="col-3">
+                <div class="text-center border rounded p-2">
+                    <span class="badge bg-danger mb-1">September</span>
+                    <div class="h3 m-0 fw-bold">29</div>
+                    <div class="small text-muted">Monday</div>
+                </div>
+            </div>
+
+            <div class="col-5">
+                <div class="fw-semibold">Beta Release</div>
+            </div>
+
+            <div class="col-3 text-center">
+                <div class="small mb-1">1/6</div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar" style="width: 17%;"></div>
+                </div>
+                <div class="small mt-1">17%</div>
+            </div>
+
+            <div class="col-1 text-end">
+                <button class="btn btn-light btn-sm border"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-light btn-sm border"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Pagination (unchanged) -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">10</button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item">10</a></li>
+                <li><a class="dropdown-item">20</a></li>
+                <li><a class="dropdown-item">30</a></li>
+            </ul>
+        </div>
+
+        <div class="small">1–2 / 2</div>
+
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled"><a class="page-link">&laquo;</a></li>
+                <li class="page-item active"><a class="page-link">1</a></li>
+                <li class="page-item"><a class="page-link">&raquo;</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+
+    <!-- EMPTY TABS (KEEPED INTACT) -->
+   <div class="tab-pane fade" id="gantt">
+
+    <!-- Top Actions -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div class="btn-group">
+            <button class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm">
+                + Add new filter
+            </button>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <select class="form-select form-select-sm">
+                <option>Days view</option>
+            </select>
+
+            <button class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> Add task
+            </button>
+        </div>
+    </div>
+
+
+    <!-- MONTH + DAYS HEADER (Always on top) -->
+    <div class="border rounded p-2 mb-3">
+
+        <!-- Months -->
+        <div class="d-flex border-bottom small fw-semibold pb-1">
+            <div>November</div>
+            <div class="ms-auto">December</div>
+        </div>
+
+        <!-- DAYS (scrolls horizontally) -->
+        <div class="overflow-auto" style="white-space: nowrap;">
+            <div class="d-inline-flex small text-muted">
+
+                <!-- Nov 20–30 -->
+                <div class="d-flex">
+                    <div class="px-2">20</div>
+                    <div class="px-2">21</div>
+                    <div class="px-2">22</div>
+                    <div class="px-2">23</div>
+                    <div class="px-2">24</div>
+                    <div class="px-2">25</div>
+                    <div class="px-2">26</div>
+                    <div class="px-2">27</div>
+                    <div class="px-2">28</div>
+                    <div class="px-2">29</div>
+                    <div class="px-2">30</div>
+                </div>
+
+                <!-- Dec 01–14 -->
+                <div class="d-flex">
+                    <div class="px-2">01</div>
+                    <div class="px-2">02</div>
+                    <div class="px-2">03</div>
+                    <div class="px-2">04</div>
+                    <div class="px-2">05</div>
+                    <div class="px-2">06</div>
+                    <div class="px-2">07</div>
+                    <div class="px-2">08</div>
+                    <div class="px-2">09</div>
+                    <div class="px-2">10</div>
+                    <div class="px-2">11</div>
+                    <div class="px-2">12</div>
+                    <div class="px-2">13</div>
+                    <div class="px-2">14</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- TASK LIST SCROLL AREA -->
+    <div class="overflow-auto" style="white-space: nowrap;">
+
+        <div class="d-inline-block" style="min-width:1200px;">
+
+
+            <!-- GROUP TITLE -->
+            <div class="fw-semibold text-secondary mb-2">Beta Release</div>
+
+
+            <!-- TASK ROW -->
+            <div class="d-flex align-items-center mb-3">
+
+                <!-- BAR (left) -->
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-warning rounded" style="height:10px; width:60%;"></div>
+                </div>
+
+                <!-- TEXT -->
+                <div class="small text-nowrap">
+                    Define plugin functionality and scope
+                </div>
+            </div>
+
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-warning rounded" style="height:10px; width:70%;"></div>
+                </div>
+                <div class="small text-nowrap">Add plugin shortcode and widgets</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-warning rounded" style="height:10px; width:80%;"></div>
+                </div>
+                <div class="small text-nowrap">Ensure plugin security and updates</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-primary rounded" style="height:10px; width:72%;"></div>
+                </div>
+                <div class="small text-nowrap">Submit plugin to WordPress repository</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-warning rounded" style="height:10px; width:92%;"></div>
+                </div>
+                <div class="small text-nowrap">Provide plugin customer support</div>
+            </div>
+
+
+
+            <!-- NEXT GROUP -->
+            <div class="fw-semibold text-secondary mb-2">Release</div>
+
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-warning rounded" style="height:10px; width:68%;"></div>
+                </div>
+                <div class="small text-nowrap">Create plugin wireframes and UI</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-info rounded" style="height:10px; width:82%;"></div>
+                </div>
+                <div class="small text-nowrap">Develop plugin core features</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-info rounded" style="height:10px; width:90%;"></div>
+                </div>
+                <div class="small text-nowrap">Create plugin custom post types</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-info rounded" style="height:10px; width:110%;"></div>
+                </div>
+                <div class="small text-nowrap">Integrate plugin with database</div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="position-relative me-3" style="width:260px;">
+                    <div class="bg-secondary rounded" style="height:10px; width:140%;"></div>
+                </div>
+                <div class="small text-nowrap">Develop plugin documentation</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    
+    <div class="tab-pane fade" id="notes">...</div>
+    <div class="tab-pane fade" id="files">...</div>
+    <div class="tab-pane fade" id="comments">...</div>
+    <div class="tab-pane fade" id="feedback">...</div>
+    <div class="tab-pane fade" id="timesheets">...</div>
+    <div class="tab-pane fade" id="invoices">...</div>
+
+     <!-- ===================== REMINDERS MODAL ===================== -->
     <div class="modal fade" id="remindersModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-slideout modal-dialog-end modal-lg">
             <div class="modal-content">
@@ -127,266 +729,7 @@
             </div>
         </div>
     </div>
-    <!-- ===================== OVERVIEW TAB ===================== -->
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="overview">
-            <div class="row g-2">
-                <div class="col-lg-3">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <canvas id="progressChart" style="max-height:160px;"></canvas>
-                            </div>
-                            <p class="text-secondary mb-1">
-                                Start date: <span id="startDate" class="text-dark"></span>
-                            </p>
-                            <p class="text-secondary mb-1">
-                                Deadline: <span id="deadline" class="text-dark"></span>
-                            </p>
-                            <p class="text-secondary mb-0">
-                                Client: <span id="client" class="text-primary"></span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Donut Chart -->
-                <div class="col-lg-3">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center mb-0">
-                            <canvas id="donutChart" style="max-height:255px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <!-- Activity -->
-                <div class="col-lg-5 ms-lg-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body">
-                            <h6 class="fw-semibold mb-3">Activity</h6>
-                            <div id="activityList"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ROW 2: Clock + Project Members + Client Contacts -->
-            <div class="row g-2 mt-1">
-                <div class="col-lg-6">
-                    <!-- CLOCK -->
-                    <div class="card border-0 shadow-sm mb-2">
-                        <div class="card-body d-flex align-items-center justify-content-between">
-                            <i class="bi bi-clock fs-1 text-secondary"></i>
-                            <div class="text-end">
-                                <h4 class="mb-0" id="hoursWorked">48.75</h4>
-                                <p class="mb-0 text-secondary">Total hours worked</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- PROJECT MEMBERS -->
-                    <div class="card border-0 shadow-sm mb-2">
-                        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 fw-semibold">Project members</h6>
-                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addMemberModal">
-                                <i class="bi bi-plus-lg me-1"></i>Add member
-                            </button>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
-                                         width="40" height="40" class="rounded-circle me-3">
-                                    <div>
-                                        <div class="fw-semibold">John Doe</div>
-                                        <div class="text-secondary small">Admin</div>
-                                    </div>
-                                </div>
-                                <i class="bi bi-x text-secondary"></i>
-                            </li>
-                            <li class="list-group-item d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/4140/4140037.png"
-                                         width="40" height="40" class="rounded-circle me-3">
-                                    <div>
-                                        <div class="fw-semibold">Mark Thomas</div>
-                                        <div class="text-secondary small">Web Developer</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <i class="bi bi-envelope me-2 text-secondary"></i>
-                                    <i class="bi bi-x text-secondary"></i>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/4140/4140040.png"
-                                         width="40" height="40" class="rounded-circle me-3">
-                                    <div>
-                                        <div class="fw-semibold">Michael Wood</div>
-                                        <div class="text-secondary small">Project Manager</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <i class="bi bi-envelope me-2 text-secondary"></i>
-                                    <i class="bi bi-x text-secondary"></i>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- CLIENT CONTACTS -->
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 fw-semibold">Client contacts</h6>
-                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addContactModal">
-                                <i class="bi bi-plus-lg me-1"></i>Add contact
-                            </button>
-                        </div>
-                        <div class="card-body text-center text-secondary small">No record found.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ===================== ADD MEMBER MODAL ===================== -->
-    <div class="modal fade" id="addMemberModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-sm">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-semibold">
-                        <i class="bi bi-person-plus me-2"></i>Add Member
-                    </h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addMemberForm">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" required placeholder="Enter member name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
-                            <select class="form-select" required>
-                                <option value="">Select Role</option>
-                                <option>Admin</option>
-                                <option>Project Manager</option>
-                                <option>Web Developer</option>
-                                <option>Web Designer</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required placeholder="Enter email address">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Profile Image URL</label>
-                            <input type="url" class="form-control" placeholder="https://example.com/image.png">
-                        </div>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Add Member</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ===================== ADD CONTACT MODAL ===================== -->
-    <div class="modal fade" id="addContactModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-sm">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-semibold">
-                        <i class="bi bi-person-lines-fill me-2"></i>Add Contact
-                    </h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addContactForm">
-                        <div class="mb-3">
-                            <label class="form-label">Client Name</label>
-                            <input type="text" class="form-control" required placeholder="Enter client name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Company</label>
-                            <input type="text" class="form-control" placeholder="Enter company name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required placeholder="Enter email address">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" placeholder="Enter phone number">
-                        </div>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Add Contact</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ===================== TASK LIST ===================== -->
-    <div class="tab-pane fade" id="tasklist">
-        <div class="container-fluid mt-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-semibold">Tasks</h5>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#manageLabelsModal"><i class="bi bi-tag"></i> Manage labels</button>
-                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addMultipleTasksModal">
-                                <i class="bi bi-plus-circle"></i> Add multiple tasks
-                            </button>
-                            <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="bi bi-plus-circle"></i> Add task</button>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
-                        <button class="btn btn-sm"><i class="bi bi-layout-split"></i></button>
-                        <div class="dropdown">
-                            <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-funnel"></i> Filters</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">All Tasks</a></li>
-                                <li><a class="dropdown-item" href="#">Bug</a></li>
-                                <li><a class="dropdown-item" href="#">My Task</a></li>
-                                <li><a class="dropdown-item" href="#">Recently Updated</a></li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-sm"><i class="bi bi-plus"></i></button>
-                        <button class="btn btn-sm">All tasks</button>
-                        <button class="btn btn-sm">Bug</button>
-                        <button class="btn btn-sm"><i class="bi bi-person"></i></button>
-                        <button class="btn btn-sm"><i class="bi bi-gear"></i></button>
-                        <div class="ms-auto d-flex gap-2">
-                            <button class="btn btn-sm" onclick="exportExcel()">Excel</button>
-                            <button class="btn btn-sm" onclick="printTable()">Print</button>
-                            <div class="input-group input-group-sm" style="width:200px;">
-                                <input type="text" class="form-control" placeholder="Search" onkeyup="searchTask(this.value)">
-                                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-middle" id="taskTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Start date</th>
-                                    <th>Deadline</th>
-                                    <th>Milestone</th>
-                                    <th>Assigned to</th>
-                                    <th>Collaborators</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ===================== TASK MODAL ===================== -->
+     <!-- ===================== TASK MODAL ===================== -->
     <div class="modal fade" id="taskModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -750,6 +1093,140 @@
         </div>
     </div>
 </div>
+<!-- Taskkanban -->
+ <!-- Manage Labels Modal -->
+<div class="modal fade" id="manageLabelsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Manage labels</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Input -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Label">
+          <button class="btn btn-outline-primary">Save</button>
+        </div>
+        <hr>
+        <!-- Existing Labels -->
+        <div class="d-flex gap-2 flex-wrap">
+          <span class="badge rounded-pill bg-danger">Bug</span>
+          <span class="badge rounded-pill bg-success">Design</span>
+          <span class="badge rounded-pill bg-primary">Enhancement</span>
+          <span class="badge rounded-pill bg-info text-dark">Feedback</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Multiple Tasks Modal -->
+<div class="modal fade" id="multipleTasksModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add multiple tasks</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-3"><label class="form-label">Title</label></div>
+          <div class="col-9"><input class="form-control" placeholder="Title"></div>
+          <div class="col-3"><label class="form-label">Description</label></div>
+          <div class="col-9"><textarea class="form-control" rows="2" placeholder="Description"></textarea></div>
+          <div class="col-3"><label class="form-label">Points</label></div>
+          <div class="col-9">
+            <select class="form-select">
+              <option>1 Point</option>
+              <option>2 Points</option>
+              <option>3 Points</option>
+            </select>
+          </div>
+
+          <div class="col-3"><label class="form-label">Milestone</label></div>
+          <div class="col-9"><select class="form-select"><option>Milestone</option></select></div>
+
+          <div class="col-3"><label class="form-label">Assign to</label></div>
+          <div class="col-9"><select class="form-select"><option>John Doe</option></select></div>
+
+          <div class="col-3"><label class="form-label">Collaborators</label></div>
+          <div class="col-9"><select class="form-select"><option>Collaborators</option></select></div>
+
+          <div class="col-3"><label class="form-label">Status</label></div>
+          <div class="col-9"><select class="form-select"><option>To do</option></select></div>
+
+          <div class="col-3"><label class="form-label">Priority</label></div>
+          <div class="col-9"><select class="form-select"><option>Priority</option></select></div>
+
+          <div class="col-3"><label class="form-label">Labels</label></div>
+          <div class="col-9"><select class="form-select"><option>Labels</option></select></div>
+
+          <div class="col-3"><label class="form-label">Start date</label></div>
+          <div class="col-9"><input type="text" class="form-control" placeholder="DD-MM-YYYY"></div>
+        </div>
+        <div class="mt-4">
+          <button class="btn btn-outline-secondary"><i class="bi bi-upload"></i> Upload File</button>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary">Save & add more</button>
+      </div>
+<!-- Milestone -->
+<!-- ADD MILESTONE MODAL (MUST BE OUTSIDE ALL TAB-PANES) -->
+<div class="modal fade" id="addMilestoneModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Add Milestone</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input id="milestoneTitle" type="text" class="form-control" placeholder="Enter milestone title">
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea id="milestoneDesc" class="form-control" rows="3" placeholder="Enter description"></textarea>
+        </div>
+
+        <!-- Due Date -->
+        <div class="mb-3">
+          <label class="form-label">Due Date</label>
+          <input id="milestoneDate" type="date" class="form-control">
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="saveMilestone" type="button" class="btn btn-primary">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+</div> <!-- END MAIN CONTENT -->
+
+
 </div>  <!-- CLOSE .content -->
     </div>    <!-- CLOSE .content-page -->
 

@@ -1,20 +1,20 @@
-/* --------------------------------------
-   🔹 GET PROJECT ID FROM URL
--------------------------------------- */
+/* =======================================================
+      🔵 GLOBAL SETUP
+======================================================= */
+
+/* GET PROJECT ID FROM URL */
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = parseInt(urlParams.get('id'), 10);
 
-/* --------------------------------------
-   🔹 LOAD PROJECT DATA
--------------------------------------- */
+
+/* =======================================================
+      🔵 LOAD PROJECT DATA
+======================================================= */
 async function loadProject() {
   try {
     const res = await fetch('projects_json.php?id=' + projectId, { cache: 'no-store' });
     const data = await res.json();
-
     const project = data.find(p => p.id === projectId) || data || null;
-    
-    
 
     if (!project) {
       document.body.innerHTML = '<div class="text-center mt-5 text-danger">Project not found</div>';
@@ -26,7 +26,7 @@ async function loadProject() {
     document.getElementById('deadline').textContent = project.deadline;
     document.getElementById('client').textContent = project.client || '-';
 
-    /* ------ Progress Chart ------ */
+    /* PROGRESS CHART */
     new Chart(document.getElementById('progressChart'), {
       type: 'doughnut',
       data: {
@@ -39,7 +39,7 @@ async function loadProject() {
       options: { cutout: '75%', plugins: { legend: { display: false } } }
     });
 
-    /* ------ Donut Chart ------ */
+    /* DONUT CHART */
     new Chart(document.getElementById('donutChart'), {
       type: 'doughnut',
       data: {
@@ -49,15 +49,10 @@ async function loadProject() {
           backgroundColor: ['#ff9800', '#4c6ef5', '#9c27b0', '#009688']
         }]
       },
-      options: {
-        cutout: '65%',
-        plugins: { legend: { display: true, position: 'bottom' } }
-      }
+      options: { cutout: '65%', plugins: { legend: { display: true, position: 'bottom' } } }
     });
 
-    /* --------------------------------------
-       🔹 ACTIVITY LIST
-    -------------------------------------- */
+    /* ACTIVITY LIST */
     const activity = [
       { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
       { name: 'John Doe', task: '#3467 - Create explainer video animations' },
@@ -74,19 +69,18 @@ async function loadProject() {
     ];
 
     const activityList = document.getElementById('activityList');
-    activityList.innerHTML = activity
-      .map(a => `
-        <div class="d-flex align-items-start border-bottom py-2">
-          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="36" height="36" class="rounded-circle me-2">
-          <div>
-            <div class="fw-semibold">${a.name} 
-              <span class="text-muted small">Today 08:09am</span>
-            </div>
-            <span class="badge bg-light text-primary border me-1">Added</span>
-            ${a.task}
+    activityList.innerHTML = activity.map(a => `
+      <div class="d-flex align-items-start border-bottom py-2">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="36" height="36" class="rounded-circle me-2">
+        <div>
+          <div class="fw-semibold">${a.name} 
+            <span class="text-muted small">Today 08:09am</span>
           </div>
-        </div>`
-      ).join('');
+          <span class="badge bg-light text-primary border me-1">Added</span>
+          ${a.task}
+        </div>
+      </div>
+    `).join('');
 
   } catch (err) {
     console.error("Project load error:", err);
@@ -94,53 +88,52 @@ async function loadProject() {
 }
 
 loadProject();
- 
 
-/* --------------------------------------
-   🔹 LOAD TASKLIST FROM tasklist.php
--------------------------------------- */
+
+/* =======================================================
+      🔵 LOAD TASKLIST
+======================================================= */
 async function loadTaskList() {
   try {
-    const res = await fetch("tasklist.php", { cache: "no-store" }); // correct
+    const res = await fetch("tasklist.php", { cache: "no-store" });
     const data = await res.json();
     const tasks = Array.isArray(data) ? data : (data.tasks || []);
 
     const tbody = document.querySelector("#taskTable tbody");
-    tbody.innerHTML = tasks.map(t => {
-      return `
-        <tr>
-          <td>${t.id}</td>
-          <td>
-            <span
-              class="task-title text-dark text-decoration-none"
-              role="button"
-              data-id="${t.id}"
-              data-title="${escapeAttr(t.title)}"
-              data-desc="${escapeAttr(t.description || '')}"
-              data-user="${escapeAttr(t.assigned_to || '')}"
-              data-deadline="${escapeAttr(t.deadline || '')}"
-              data-status="${escapeAttr(t.status || '')}"
-              data-milestone="${escapeAttr(t.milestone || '')}"
-              data-collab="${escapeAttr(t.collaborators || '')}"
-            >${escapeHtml(t.title)}</span>
-          </td>
-          <td>${t.start_date || "-"}</td>
-          <td class="${t.deadline_color || ""}">${t.deadline || "-"}</td>
-          <td>${t.milestone || "-"}</td>
-          <td>${t.assigned_to || "-"}</td>
-          <td>${t.collaborators || "-"}</td>
-          <td>${t.status || "-"}</td>
-          <td class="text-end">
-            <button class="btn btn-sm btn-outline-secondary btn-edit" data-id="${t.id}">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-secondary btn-delete" data-id="${t.id}">
-              <i class="bi bi-x-circle"></i>
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join("");
+
+    tbody.innerHTML = tasks.map(t => `
+      <tr>
+        <td>${t.id}</td>
+        <td>
+          <span
+            class="task-title text-dark text-decoration-none"
+            role="button"
+            data-id="${t.id}"
+            data-title="${escapeAttr(t.title)}"
+            data-desc="${escapeAttr(t.description || '')}"
+            data-user="${escapeAttr(t.assigned_to || '')}"
+            data-deadline="${escapeAttr(t.deadline || '')}"
+            data-status="${escapeAttr(t.status || '')}"
+            data-milestone="${escapeAttr(t.milestone || '')}"
+            data-collab="${escapeAttr(t.collaborators || '')}"
+          >${escapeHtml(t.title)}</span>
+        </td>
+        <td>${t.start_date || "-"}</td>
+        <td class="${t.deadline_color || ""}">${t.deadline || "-"}</td>
+        <td>${t.milestone || "-"}</td>
+        <td>${t.assigned_to || "-"}</td>
+        <td>${t.collaborators || "-"}</td>
+        <td>${t.status || "-"}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-secondary btn-edit" data-id="${t.id}">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-secondary btn-delete" data-id="${t.id}">
+            <i class="bi bi-x-circle"></i>
+          </button>
+        </td>
+      </tr>
+    `).join("");
 
     attachModalEvents();
     attachRowButtons();
@@ -153,9 +146,9 @@ async function loadTaskList() {
 loadTaskList();
 
 
-/* --------------------------------------
-   🔹 UTILS
--------------------------------------- */
+/* =======================================================
+      🔵 UTILS (escape functions)
+======================================================= */
 function escapeAttr(s) {
   if (!s) return "";
   return String(s)
@@ -165,6 +158,7 @@ function escapeAttr(s) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }
+
 function escapeHtml(s) {
   if (!s) return "";
   return String(s)
@@ -173,9 +167,10 @@ function escapeHtml(s) {
     .replace(/>/g, "&gt;");
 }
 
-/* --------------------------------------
-   🔹 ATTACH MODAL TO TITLES
--------------------------------------- */
+
+/* =======================================================
+      🔵 TASK DETAILS MODAL
+======================================================= */
 function attachModalEvents() {
   const tbody = document.querySelector("#taskTable tbody");
   if (!tbody) return;
@@ -183,41 +178,38 @@ function attachModalEvents() {
   tbody.querySelectorAll(".task-title").forEach(title => {
     title.onclick = null;
     title.addEventListener("click", function (e) {
-      if (e && e.preventDefault) e.preventDefault();
-
+      e.preventDefault();
       const ds = this.dataset;
 
       document.querySelector("#modalTaskTitle").innerText = ds.title || "";
       document.querySelector("#modalTaskDesc").innerText = ds.desc || "";
       document.querySelector("#modalUserName").innerText = ds.user || "";
-
-      const projectNameEl = document.querySelector("#modalProjectName");
-      if (projectNameEl) projectNameEl.innerText = ds.milestone || "";
+      document.querySelector("#modalProjectName").innerText = ds.milestone || "";
 
       const statusBadge = document.querySelector("#modalStatusBadge");
-      if (statusBadge) {
-        statusBadge.innerText = ds.status || "";
-        statusBadge.className = "badge " + (ds.status ? "bg-secondary" : "");
-      }
+      statusBadge.innerText = ds.status || "";
+      statusBadge.className = "badge " + (ds.status ? "bg-secondary" : "");
 
       new bootstrap.Modal(document.querySelector("#taskModal")).show();
     });
   });
 }
 
-/* --------------------------------------
-   🔹 EDIT / DELETE ROW BUTTONS
--------------------------------------- */
+
+/* =======================================================
+      🔵 EDIT & DELETE BUTTONS
+======================================================= */
 function attachRowButtons() {
+  /* DELETE */
   document.querySelectorAll("#taskTable .btn-delete").forEach(btn => {
     btn.onclick = null;
     btn.addEventListener("click", function () {
       if (!confirm("Delete this task?")) return;
-      const tr = this.closest("tr");
-      if (tr) tr.remove();
+      this.closest("tr")?.remove();
     });
   });
 
+  /* EDIT */
   document.querySelectorAll("#taskTable .btn-edit").forEach(btn => {
     btn.onclick = null;
     btn.addEventListener("click", function () {
@@ -227,14 +219,10 @@ function attachRowButtons() {
   });
 }
 
-/* --------------------------------------
-   🔹 INITIAL CALL
--------------------------------------- */
-loadTaskList();
 
-/* --------------------------------------
-   🔹 TAB ACTIVE COLOR SWITCH
--------------------------------------- */
+/* =======================================================
+      🔵 TAB ACTIVE COLOR SWITCH
+======================================================= */
 const allTabs = document.querySelectorAll('.nav-link');
 allTabs.forEach(tab => {
   tab.addEventListener('shown.bs.tab', () => {
@@ -243,9 +231,10 @@ allTabs.forEach(tab => {
   });
 });
 
-/* --------------------------------------
-   🔹 REMINDERS
--------------------------------------- */
+
+/* =======================================================
+      🔵 REMINDERS
+======================================================= */
 const reminders = [];
 const reminderList = document.getElementById('reminderList');
 
@@ -277,8 +266,8 @@ function renderReminders() {
       <button class="btn btn-sm btn-outline-danger" onclick="deleteReminder(${i})">
         <i class="bi bi-trash"></i>
       </button>
-    </li>`
-  ).join('');
+    </li>
+  `).join('');
 }
 
 function deleteReminder(i) {
@@ -286,9 +275,10 @@ function deleteReminder(i) {
   renderReminders();
 }
 
-/* --------------------------------------
-   🔹 SETTINGS
--------------------------------------- */
+
+/* =======================================================
+      🔵 SETTINGS (LOCAL STORAGE)
+======================================================= */
 const saveBtn = document.getElementById('saveSettings');
 const clientTimesheet = document.getElementById('clientTimesheet');
 const enableSlack = document.getElementById('enableSlack');
@@ -311,9 +301,10 @@ saveBtn.addEventListener('click', () => {
   alert('Settings saved!');
 });
 
-/* --------------------------------------
-   🔹 TASKLIST — ALL FUNCTIONS FIXED
--------------------------------------- */
+
+/* =======================================================
+      🔵 TASK ACTIONS
+======================================================= */
 function addTask() {
   alert("Open Add Task Modal Here");
 }
@@ -323,24 +314,11 @@ function addMultipleTasks() {
 }
 
 function openLabelManager() {
-  alert("Open Label Manager Popup");
-}
-
-function deleteTask(btn) {
-  if (confirm("Are you sure you want to delete this task?")) {
-    btn.closest("tr").remove();
-  }
-}
-
-function editTask(btn) {
-  alert("Open Edit Task Modal for: " + btn.closest("tr").children[1].innerText);
-}
-
-function openLabelManager() {
   let modal = new bootstrap.Modal(document.getElementById("manageLabelsModal"));
   modal.show();
 }
 
+/* EDIT TASK POPUP */
 function editTask(button) {
   const row = button.closest("tr");
   const cells = row.getElementsByTagName("td");
@@ -350,7 +328,7 @@ function editTask(button) {
   document.getElementById("edit-task-start").value = cells[2].innerText === "-" ? "" : cells[2].innerText;
   document.getElementById("edit-task-deadline").value = cells[3].innerText.replaceAll("-", "");
   document.getElementById("edit-task-milestone").value = cells[4].innerText;
-  document.getElementById("edit-task-assigned").value = cells[5].innerText.replace(/^\s*|\s*$/g, "");
+  document.getElementById("edit-task-assigned").value = cells[5].innerText.trim();
   document.getElementById("edit-task-status").value = cells[7].innerText;
 
   new bootstrap.Modal(document.getElementById("editTaskModal")).show();
@@ -375,7 +353,10 @@ document.getElementById("saveEditedTask").addEventListener("click", function () 
   bootstrap.Modal.getInstance(document.getElementById("editTaskModal")).hide();
 });
 
-/* 🔍 FILTER */
+
+/* =======================================================
+      🔵 FILTER & SEARCH
+======================================================= */
 document.querySelectorAll(".filter-option").forEach(item => {
   item.addEventListener("click", function () {
     let filter = this.dataset.filter;
@@ -390,7 +371,6 @@ document.querySelectorAll(".filter-option").forEach(item => {
   });
 });
 
-/* 🔍 SEARCH */
 function searchTask() {
   let input = document.getElementById("taskSearch").value.toLowerCase();
 
@@ -400,7 +380,10 @@ function searchTask() {
   });
 }
 
-/* 🖨 PRINT */
+
+/* =======================================================
+      🔵 PRINT & EXPORT
+======================================================= */
 function printTable() {
   let table = document.getElementById("taskTable").outerHTML;
   let win = window.open("");
@@ -408,7 +391,6 @@ function printTable() {
   win.print();
 }
 
-/* 📥 EXPORT EXCEL */
 function exportExcel() {
   let table = document.getElementById("taskTable").outerHTML;
   let blob = new Blob([table], { type: "application/vnd.ms-excel" });
@@ -417,3 +399,121 @@ function exportExcel() {
   link.download = "tasks.xls";
   link.click();
 }
+
+
+/* =======================================================
+      🔵 SEARCH TABLES (EXPENSES / CONTRACTS)
+======================================================= */
+function setupSearch(inputId, tableId) {
+  document.getElementById(inputId).addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+
+    rows.forEach(row => {
+      let text = row.innerText.toLowerCase();
+      row.style.display = text.includes(filter) ? "" : "none";
+    });
+  });
+}
+
+setupSearch("expenseSearch", "expensesTable");
+setupSearch("contractSearch", "contractsTable");
+
+
+/* =======================================================
+      🔵 EXPORT (EXPENSES + CONTRACTS)
+======================================================= */
+function exportTableToCSV(tableId, filename) {
+  let table = document.getElementById(tableId);
+  let rows = table.querySelectorAll("tr");
+  let csv = [];
+
+  rows.forEach(row => {
+    let cols = row.querySelectorAll("th, td");
+    let rowData = [];
+    cols.forEach(col => rowData.push(col.innerText.replace(/,/g, "")));
+    csv.push(rowData.join(","));
+  });
+
+  let blob = new Blob([csv.join("\n")], { type: "text/csv" });
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}
+
+document.getElementById("btnExportExpenses").onclick = () =>
+  exportTableToCSV("expensesTable", "expenses.csv");
+
+document.getElementById("btnExportContracts").onclick = () =>
+  exportTableToCSV("contractsTable", "contracts.csv");
+
+
+/* =======================================================
+      🔵 ADD BUTTONS
+======================================================= */
+document.getElementById("btnAddExpense").onclick = () =>
+  alert("Open 'Add Expense' modal");
+
+document.getElementById("btnAddContract").onclick = () =>
+  alert("Open 'Add Contract' modal");
+
+// Milestone
+document.getElementById("saveMilestone").addEventListener("click", function () {
+    const title = document.getElementById("milestoneTitle").value.trim();
+    const desc = document.getElementById("milestoneDesc").value.trim();
+    const date = document.getElementById("milestoneDate").value;
+
+    if (!title || !date) {
+        alert("Title and Due Date are required");
+        return;
+    }
+
+    // Format date
+    const d = new Date(date);
+    const month = d.toLocaleString('en-US', { month: 'long' });
+    const day = d.getDate();
+    const weekday = d.toLocaleString('en-US', { weekday: 'long' });
+
+    // Create new milestone item
+    const newMilestone = `
+        <div class="milestone-item row py-3 border-bottom align-items-center">
+            <div class="col-3">
+                <div class="text-center border rounded p-2">
+                    <span class="badge bg-danger mb-1">${month}</span>
+                    <div class="h3 m-0 fw-bold">${day}</div>
+                    <div class="small text-muted">${weekday}</div>
+                </div>
+            </div>
+
+            <div class="col-5">
+                <div class="fw-semibold">${title}</div>
+                <div class="text-muted small">${desc}</div>
+            </div>
+
+            <div class="col-3 text-center">
+                <div class="small mb-1">0/0</div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="small mt-1">0%</div>
+            </div>
+
+            <div class="col-1 text-end">
+                <button class="btn btn-light btn-sm border"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-light btn-sm border"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("milestoneList").insertAdjacentHTML("beforeend", newMilestone);
+
+    // Close modal after save
+    const modal = bootstrap.Modal.getInstance(document.getElementById("addMilestoneModal"));
+    modal.hide();
+
+    // Clear fields
+    document.getElementById("milestoneTitle").value = "";
+    document.getElementById("milestoneDesc").value = "";
+    document.getElementById("milestoneDate").value = "";
+});
