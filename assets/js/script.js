@@ -318,7 +318,13 @@ document.addEventListener("DOMContentLoaded", () => {
      ${c.name}
   </a>
 </td>
-        <td>${c.primaryContact}</td>
+        <td>
+  <a href="Client-View.php?id=${c.id}" 
+     class="text-primary text-decoration-none fw-semibold">
+     ${c.primaryContact}
+  </a>
+</td>
+
         <td>${c.phone}</td>
         <td>${c.clientGroup}</td>
         <td>${c.labels || ""}</td>
@@ -337,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       clientsTableBody.appendChild(row);
 
-      // ✏️ Edit button
+      // ✏ Edit button
       row.querySelector(".editBtn").addEventListener("click", () => {
         editIndex = index;
         document.getElementById("editClientName").value = c.name;
@@ -513,7 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
     exportBtn.addEventListener("click", () => {
       const clients = JSON.parse(localStorage.getItem("clientsData")) || [];
       if (clients.length === 0) {
-        alert("⚠️ No clients available to export!");
+        alert("⚠ No clients available to export!");
         return;
       }
 
@@ -533,4 +539,3 @@ document.addEventListener("DOMContentLoaded", () => {
   renderClients();
   saveClients();
 });
-
