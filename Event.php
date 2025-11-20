@@ -8,29 +8,29 @@
 
     <!-- ✅ Event Page Content Starts Here -->
     <!-- Page Content -->
-<div class="container-fluid py-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-semibold">Event Calendar</h4>
-            <div class="d-flex align-items-center gap-4">
-              <select class="form-select form-select-sm" style="width: 160px;">
-                <option selected>- Event label -</option>
-                <option>Workshops</option>
-                <option>Meetings</option>
-                <option>Training</option>
-              </select>
-              <select class="form-select form-select-sm" style="width: 140px;">
-                <option selected>Event type</option>
-                <option>Online</option>
-                <option>In-person</option>
-              </select>
-              <button class="btn btn-outline-secondary btn-sm">Manage labels</button>
-              <button id="addEventBtn" class="btn btn-primary btn-sm">Add event</button>
+    <div class="container-fluid py-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-semibold">Event Calendar</h4>
+        <div class="d-flex align-items-center gap-4">
+          <select class="form-select form-select-sm" style="width: 160px;">
+            <option selected>- Event label -</option>
+            <option>Workshops</option>
+            <option>Meetings</option>
+            <option>Training</option>
+          </select>
+          <select class="form-select form-select-sm" style="width: 140px;">
+            <option selected>Event type</option>
+            <option>Online</option>
+            <option>In-person</option>
+          </select>
+          <button class="btn btn-outline-secondary btn-sm">Manage labels</button>
+          <button id="addEventBtn" class="btn btn-primary btn-sm">Add event</button>
 
-            </div>
-          </div>
-
-          <div id="calendar"></div>
         </div>
+      </div>
+
+      <div id="calendar"></div>
+    </div>
     <div id="calendar"></div>
   </div>
 
@@ -125,6 +125,12 @@
       </div>
     </div>
   </div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
   <div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
       <div class="modal-content">
@@ -149,41 +155,37 @@
     </div>
   </div>
   <div class="modal fade" id="editEventModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Event</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editEventForm">
-          <div class="mb-3">
-            <label class="form-label">Event Title</label>
-            <input type="text" id="editTitle" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input type="date" id="editDate" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Color</label>
-            <input type="color" id="editColor" class="form-control form-control-color">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button id="saveEditBtn" class="btn btn-primary">Save Changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editEventForm">
+            <div class="mb-3">
+              <label class="form-label">Event Title</label>
+              <input type="text" id="editTitle" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" id="editDate" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Color</label>
+              <input type="color" id="editColor" class="form-control form-control-color">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="saveEditBtn" class="btn btn-primary">Save Changes</button>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-</div>
 
 <?php include 'common/footer.php'; ?>
 </body>
+
 </html>

@@ -310,37 +310,44 @@ document.addEventListener("DOMContentLoaded", () => {
     clientsTableBody.innerHTML = "";
     clients.forEach((c, index) => {
       const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${c.id}</td>
-       <td>
-  <a href="Client-View.php?id=${c.id}" 
-     class="text-decoration-none text-primary fw-semibold">
-     ${c.name}
-  </a>
-</td>
-        <td>
-  <a href="Client-View.php?id=${c.id}" 
-     class="text-primary text-decoration-none fw-semibold">
-     ${c.primaryContact}
-  </a>
-</td>
+     row.innerHTML = `
+  <td>${c.id}</td>
 
-        <td>${c.phone}</td>
-        <td>${c.clientGroup}</td>
-        <td>${c.labels || ""}</td>
-        <td>${c.projects || ""}</td>
-        <td>$${c.totalInvoiced || 0}</td>
-        <td>$${c.paymentReceived || 0}</td>
-        <td>$${c.due || 0}</td>
-        <td>
-          <button class="btn btn-sm btn-outline-primary me-1 editBtn">
-            <i class="bi bi-pencil-square"></i>
-          </button>
-          <button class="btn btn-sm btn-outline-danger deleteBtn">
-            <i class="bi bi-trash"></i>
-          </button>
-        </td>
-      `;
+  <td>
+    <a href="Client-View.php?id=${c.id}"
+       class="text-decoration-none text-primary fw-semibold"
+       onclick="event.stopPropagation()">
+       ${c.name}
+    </a>
+  </td>
+
+  <td>
+    <a href="Client-View.php?id=${c.id}"
+       class="text-primary text-decoration-none fw-semibold"
+       onclick="event.stopPropagation()">
+       ${c.primaryContact}
+    </a>
+  </td>
+
+  <td>${c.phone}</td>
+  <td>${c.clientGroup}</td>
+  <td>${c.labels || ""}</td>
+  <td>${c.projects || ""}</td>
+  <td>$${c.totalInvoiced || 0}</td>
+  <td>$${c.paymentReceived || 0}</td>
+  <td>$${c.due || 0}</td>
+
+  <td>
+    <button class="btn btn-sm btn-outline-primary me-1 editBtn">
+      <i class="bi bi-pencil-square"></i>
+    </button>
+
+    <button class="btn btn-sm btn-outline-danger deleteBtn">
+      <i class="bi bi-trash"></i>
+    </button>
+  </td>
+`;
+
       clientsTableBody.appendChild(row);
 
       // ✏ Edit button
