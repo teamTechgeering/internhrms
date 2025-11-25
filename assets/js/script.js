@@ -312,22 +312,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const row = document.createElement("tr");
      row.innerHTML = `
   <td>${c.id}</td>
-
-  <td>
+ <td onclick="openClient(${c.id})">
     <a href="Client-View.php?id=${c.id}"
        class="text-decoration-none text-primary fw-semibold"
        onclick="event.stopPropagation()">
        ${c.name}
     </a>
-  </td>
+</td>
 
-  <td>
-    <a href="Client-View.php?id=${c.id}"
+<td onclick="openClient(${c.id})">
+    <a href="Client-Contact.php?id=${c.id}"
        class="text-primary text-decoration-none fw-semibold"
        onclick="event.stopPropagation()">
        ${c.primaryContact}
     </a>
-  </td>
+</td>
 
   <td>${c.phone}</td>
   <td>${c.clientGroup}</td>

@@ -49,20 +49,21 @@
                 </div>
 
                 <div class="col-sm-6 col-md-3">
-                  <div class="card h-100 shadow-sm" id="card-total-contacts" style="cursor:pointer;">
-                    <div class="card-body d-flex align-items-center">
-                      <div class="me-3">
-                        <div class="bg-success rounded p-2 d-inline-block">
-                          <i class="bi bi-people-fill text-white" style="font-size:1.25rem;"></i>
-                        </div>
-                      </div>
-                      <div class="flex-grow-1 text-end">
-                        <div class="text-muted small">Total contacts</div>
-                        <div class="h4 mb-0">3</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <div class="card h-100 shadow-sm" id="card-total-contacts" style="cursor:pointer;">
+    <div class="card-body d-flex align-items-center">
+      <div class="me-3">
+        <div class="bg-success rounded p-2 d-inline-block">
+          <i class="bi bi-people-fill text-white" style="font-size:1.25rem;"></i>
+        </div>
+      </div>
+      <div class="flex-grow-1 text-end">
+        <div class="text-muted small">Total contacts</div>
+        <div class="h4 mb-0" id="totalContactsCount">3</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
                 <div class="col-sm-6 col-md-3">
                   <div class="card h-100 shadow-sm">
@@ -446,31 +447,139 @@
 
 
             <!-- === Contacts Tab === -->
-            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-              <div class="card shadow-sm">
-                <div class="card-header"><strong>Contacts</strong></div>
-                <div class="card-body">
-                  <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      John Doe <small class="text-muted">— Acme Corporation</small>
-                      <span class="text-muted small">john@example.com</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      Jane Smith <small class="text-muted">— Bright Labs</small>
-                      <span class="text-muted small">jane@example.com</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      Rohit Banerjee <small class="text-muted">— Blue Sky Ltd.</small>
-                      <span class="text-muted small">rohit@example.com</span>
-                    </li>
-                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                      Rohit Banerjee <small class="text-muted">— Blue Sky Ltd.</small>
-                      <span class="text-muted small">rohit@example.com</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+           <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+    <div class="card shadow-sm">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>Contacts</strong>
+           <button class="btn btn-primary btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#addContactModal">
+    Add Contact
+</button>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="contactsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Client name</th>
+                            <th>Job Title</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Skype</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactsBody"></tbody>
+                </table>
             </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- ADD CONTACT MODAL -->
+<div class="modal fade" id="addContactModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form id="addContactForm">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Add Contact</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Client Name</label>
+            <input type="text" name="client" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Job Title</label>
+            <input type="text" name="job" class="form-control" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Skype</label>
+            <input type="text" name="skype" class="form-control" />
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Contact</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteContactModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you want to delete this contact?
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Success</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                Contact added successfully!
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
         
     <!-- ✅ ✅ ✅ YOUR FULL CONTENT AREA ENDS HERE -->
@@ -530,6 +639,147 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+
+// ================= LOAD CONTACTS =================
+// ========================= LOAD CONTACTS =========================
+function loadContacts() {
+    let stored = JSON.parse(localStorage.getItem("contacts"));
+
+    // Load from localStorage if exists
+    if (stored && stored.length > 0) {
+        renderContacts(stored);
+        updateStatsCard();
+        return; // Do NOT fetch from server
+    }
+
+    // Otherwise load from server one time
+    fetch("contacts.php")
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem("contacts", JSON.stringify(data));
+            renderContacts(data);
+            updateStatsCard();
+        });
+}
+
+document.addEventListener("DOMContentLoaded", loadContacts);
+
+
+// ========================= RENDER CONTACTS =========================
+function renderContacts(data) {
+    let tbody = document.getElementById("contactsBody");
+    tbody.innerHTML = "";
+
+    data.forEach((c, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td><img src="assets/images/users/avatar-6.jpg" width="32" class="rounded-circle"></td>
+
+                <td onclick="openClient(${c.id})">
+                    <a href="Client-Contact.php?id=${c.id}"
+                       class="text-decoration-none text-primary fw-semibold"
+                       onclick="event.stopPropagation()">
+                        ${c.name}
+                    </a>
+                </td>
+
+                <td onclick="openClient(${c.id})">
+                    <a href="Client-View.php?id=${c.id}"
+                       class="text-primary text-decoration-none fw-semibold"
+                       onclick="event.stopPropagation()">
+                        ${c.client_name}
+                    </a>
+                </td>
+
+                <td>${c.job_title}</td>
+                <td>${c.email}</td>
+                <td>${c.phone}</td>
+                <td>${c.skype}</td>
+
+                <td>
+                    <i class="bi bi-x-lg text-danger delete-btn"
+                       style="cursor:pointer;"
+                       data-index="${index}">
+                    </i>
+                </td>
+            </tr>
+        `;
+    });
+
+    attachDeleteEvents();
+}
+
+
+// ========================= DELETE CONTACT =========================
+let deleteIndex = null;
+
+function attachDeleteEvents() {
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            deleteIndex = this.getAttribute("data-index");
+
+            let modal = new bootstrap.Modal(document.getElementById("deleteContactModal"));
+            modal.show();
+        });
+    });
+}
+
+
+document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+    let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+
+    contacts.splice(deleteIndex, 1);
+
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+
+    renderContacts(contacts);
+    updateStatsCard();
+
+    let modal = bootstrap.Modal.getInstance(document.getElementById("deleteContactModal"));
+    modal.hide();
+});
+
+
+// ========================= UPDATE CONTACT COUNT =========================
+function updateStatsCard() {
+    let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+    let counter = document.getElementById("totalContactsCount");
+
+    if (counter) counter.innerText = contacts.length;
+}
+
+
+// ========================= ADD CONTACT =========================
+document.getElementById("addContactForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+
+    let newContact = {
+        id: Date.now(),
+        name: this.name.value,
+        client_name: this.client.value,
+        job_title: this.job.value,
+        email: this.email.value,
+        phone: this.phone.value,
+        skype: this.skype.value
+    };
+
+    contacts.push(newContact);
+
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+
+    renderContacts(contacts);
+    updateStatsCard();
+
+    let modal = bootstrap.Modal.getInstance(document.getElementById("addContactModal"));
+    modal.hide();
+
+    this.reset();
+
+    let successModal = new bootstrap.Modal(document.getElementById("successModal"));
+    successModal.show();
+});
 
 
 

@@ -2,11 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-
 <script src="assets/js/vendor.min.js"></script>
 <script src="assets/js/app.min.js"></script>
-
 <!-- ALWAYS LAST -->
 <script src="assets/js/script.js"></script>
 
