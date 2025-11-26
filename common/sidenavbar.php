@@ -48,7 +48,7 @@
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link" href="Leads.php">
                 <i class="fa-solid fa-box me-2"></i>
                 <span>Leads</span>
               </a>
