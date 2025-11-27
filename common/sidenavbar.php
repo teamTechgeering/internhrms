@@ -13,56 +13,56 @@
           <ul class="side-nav">
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="index.php">
+              <a class="side-nav-link text-decoration-none" href="index.php">
                 <i class="fa-solid fa-house"></i>
                 <span> Dashboard </span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="Event.php">
+              <a class="side-nav-link text-decoration-none" href="Event.php">
                 <i class="fa-solid fa-calendar me-2"></i>
                 <span> Events</span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="Clients.php">
+              <a class="side-nav-link text-decoration-none" href="Clients.php">
                 <i class="fa-solid fa-user me-2"></i>
                 <span>Clients</span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="projects.php">
+              <a class="side-nav-link text-decoration-none" href="projects.php">
                 <i class="fa-solid fa-diagram-project me-2"></i>
                 <span>Projects</span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="tasks.php">
                 <i class="fa-solid fa-list-check me-2"></i>
                 <span>Tasks</span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-box me-2"></i>
                 <span>Leads</span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="subscription.php">
                 <i class="fa-solid fa-arrows-rotate me-2"></i>
                 <span>Subscription</span>
               </a>
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+              <a class="side-nav-link text-decoration-none d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                 href="#salesMenu" role="button" aria-expanded="false" aria-controls="salesMenu">
                 <div class="d-flex align-items-center">
                   <i class="fa-solid fa-chart-line me-1"></i>
@@ -72,7 +72,7 @@
 
               <div class="collapse" id="salesMenu">
                 <ul class="nav flex-column ms-4">
-                  <li><a href="#" class="nav-link text-secondary">Invoices</a></li>
+                  <li><a href="invoices.php" class="nav-link text-secondary">Invoices</a></li>
                   <li><a href="#" class="nav-link text-secondary">Order List</a></li>
                   <li><a href="#" class="nav-link text-secondary">Store</a></li>
                   <li><a href="#" class="nav-link text-secondary">Payments</a></li>
@@ -83,7 +83,7 @@
             </li>
              <!-- Prospect Dropdown -->
             <li class="side-nav-item">
-              <a class="side-nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+              <a class="side-nav-link text-decoration-none d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                 href="#prospectMenu" role="button" aria-expanded="false" aria-controls="prospectMenu">
                 <div class="d-flex align-items-center">
                   <i class="fa-solid fa-hamsa me-1"></i>
@@ -101,13 +101,13 @@
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-note-sticky me-2"></i>
                 <span>Notes</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-envelope me-2"></i>
                 <span>Messages</span>
               </a>
@@ -115,7 +115,7 @@
 
             <!-- Team Dropdown -->
             <li class="side-nav-item">
-              <a class="side-nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+              <a class="side-nav-link text-decoration-none d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                 href="#TeamMenu" role="button" aria-expanded="false" aria-controls="TeamMenu">
                 <div class="d-flex align-items-center">
                   <i class="fa-solid fa-users me-2"></i>
@@ -135,37 +135,37 @@
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-ticket"></i>
                 <span>Tickets</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-gear"></i>
                 <span>Knowledge base</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-folder"></i>
                 <span>Files</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-regular fa-circle-right"></i>
                 <span>Expenses</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-chart-bar"></i>
                 <span>Reports</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link" href="#">
+              <a class="side-nav-link text-decoration-none" href="#">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
               </a>

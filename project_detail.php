@@ -41,9 +41,7 @@
     <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#notes">Notes</a></li>
     <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#files">Files</a></li>
     <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#comments">Comments</a></li>
-    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#feedback">Customer Feedback</a></li>
-    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#timesheets">Timesheets</a></li>
-    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#invoices">Invoices</a></li>
+    <li class="nav-item"><a class="nav-link text-secondary" data-bs-toggle="tab" href="#expenses">Expenses</a></li>
 </ul>
 <!-- ===================== MAIN TAB CONTENT ===================== -->
 <div class="tab-content">
@@ -224,7 +222,7 @@
 
 
     <!-- ================================= TASK KANBAN ================================= -->
-     <div class="tab-pane fade show active p-0" id="taskkanban">
+     <div class="tab-pane fade " id="taskkanban">
     <div class="container-fluid">
         <!-- Top Section -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -478,189 +476,286 @@
 
 
     <!-- EMPTY TABS (KEEPED INTACT) -->
-   <div class="tab-pane fade" id="gantt">
+<div class="tab-pane fade" id="gantt">
 
     <!-- Top Actions -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
+   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
 
-        <div class="btn-group">
-            <button class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-clockwise"></i>
-            </button>
-            <button class="btn btn-outline-secondary btn-sm">
-                + Add new filter
-            </button>
-        </div>
-
-        <div class="d-flex align-items-center gap-2">
-            <select class="form-select form-select-sm">
-                <option>Days view</option>
-            </select>
-
-            <button class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-lg"></i> Add task
-            </button>
-        </div>
+    <!-- Left Buttons -->
+    <div class="btn-group">
+        <button class="btn btn-outline-secondary btn-sm" id="refreshBtn">
+            <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" id="addFilterBtn">
+            + Add new filter
+        </button>
     </div>
 
+    <!-- Right: View Selector + Add Task -->
+    <div class="d-flex align-items-center gap-2">
+        <select class="form-select form-select-sm" id="viewSelect">
+            <option>Days view</option>
+            <option>Weeks view</option>
+            <option>Months view</option>
+        </select>
 
-    <!-- MONTH + DAYS HEADER (Always on top) -->
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            <i class="bi bi-plus-lg"></i> Add task
+        </button>
+    </div>
+</div>
+    <!-- MONTH + DAYS HEADER -->
     <div class="border rounded p-2 mb-3">
-
-        <!-- Months -->
         <div class="d-flex border-bottom small fw-semibold pb-1">
             <div>November</div>
             <div class="ms-auto">December</div>
         </div>
 
-        <!-- DAYS (scrolls horizontally) -->
         <div class="overflow-auto" style="white-space: nowrap;">
-            <div class="d-inline-flex small text-muted">
-
-                <!-- Nov 20–30 -->
-                <div class="d-flex">
-                    <div class="px-2">20</div>
-                    <div class="px-2">21</div>
-                    <div class="px-2">22</div>
-                    <div class="px-2">23</div>
-                    <div class="px-2">24</div>
-                    <div class="px-2">25</div>
-                    <div class="px-2">26</div>
-                    <div class="px-2">27</div>
-                    <div class="px-2">28</div>
-                    <div class="px-2">29</div>
-                    <div class="px-2">30</div>
-                </div>
-
-                <!-- Dec 01–14 -->
-                <div class="d-flex">
-                    <div class="px-2">01</div>
-                    <div class="px-2">02</div>
-                    <div class="px-2">03</div>
-                    <div class="px-2">04</div>
-                    <div class="px-2">05</div>
-                    <div class="px-2">06</div>
-                    <div class="px-2">07</div>
-                    <div class="px-2">08</div>
-                    <div class="px-2">09</div>
-                    <div class="px-2">10</div>
-                    <div class="px-2">11</div>
-                    <div class="px-2">12</div>
-                    <div class="px-2">13</div>
-                    <div class="px-2">14</div>
-                </div>
-
-            </div>
+            <div id="gantt-days" class="d-inline-flex small text-muted"></div>
         </div>
     </div>
 
-
-
-    <!-- TASK LIST SCROLL AREA -->
+    <!-- TASKS + BARS -->
     <div class="overflow-auto" style="white-space: nowrap;">
+        <div id="gantt-task-container" class="d-inline-block w-100"></div>
+    </div>
 
-        <div class="d-inline-block" style="min-width:1200px;">
+</div>
 
+    <!-- Notes -->
+    <div class="tab-pane fade" id="notes">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
 
-            <!-- GROUP TITLE -->
-            <div class="fw-semibold text-secondary mb-2">Beta Release</div>
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-semibold mb-0">Notes (Private)</h5>
 
+                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNoteModal"><i class="fa-solid fa-plus"></i> Add note</button>
 
-            <!-- TASK ROW -->
-            <div class="d-flex align-items-center mb-3">
+            </div>
 
-                <!-- BAR (left) -->
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-warning rounded" style="height:10px; width:60%;"></div>
-                </div>
+            <!-- Toolbar -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </button>
 
-                <!-- TEXT -->
-                <div class="small text-nowrap">
-                    Define plugin functionality and scope
+                <div class="input-group input-group-sm" style="width: 200px;">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fa-solid fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search">
                 </div>
             </div>
 
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Created date</th>
+                            <th>Title</th>
+                            <th>Files</th>
+                            <th class="text-end"><i class="fa-solid fa-bars"></i></th>
+                        </tr>
+                    </thead>
 
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-warning rounded" style="height:10px; width:70%;"></div>
-                </div>
-                <div class="small text-nowrap">Add plugin shortcode and widgets</div>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted fs-6">
+                                No record found.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-warning rounded" style="height:10px; width:80%;"></div>
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                    <select class="form-select form-select-sm" style="width: 70px;">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
                 </div>
-                <div class="small text-nowrap">Ensure plugin security and updates</div>
+
+                <div class="text-muted">
+                    0-0 / 0
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary btn-sm">
+                        <i class="fa-solid fa-chevron-left small"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm">
+                        <i class="fa-solid fa-chevron-right small"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-primary rounded" style="height:10px; width:72%;"></div>
-                </div>
-                <div class="small text-nowrap">Submit plugin to WordPress repository</div>
+        </div>
+    </div>
+</div>
+    <!-- Files -->
+    <div class="tab-pane fade" id="files">
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+
+      <!-- TOP BAR -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold mb-0">Files</h5>
+        <button class="btn btn-outline-primary btn-sm"data-bs-toggle="modal"data-bs-target="#addFilesModal"><i class="fa-solid fa-plus me-1"></i> Add files</button>
+      </div>
+
+      <!-- FILE NAV TABS -->
+      <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#filesListTab">Files list</button>
+        </li>
+     </ul>
+
+      <div class="tab-content">
+
+        <!-- FILES LIST TAB -->
+        <div class="tab-pane fade show active" id="filesListTab">
+
+          <!-- FILTERS / SEARCH -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-table-list"></i>
+              </button>
+
+              <select class="form-select form-select-sm">
+                <option>- Category -</option>
+              </select>
             </div>
 
-            <div class="d-flex align-items-center mb-4">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-warning rounded" style="height:10px; width:92%;"></div>
-                </div>
-                <div class="small text-nowrap">Provide plugin customer support</div>
+            <div class="d-flex gap-2 align-items-center">
+              <button id="exportExcel" class="btn btn-outline-secondary btn-sm">Excel</button>
+              <button id="printTable" class="btn btn-outline-secondary btn-sm">Print</button>
+
+
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Search">
+                <span class="input-group-text"><i class="fa-solid fa-search"></i></span>
+              </div>
             </div>
 
+          </div>
 
+          <!-- TABLE -->
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>File</th>
+                  <th>Category</th>
+                  <th>Size</th>
+                  <th>Uploaded by</th>
+                  <th>Created date</th>
+                  <th class="text-end"><i class="fa-solid fa-bars"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="7" class="text-center py-4 text-muted">No record found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <!-- NEXT GROUP -->
-            <div class="fw-semibold text-secondary mb-2">Release</div>
+          <!-- PAGINATION -->
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <select class="form-select form-select-sm" style="width: 80px;">
+              <option>10</option>
+            </select>
+            <span class="text-muted small">0-0 / 0</span>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary btn-sm">&lt;</button>
+              <button class="btn btn-outline-secondary btn-sm">&gt;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- Comments -->
+<div class="tab-pane fade" id="comments">
+    <div class="card">
+        <div class="card-body">
 
-
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-warning rounded" style="height:10px; width:68%;"></div>
-                </div>
-                <div class="small text-nowrap">Create plugin wireframes and UI</div>
+            <div class="d-flex">
+                <img src="avatar.png" class="rounded-circle me-2" width="40">
+                <textarea class="form-control" rows="3" placeholder="Write a comment..."></textarea>
             </div>
 
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-info rounded" style="height:10px; width:82%;"></div>
+            <!-- Hidden file input -->
+            <input type="file" id="commentFile" class="d-none">
+
+            <div class="d-flex justify-content-between mt-3">
+                <div>
+                    <!-- Upload Button (RENAMED) -->
+                    <button class="btn btn-light" id="commentUploadBtn"><i class="bi bi-paperclip"></i> Upload File</button>
+
+                    <button class="btn btn-light"><i class="bi bi-mic"></i></button>
                 </div>
-                <div class="small text-nowrap">Develop plugin core features</div>
+
+                <button class="btn btn-primary"><i class="bi bi-send"></i> Post Comment</button>
             </div>
 
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-info rounded" style="height:10px; width:90%;"></div>
-                </div>
-                <div class="small text-nowrap">Create plugin custom post types</div>
-            </div>
-
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-info rounded" style="height:10px; width:110%;"></div>
-                </div>
-                <div class="small text-nowrap">Integrate plugin with database</div>
-            </div>
-
-            <div class="d-flex align-items-center mb-3">
-                <div class="position-relative me-3" style="width:260px;">
-                    <div class="bg-secondary rounded" style="height:10px; width:140%;"></div>
-                </div>
-                <div class="small text-nowrap">Develop plugin documentation</div>
-            </div>
+            <!-- File Name Display (RENAMED) -->
+            <div id="commentFileName" class="text-muted mt-2"></div>
 
         </div>
     </div>
 </div>
 
     
-    <div class="tab-pane fade" id="notes">...</div>
-    <div class="tab-pane fade" id="files">...</div>
-    <div class="tab-pane fade" id="comments">...</div>
-    <div class="tab-pane fade" id="feedback">...</div>
-    <div class="tab-pane fade" id="timesheets">...</div>
-    <div class="tab-pane fade" id="invoices">...</div>
+    <!-- Expenses -->
+    <div class="tab-pane fade" id="expenses">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between mb-3">
+                <h4>Expenses</h4>
+                <button class="btn btn-outline-primary">
+                    <i class="bi bi-plus-circle"></i> Add expense
+                </button>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>File</th>
+                        <th>Amount</th>
+                        <th>Tax</th>
+                        <th>Second Tax</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No record found.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
 
      <!-- ===================== REMINDERS MODAL ===================== -->
     <div class="modal fade" id="remindersModal" tabindex="-1">
@@ -1221,19 +1316,170 @@
     </div>
   </div>
 </div>
+<!-- Gantt -->
+ <!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addTaskForm">
+          <div class="mb-3">
+            <label for="taskTitle" class="form-label">Task Title</label>
+            <input type="text" class="form-control" id="taskTitle" required>
+          </div>
+          <div class="mb-3">
+            <label for="taskBadge" class="form-label">Badge</label>
+            <select class="form-select" id="taskBadge">
+              <option>Enhancement</option>
+              <option>Bug</option>
+              <option>Feature</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="taskDeadline" class="form-label">Deadline</label>
+            <input type="date" class="form-control" id="taskDeadline">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="saveTaskBtn">Save Task</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Notes -->
+ <!-- ADD NOTE MODAL -->
+<div class="modal fade" id="addNoteModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
 
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Add note</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
+            <!-- Body -->
+            <div class="modal-body">
 
+                <!-- Title -->
+                <input type="text" id="noteTitle" class="form-control mb-3" placeholder="Title">
+
+                <!-- Description -->
+                <textarea id="noteDesc" class="form-control mb-3" rows="8" placeholder="Description..."></textarea>
+
+                <!-- Category -->
+                <select id="noteCategory" class="form-select mb-3">
+                    <option value="">- Category -</option>
+                    <option>Personal</option>
+                    <option>Work</option>
+                    <option>Important</option>
+                    <option>Ideas</option>
+                </select>
+
+                <!-- Labels -->
+                <input type="text" id="noteLabels" class="form-control mb-3" placeholder="Labels">
+
+                <!-- Mark as public -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="notePublic">
+                    <label class="form-check-label">Mark as public</label>
+                </div>
+
+                <!-- Color Picker (Bootstrap buttons only) -->
+                <div class="mb-3">
+                    <label class="form-label">Color</label>
+                    <div class="d-flex flex-wrap gap-1">
+                        <button type="button" class="btn btn-success btn-sm color-btn" data-color="green"></button>
+                        <button type="button" class="btn btn-primary btn-sm color-btn" data-color="blue"></button>
+                        <button type="button" class="btn btn-warning btn-sm color-btn" data-color="yellow"></button>
+                        <button type="button" class="btn btn-danger btn-sm color-btn" data-color="red"></button>
+                        <button type="button" class="btn btn-secondary btn-sm color-btn" data-color="grey"></button>
+                        <button type="button" class="btn btn-dark btn-sm color-btn" data-color="black"></button>
+                    </div>
+                </div>
+
+                <!-- Selected Color (Bootstrap badge) -->
+                <span id="selectedColor" class="badge bg-primary">blue</span>
+
+                <!-- File Upload -->
+                <div class="input-group mt-3 mb-3">
+                    <input type="file" id="noteFile" class="d-none">
+                    <button class="btn btn-outline-secondary" id="uploadBtn">
+                        <i class="fa-solid fa-upload"></i> Upload File
+                    </button>
+                    <span id="fileName" class="ms-2 small text-muted"></span>
+
+                    <button class="btn btn-outline-secondary ms-2">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" id="saveNoteBtn">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Files -->
+ <!-- ADD FILES MODAL -->
+<div class="modal fade" id="addFilesModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title fw-semibold">Add files</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Category -->
+        <label class="form-label">Category</label>
+        <select id="fileCategory" class="form-select mb-3">
+          <option value="-">-</option>
+          <option>Design</option>
+          <option>Documents</option>
+        </select>
+
+        <!-- Upload Area -->
+        <div id="dropArea"
+             class="border border-2 border-secondary rounded p-5 text-center"
+             style="cursor: pointer;">
+          <p class="text-secondary mb-0">
+            Drag-and-drop documents here <br>
+            <small>(or click to browse…)</small>
+          </p>
+          <input type="file" id="fileInput" class="d-none" multiple>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        <button id="saveFilesBtn" class="btn btn-primary">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 </div> <!-- END MAIN CONTENT -->
 
 
 </div>  <!-- CLOSE .content -->
     </div>    <!-- CLOSE .content-page -->
-
-
 <?php include 'common/footer.php'; ?>
-
-
-
-
 </html>

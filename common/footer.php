@@ -16,14 +16,25 @@
 
 
 <!-- Vendor JS -->
-<script src="assets/js/vendor.min.js"></script>
+<script src="assets/js/vendor.min.js?v=<?php echo time(); ?>"></script>
 
 <!-- App JS -->
-<script src="assets/js/app.min.js"></script>
+<script src="assets/js/app.min.js?v=1.0"></script>
 <script src=assets/js/script.js></script>
-<script src=assets/js/project.js></script>
-<script src=assets/js/project_detail.js></script>
-<script src=assets/js/dashboard.js></script>
+<script src="assets/js/project.js"></script>
+<script src="assets/js/project_detail.js"></script>
+<script src="assets/js/tasks.js"></script>
+<script src="assets/js/subscription.js"></script>
+<script src="assets/js/subscription_view.js"></script>
+<script src="assets/js/invoices.js"></script>
+
+
+
+
+
+
+
+
 
 
 

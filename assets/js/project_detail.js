@@ -1,11 +1,10 @@
-/* =======================================================
-      🔵 GLOBAL SETUP
-======================================================= */
+document.addEventListener("DOMContentLoaded", function () {
 
-/* GET PROJECT ID FROM URL */
+/* =======================================================
+      🔵 GET PROJECT ID FROM URL
+======================================================= */
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = parseInt(urlParams.get('id'), 10);
-
 
 /* =======================================================
       🔵 LOAD PROJECT DATA
@@ -58,13 +57,6 @@ async function loadProject() {
       { name: 'John Doe', task: '#3467 - Create explainer video animations' },
       { name: 'John Doe', task: '#3468 - Add voice-over and background music' },
       { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
-      { name: 'John Doe', task: '#3473 - Collaborate with clients on video concept' },
       { name: 'John Doe', task: '#3469 - Incorporate video special effects' }
     ];
 
@@ -73,25 +65,20 @@ async function loadProject() {
       <div class="d-flex align-items-start border-bottom py-2">
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="36" height="36" class="rounded-circle me-2">
         <div>
-          <div class="fw-semibold">${a.name} 
-            <span class="text-muted small">Today 08:09am</span>
-          </div>
+          <div class="fw-semibold">${a.name} <span class="text-muted small">Today 08:09am</span></div>
           <span class="badge bg-light text-primary border me-1">Added</span>
           ${a.task}
         </div>
       </div>
     `).join('');
-
   } catch (err) {
     console.error("Project load error:", err);
   }
 }
-
 loadProject();
 
-
 /* =======================================================
-      🔵 LOAD TASKLIST
+      🔵 LOAD TASK LIST
 ======================================================= */
 async function loadTaskList() {
   try {
@@ -142,12 +129,10 @@ async function loadTaskList() {
     console.error("Tasklist load error:", err);
   }
 }
-
 loadTaskList();
 
-
 /* =======================================================
-      🔵 UTILS (escape functions)
+      UTIL FUNCTIONS
 ======================================================= */
 function escapeAttr(s) {
   if (!s) return "";
@@ -158,7 +143,6 @@ function escapeAttr(s) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }
-
 function escapeHtml(s) {
   if (!s) return "";
   return String(s)
@@ -167,9 +151,8 @@ function escapeHtml(s) {
     .replace(/>/g, "&gt;");
 }
 
-
 /* =======================================================
-      🔵 TASK DETAILS MODAL
+      TASK DETAILS MODAL
 ======================================================= */
 function attachModalEvents() {
   const tbody = document.querySelector("#taskTable tbody");
@@ -177,30 +160,27 @@ function attachModalEvents() {
 
   tbody.querySelectorAll(".task-title").forEach(title => {
     title.onclick = null;
-    title.addEventListener("click", function (e) {
-      e.preventDefault();
+    title.addEventListener("click", function () {
       const ds = this.dataset;
 
-      document.querySelector("#modalTaskTitle").innerText = ds.title || "";
-      document.querySelector("#modalTaskDesc").innerText = ds.desc || "";
-      document.querySelector("#modalUserName").innerText = ds.user || "";
-      document.querySelector("#modalProjectName").innerText = ds.milestone || "";
+      document.querySelector("#modalTaskTitle").innerText = ds.title;
+      document.querySelector("#modalTaskDesc").innerText = ds.desc;
+      document.querySelector("#modalUserName").innerText = ds.user;
+      document.querySelector("#modalProjectName").innerText = ds.milestone;
 
       const statusBadge = document.querySelector("#modalStatusBadge");
-      statusBadge.innerText = ds.status || "";
-      statusBadge.className = "badge " + (ds.status ? "bg-secondary" : "");
+      statusBadge.innerText = ds.status;
+      statusBadge.className = "badge bg-secondary";
 
       new bootstrap.Modal(document.querySelector("#taskModal")).show();
     });
   });
 }
 
-
 /* =======================================================
-      🔵 EDIT & DELETE BUTTONS
+      EDIT & DELETE BUTTONS
 ======================================================= */
 function attachRowButtons() {
-  /* DELETE */
   document.querySelectorAll("#taskTable .btn-delete").forEach(btn => {
     btn.onclick = null;
     btn.addEventListener("click", function () {
@@ -209,7 +189,6 @@ function attachRowButtons() {
     });
   });
 
-  /* EDIT */
   document.querySelectorAll("#taskTable .btn-edit").forEach(btn => {
     btn.onclick = null;
     btn.addEventListener("click", function () {
@@ -219,21 +198,20 @@ function attachRowButtons() {
   });
 }
 
-
 /* =======================================================
-      🔵 TAB ACTIVE COLOR SWITCH
+      TABS COLOR SWITCH
 ======================================================= */
-const allTabs = document.querySelectorAll('.nav-link');
-allTabs.forEach(tab => {
+document.querySelectorAll('.nav-link').forEach(tab => {
   tab.addEventListener('shown.bs.tab', () => {
-    allTabs.forEach(t => t.classList.replace('text-dark', 'text-secondary'));
+    document.querySelectorAll('.nav-link').forEach(t =>
+      t.classList.replace('text-dark', 'text-secondary')
+    );
     tab.classList.replace('text-secondary', 'text-dark');
   });
 });
 
-
 /* =======================================================
-      🔵 REMINDERS
+      REMINDERS
 ======================================================= */
 const reminders = [];
 const reminderList = document.getElementById('reminderList');
@@ -256,7 +234,6 @@ function renderReminders() {
     reminderList.innerHTML = '<li class="list-group-item text-center text-muted">No record found.</li>';
     return;
   }
-
   reminderList.innerHTML = reminders.map((r, i) => `
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <div>
@@ -275,9 +252,8 @@ function deleteReminder(i) {
   renderReminders();
 }
 
-
 /* =======================================================
-      🔵 SETTINGS (LOCAL STORAGE)
+      SETTINGS
 ======================================================= */
 const saveBtn = document.getElementById('saveSettings');
 const clientTimesheet = document.getElementById('clientTimesheet');
@@ -301,17 +277,11 @@ saveBtn.addEventListener('click', () => {
   alert('Settings saved!');
 });
 
-
 /* =======================================================
-      🔵 TASK ACTIONS
+      TASK ACTIONS
 ======================================================= */
-function addTask() {
-  alert("Open Add Task Modal Here");
-}
-
-function addMultipleTasks() {
-  alert("Open Add Multiple Tasks Modal");
-}
+function addTask() { alert("Open Add Task Modal Here"); }
+function addMultipleTasks() { alert("Open Add Multiple Tasks Modal"); }
 
 function openLabelManager() {
   let modal = new bootstrap.Modal(document.getElementById("manageLabelsModal"));
@@ -336,7 +306,6 @@ function editTask(button) {
 
 document.getElementById("saveEditedTask").addEventListener("click", function () {
   const id = document.getElementById("edit-task-id").value;
-
   const rows = document.querySelectorAll("#taskTable tbody tr");
 
   rows.forEach(row => {
@@ -353,9 +322,8 @@ document.getElementById("saveEditedTask").addEventListener("click", function () 
   bootstrap.Modal.getInstance(document.getElementById("editTaskModal")).hide();
 });
 
-
 /* =======================================================
-      🔵 FILTER & SEARCH
+      FILTER & SEARCH
 ======================================================= */
 document.querySelectorAll(".filter-option").forEach(item => {
   item.addEventListener("click", function () {
@@ -380,9 +348,8 @@ function searchTask() {
   });
 }
 
-
 /* =======================================================
-      🔵 PRINT & EXPORT
+      PRINT & EXPORT
 ======================================================= */
 function printTable() {
   let table = document.getElementById("taskTable").outerHTML;
@@ -400,9 +367,8 @@ function exportExcel() {
   link.click();
 }
 
-
 /* =======================================================
-      🔵 SEARCH TABLES (EXPENSES / CONTRACTS)
+      SEARCH FOR OTHER TABLES
 ======================================================= */
 function setupSearch(inputId, tableId) {
   document.getElementById(inputId).addEventListener("keyup", function () {
@@ -415,13 +381,11 @@ function setupSearch(inputId, tableId) {
     });
   });
 }
-
 setupSearch("expenseSearch", "expensesTable");
 setupSearch("contractSearch", "contractsTable");
 
-
 /* =======================================================
-      🔵 EXPORT (EXPENSES + CONTRACTS)
+      EXPORT CSV
 ======================================================= */
 function exportTableToCSV(tableId, filename) {
   let table = document.getElementById(tableId);
@@ -442,41 +406,34 @@ function exportTableToCSV(tableId, filename) {
   link.click();
 }
 
-document.getElementById("btnExportExpenses").onclick = () =>
-  exportTableToCSV("expensesTable", "expenses.csv");
-
-document.getElementById("btnExportContracts").onclick = () =>
-  exportTableToCSV("contractsTable", "contracts.csv");
-
+document.getElementById("btnExportExpenses").onclick = () => exportTableToCSV("expensesTable", "expenses.csv");
+document.getElementById("btnExportContracts").onclick = () => exportTableToCSV("contractsTable", "contracts.csv");
 
 /* =======================================================
-      🔵 ADD BUTTONS
+      ADD BUTTONS
 ======================================================= */
-document.getElementById("btnAddExpense").onclick = () =>
-  alert("Open 'Add Expense' modal");
+document.getElementById("btnAddExpense").onclick = () => alert("Open 'Add Expense' modal");
+document.getElementById("btnAddContract").onclick = () => alert("Open 'Add Contract' modal");
 
-document.getElementById("btnAddContract").onclick = () =>
-  alert("Open 'Add Contract' modal");
-
-// Milestone
+/* =======================================================
+      ADD MILESTONE
+======================================================= */
 document.getElementById("saveMilestone").addEventListener("click", function () {
-    const title = document.getElementById("milestoneTitle").value.trim();
-    const desc = document.getElementById("milestoneDesc").value.trim();
-    const date = document.getElementById("milestoneDate").value;
+  const title = document.getElementById("milestoneTitle").value.trim();
+  const desc = document.getElementById("milestoneDesc").value.trim();
+  const date = document.getElementById("milestoneDate").value;
 
-    if (!title || !date) {
-        alert("Title and Due Date are required");
-        return;
-    }
+  if (!title || !date) {
+    alert("Title and Due Date are required");
+    return;
+  }
 
-    // Format date
-    const d = new Date(date);
-    const month = d.toLocaleString('en-US', { month: 'long' });
-    const day = d.getDate();
-    const weekday = d.toLocaleString('en-US', { weekday: 'long' });
+  const d = new Date(date);
+  const month = d.toLocaleString('en-US', { month: 'long' });
+  const day = d.getDate();
+  const weekday = d.toLocaleString('en-US', { weekday: 'long' });
 
-    // Create new milestone item
-    const newMilestone = `
+  const newMilestone = `
         <div class="milestone-item row py-3 border-bottom align-items-center">
             <div class="col-3">
                 <div class="text-center border rounded p-2">
@@ -506,14 +463,227 @@ document.getElementById("saveMilestone").addEventListener("click", function () {
         </div>
     `;
 
-    document.getElementById("milestoneList").insertAdjacentHTML("beforeend", newMilestone);
+  document.getElementById("milestoneList").insertAdjacentHTML("beforeend", newMilestone);
 
-    // Close modal after save
-    const modal = bootstrap.Modal.getInstance(document.getElementById("addMilestoneModal"));
-    modal.hide();
+  bootstrap.Modal.getInstance(document.getElementById("addMilestoneModal")).hide();
 
-    // Clear fields
-    document.getElementById("milestoneTitle").value = "";
-    document.getElementById("milestoneDesc").value = "";
-    document.getElementById("milestoneDate").value = "";
+  document.getElementById("milestoneTitle").value = "";
+  document.getElementById("milestoneDesc").value = "";
+  document.getElementById("milestoneDate").value = "";
 });
+
+/* =======================================================
+      GANTT SETTINGS
+======================================================= */
+const DAYWIDTH = 40;
+const START = new Date("2025-11-20");
+const END = new Date("2025-12-14");
+
+/* =======================================================
+      GANTT DAYS AUTO GENERATE
+======================================================= */
+function renderDays() {
+  const days = document.getElementById("gantt-days");
+
+  let cur = new Date(START);
+  while (cur <= END) {
+    const d = document.createElement("div");
+    d.style.width = DAYWIDTH + "px";
+    d.className = "px-2 text-center";
+    d.innerText = String(cur.getDate()).padStart(2, "0");
+    days.appendChild(d);
+    cur.setDate(cur.getDate() + 1);
+  }
+}
+renderDays();
+
+/* =======================================================
+      GANTT DATA
+======================================================= */
+const ganttData = [
+  {
+    title: "Beta Release",
+    tasks: [
+      { title: "Define plugin functionality and scope", start: "2025-11-20", end: "2025-11-25", color: "warning" },
+      { title: "Add plugin shortcode and widgets", start: "2025-11-21", end: "2025-11-29", color: "warning" },
+      { title: "Ensure plugin security and updates", start: "2025-11-22", end: "2025-11-30", color: "warning" },
+      { title: "Submit plugin to WordPress repository", start: "2025-11-23", end: "2025-12-01", color: "primary" },
+      { title: "Provide plugin customer support", start: "2025-11-24", end: "2025-12-03", color: "warning" }
+    ]
+  },
+  {
+    title: "Release",
+    tasks: [
+      { title: "Create plugin wireframes and UI", start: "2025-11-25", end: "2025-12-01", color: "warning" },
+      { title: "Develop plugin core features", start: "2025-11-26", end: "2025-12-05", color: "info" },
+      { title: "Create plugin custom post types", start: "2025-11-27", end: "2025-12-06", color: "info" },
+      { title: "Integrate plugin with database", start: "2025-11-28", end: "2025-12-08", color: "info" },
+      { title: "Develop plugin documentation", start: "2025-11-29", end: "2025-12-10", color: "secondary" }
+    ]
+  }
+];
+
+/* =======================================================
+      GANTT TASK BAR RENDER
+======================================================= */
+function renderGantt() {
+  const box = document.getElementById("gantt-task-container");
+  box.innerHTML = "";
+
+  ganttData.forEach(group => {
+    let groupTitle = document.createElement("div");
+    groupTitle.className = "fw-semibold text-secondary mb-2";
+    groupTitle.innerText = group.title;
+    box.appendChild(groupTitle);
+
+    group.tasks.forEach(t => {
+      let offset = 0;
+      let length = 3;
+
+      let row = document.createElement("div");
+      row.className = "d-flex align-items-center mb-3";
+
+      row.innerHTML = `
+                <div class="position-relative me-3" style="width:150px;">
+                    <div class="bg-${t.color} rounded"
+                         style="height:10px;
+                                position:absolute;
+                                left:${offset * DAYWIDTH}px;
+                                width:${length * DAYWIDTH}px;">
+                    </div>
+                </div>
+
+                <div class="small text-nowrap">${t.title}</div>
+            `;
+
+      box.appendChild(row);
+    });
+
+    box.appendChild(document.createElement("br"));
+  });
+}
+renderGantt();
+
+/* =======================================================
+      GANTT MODAL SAVE
+======================================================= */
+document.getElementById('saveTaskBtn').addEventListener('click', () => {
+  const title = document.getElementById('taskTitle').value;
+  const badge = document.getElementById('taskBadge').value;
+  const deadline = document.getElementById('taskDeadline').value;
+
+  if (!title) {
+    alert('Please enter a task title.');
+    return;
+  }
+
+  console.log({ title, badge, deadline });
+  document.getElementById('addTaskForm').reset();
+  const addTaskModal = bootstrap.Modal.getInstance(document.getElementById('addTaskModal'));
+  addTaskModal.hide();
+});
+
+/* =======================================================
+      NOTES SECTION
+======================================================= */
+document.getElementById("uploadBtn").onclick = () => {
+  document.getElementById("noteFile").click();
+};
+
+document.getElementById("noteFile").onchange = function () {
+  let file = this.files[0];
+  if (file) {
+    document.getElementById("fileName").textContent = file.name;
+  }
+};
+
+let colorButtons = document.querySelectorAll(".color-btn");
+let selectedColor = document.getElementById("selectedColor");
+
+colorButtons.forEach(btn => {
+  btn.addEventListener("click", function () {
+    selectedColor.textContent = this.dataset.color;
+    selectedColor.className = "badge bg-" + this.classList[1].replace("btn-", "");
+  });
+});
+
+document.getElementById("saveNoteBtn").onclick = () => {
+  let note = {
+    title: document.getElementById("noteTitle").value,
+    desc: document.getElementById("noteDesc").value,
+    category: document.getElementById("noteCategory").value,
+    labels: document.getElementById("noteLabels").value,
+    public: document.getElementById("notePublic").checked,
+    color: selectedColor.textContent,
+    file: document.getElementById("noteFile").files[0]?.name || null
+  };
+  console.log("NOTE SAVED:", note);
+  alert("Note saved!");
+  bootstrap.Modal.getInstance(document.getElementById("addNoteModal")).hide();
+};
+
+/* =======================================================
+      FILES
+======================================================= */
+document.getElementById("saveFilesBtn").onclick = () => {
+  let tbody = document.querySelector("#filesListTab tbody");
+  tbody.innerHTML = "";
+
+  uploadedFiles.forEach((f, i) => {
+    tbody.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${f.name}</td>
+            <td>${document.getElementById("fileCategory").value}</td>
+            <td>${f.size}</td>
+            <td>You</td>
+            <td>${f.date}</td>
+            <td></td>
+          </tr>
+        `;
+  });
+
+  bootstrap.Modal.getInstance(document.getElementById("addFilesModal")).hide();
+};
+
+/* =======================================================
+      PRINT TABLE
+======================================================= */
+document.getElementById("printTable").onclick = () => {
+  window.print();
+};
+
+/* =======================================================
+      EXPORT TO EXCEL
+======================================================= */
+document.getElementById("exportExcel").onclick = () => {
+  let table = document.querySelector("#filesListTab table").outerHTML;
+  let data = new Blob([table], { type: "application/vnd.ms-excel" });
+  let url = URL.createObjectURL(data);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "files.xls";
+  a.click();
+};
+
+/* =======================================================
+      COMMENTS FILE UPLOAD
+======================================================= */
+const commentUploadBtn = document.getElementById('commentUploadBtn');
+const commentFileInput = document.getElementById('commentFile');
+const commentFileName = document.getElementById('commentFileName');
+
+commentUploadBtn.addEventListener('click', () => {
+    commentFileInput.click();
+});
+
+commentFileInput.addEventListener('change', () => {
+    if (commentFileInput.files.length > 0) {
+        commentFileName.textContent = "Selected file: " + commentFileInput.files[0].name;
+    }
+});
+
+
+
+});  // END SINGLE DOMContentLoaded
