@@ -92,7 +92,7 @@
               </a>
               <div class="collapse" id="prospectMenu">
                 <ul class="nav flex-column ms-4">
-                  <li><a href="#" class="nav-link text-secondary">Estimate List</a></li>
+                  <li><a href="Estimate.php" class="nav-link text-secondary">Estimate List</a></li>
                   <li><a href="#" class="nav-link text-secondary">Estimate Request</a></li>
                   <li><a href="#" class="nav-link text-secondary">Estimate Forms</a></li>
                   <li><a href="#" class="nav-link text-secondary">Proposals</a></li>
