@@ -4,14 +4,34 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <!-- REQUIRED FOR DROPDOWNS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-
-<!-- BOOTSTRAP JS (bundle includes popper + dropdown support) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <script src="assets/js/vendor.min.js"></script>
 <script src="assets/js/app.min.js"></script>
 <!-- ALWAYS LAST -->
 <script src="assets/js/script.js"></script>
+
+<!-- Vendor JS -->
+<script src="assets/js/vendor.min.js?v=<?php echo time(); ?>"></script>
+
+<!-- App JS -->
+<script src="assets/js/app.min.js?v=1.0"></script>
+<script src=assets/js/script.js></script>
+<script src="assets/js/project.js"></script>
+<script src="assets/js/project_detail.js"></script>
+<script src="assets/js/tasks.js"></script>
+<script src="assets/js/subscription.js"></script>
+<script src="assets/js/subscription_view.js"></script>
+<script src="assets/js/invoices.js"></script>
+<script src="assets/js/leads.js"></script>
+
+
+
+
+
+
+
+
+
+
 
 
 
