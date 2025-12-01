@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
+
   let invoicesData = [];
   let filteredData = [];
-  let currentType = "invoice"; 
-  let activeFilter = "all"; 
+  let currentType = "invoice";
+  let activeFilter = "all";
   let currentPage = 1;
   let pageSize = 10;
+  let editingId = null; // <-- track when editing
 
   const invoiceBody = document.getElementById("invoiceBody");
   const totalInvoicedEl = document.getElementById("totalInvoiced");
@@ -24,14 +25,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const invoiceModal = new bootstrap.Modal(document.getElementById("invoiceModal"));
   const paymentModal = new bootstrap.Modal(document.getElementById("paymentModal"));
 
+  // SAFELY ensure listTab exists by wrapping the existing table if necessary
+  (function ensureListTab() {
+    if (!document.getElementById("listTab")) {
+      const tableResponsive = document.getElementById("invoicesTable")?.closest(".table-responsive");
+      if (tableResponsive) {
+        const wrapper = document.createElement("div");
+        wrapper.id = "listTab";
+        // move the tableResponsive into wrapper
+        tableResponsive.parentElement.insertBefore(wrapper, tableResponsive);
+        wrapper.appendChild(tableResponsive);
+      }
+    }
+  })();
+
   // Fetch Data
   fetch("invoices_json.php")
     .then(r => r.json())
     .then(data => {
-      invoicesData = data;
+      // normalize data (ensure numeric fields and default props)
+      invoicesData = (data || []).map(d => ({
+        id: String(d.id || "").trim(),
+        type: d.type || "invoice",
+        client: d.client || "",
+        project: d.project || "",
+        bill_date: d.bill_date || null,
+        due_date: d.due_date || null,
+        total: Number(d.total || 0),
+        received: Number(d.received || 0),
+        due: Number(d.due || (Number(d.total || 0) - Number(d.received || 0))),
+        status: d.status || "-",
+        // optional recurring fields (may be missing)
+        recurring: !!d.recurring,
+        next_recurring: d.next_recurring || null,
+        repeat_every: d.repeat_every || null,
+        cycles: d.cycles || null
+      }));
+
       applyAllFiltersAndRender();
       fillPaymentInvoiceSelect();
       updateAlertCount();
+    })
+    .catch(err => {
+      console.error("Failed to load invoices_json.php:", err);
+      // keep UI usable
     });
 
   // RENDER INVOICES
@@ -43,25 +80,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const statusHtml = getStatusBadge(inv.status);
 
       invoiceBody.insertAdjacentHTML("beforeend", `
-        <tr data-id="${inv.id}">
-        
+        <tr data-id="${escapeHtml(inv.id)}">
+
           <!-- CLICKABLE BLUE INVOICE ID (no underline) -->
           <td>
-            <button class="btn btn-link p-0 text-primary fw-semibold text-decoration-none btn-view-invoice" data-id="${inv.id}">
-              ${inv.id}
+            <button class="btn btn-link p-0 text-primary fw-semibold text-decoration-none btn-view-invoice" data-id="${escapeHtml(inv.id)}">
+              ${escapeHtml(inv.id)}
             </button>
           </td>
 
           <!-- CLIENT (clickable, blue, no underline) -->
           <td>
-            <button class="btn btn-link p-0 text-primary text-decoration-none btn-view-client" data-id="${inv.id}" data-client="${escapeHtml(inv.client)}">
+            <button class="btn btn-link p-0 text-primary text-decoration-none btn-view-client" data-id="${escapeHtml(inv.id)}" data-client="${escapeHtml(inv.client)}">
               ${escapeHtml(inv.client)}
             </button>
           </td>
 
           <!-- PROJECT (clickable, blue, no underline) -->
           <td>
-            <button class="btn btn-link p-0 text-primary text-decoration-none btn-view-project" data-id="${inv.id}" data-project="${escapeHtml(inv.project)}">
+            <button class="btn btn-link p-0 text-primary text-decoration-none btn-view-project" data-id="${escapeHtml(inv.id)}" data-project="${escapeHtml(inv.project)}">
               ${escapeHtml(inv.project)}
             </button>
           </td>
@@ -80,9 +117,9 @@ document.addEventListener("DOMContentLoaded", () => {
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
 
-                <li><button class="dropdown-item btn-edit" data-id="${inv.id}">Edit</button></li>
-                <li><button class="dropdown-item btn-delete" data-id="${inv.id}">Delete</button></li>
-                <li><button class="dropdown-item btn-add-payment" data-id="${inv.id}">Add Payment</button></li>
+                <li><button class="dropdown-item btn-edit" data-id="${escapeHtml(inv.id)}">Edit</button></li>
+                <li><button class="dropdown-item btn-delete" data-id="${escapeHtml(inv.id)}">Delete</button></li>
+                <li><button class="dropdown-item btn-add-payment" data-id="${escapeHtml(inv.id)}">Add Payment</button></li>
 
               </ul>
             </div>
@@ -94,10 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getStatusBadge(status) {
     if (!status || status === "-") return "-";
-    if (status === "Overdue") return `<span class="badge bg-danger">${status}</span>`;
-    if (status === "Fully paid") return `<span class="badge bg-primary">${status}</span>`;
-    if (status === "Not paid") return `<span class="badge bg-warning text-dark">${status}</span>`;
-    return `<span class="badge bg-secondary">${status}</span>`;
+    if (status === "Overdue") return `<span class="badge bg-danger">${escapeHtml(status)}</span>`;
+    if (status === "Fully paid") return `<span class="badge bg-primary">${escapeHtml(status)}</span>`;
+    if (status === "Not paid") return `<span class="badge bg-warning text-dark">${escapeHtml(status)}</span>`;
+    return `<span class="badge bg-secondary">${escapeHtml(status)}</span>`;
   }
 
   // UTILITIES
@@ -111,7 +148,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${String(d.getDate()).padStart(2,"0")}-${String(d.getMonth()+1).padStart(2,"0")}-${d.getFullYear()}`;
   }
   function escapeHtml(s) {
-    return String(s || "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    return String(s || "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;");
   }
 
   // TOTALS
@@ -141,8 +181,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // FILTER DROPDOWN
   document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("filter-option")) {
-      activeFilter = e.target.dataset.value;
+    const t = e.target;
+    if (t.classList && t.classList.contains("filter-option")) {
+      activeFilter = t.dataset.value;
       currentPage = 1;
       applyAllFiltersAndRender();
     }
@@ -186,13 +227,19 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     });
 
+    // if current page is out of range after filtering, reset to 1
+    const totalPages = Math.max(1, Math.ceil(filteredData.length / pageSize));
+    if (currentPage > totalPages) currentPage = 1;
+
     renderPaginatedData();
     calculateTotals(filteredData);
+    updateAlertCount();
+    fillPaymentInvoiceSelect(); // keep payment select up to date
   }
 
   // PAGINATION FUNCTIONS ------------------------------
   function renderPaginatedData() {
-    pageSize = parseInt(pageSizeDropdown.value);
+    pageSize = parseInt(pageSizeDropdown.value) || 10;
 
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
@@ -220,11 +267,19 @@ document.addEventListener("DOMContentLoaded", () => {
     paginationNumbers.insertAdjacentHTML(
       "beforeend",
       `<li class="page-item ${currentPage === 1 ? "disabled" : ""}">
-        <button class="page-link" data-page="${currentPage - 1}">&lsaquo;</button>
+        <button class="page-link" data-page="${Math.max(1, currentPage - 1)}">&lsaquo;</button>
       </li>`
     );
 
-    for (let i = 1; i <= totalPages; i++) {
+    // show up to 7 pages (simple windowing)
+    const maxButtons = 7;
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+    if (endPage - startPage < maxButtons - 1) {
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
       paginationNumbers.insertAdjacentHTML(
         "beforeend",
         `<li class="page-item ${i === currentPage ? "active" : ""}">
@@ -236,14 +291,17 @@ document.addEventListener("DOMContentLoaded", () => {
     paginationNumbers.insertAdjacentHTML(
       "beforeend",
       `<li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
-        <button class="page-link" data-page="${currentPage + 1}">&rsaquo;</button>
+        <button class="page-link" data-page="${Math.min(totalPages, currentPage + 1)}">&rsaquo;</button>
       </li>`
     );
   }
 
   paginationNumbers.addEventListener("click", (e) => {
-    if (e.target.dataset.page) {
-      currentPage = parseInt(e.target.dataset.page);
+    const btn = e.target.closest('button[data-page]');
+    if (!btn) return;
+    const page = parseInt(btn.dataset.page);
+    if (!isNaN(page)) {
+      currentPage = page;
       renderPaginatedData();
     }
   });
@@ -263,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rows.push([i.id, i.client, i.project, i.bill_date, i.due_date, i.total, i.received, i.due, i.status]);
     });
 
-    const csvContent = rows.map(r => r.join(",")).join("\n");
+    const csvContent = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
 
@@ -297,6 +355,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("addInvoiceMainBtn").addEventListener("click", openAddInvoiceModal);
 
   function openAddInvoiceModal() {
+    editingId = null;
     document.getElementById("invoiceModalTitle").innerText = "Add Invoice";
     document.getElementById("invoiceForm").reset();
     invoiceModal.show();
@@ -308,16 +367,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const project = document.getElementById("formProject").value.trim();
     const bill = document.getElementById("formBill").value;
     const due = document.getElementById("formDue").value;
-    const total = Number(document.getElementById("formTotal").value);
+    const totalVal = Number(document.getElementById("formTotal").value) || 0;
     const status = document.getElementById("formStatus").value;
 
-    const invoice = {
-      id, type: "invoice", client, project,
-      bill_date: bill, due_date: due, total,
-      received: 0, due: total, status
-    };
+    if (editingId) {
+      // update existing invoice (based on editingId)
+      const inv = invoicesData.find(x => x.id === editingId);
+      if (inv) {
+        inv.id = id;
+        inv.client = client;
+        inv.project = project;
+        inv.bill_date = bill || null;
+        inv.due_date = due || null;
+        inv.total = totalVal;
+        inv.received = Number(inv.received || 0); // keep received as-is
+        inv.due = inv.total - inv.received;
+        inv.status = status || inv.status;
+      }
+    } else {
+      const invoice = {
+        id, type: "invoice", client, project,
+        bill_date: bill || null, due_date: due || null, total: totalVal,
+        received: 0, due: totalVal, status: status || "-"
+      };
+      invoicesData.unshift(invoice);
+    }
 
-    invoicesData.unshift(invoice);
+    editingId = null;
     currentPage = 1;
     applyAllFiltersAndRender();
     invoiceModal.hide();
@@ -331,23 +407,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function fillPaymentInvoiceSelect() {
     const sel = document.getElementById("paymentInvoiceSelect");
+    if (!sel) return;
     sel.innerHTML = "";
-    invoicesData.forEach(i => {
-      sel.innerHTML += `<option value="${i.id}">${i.id} — ${i.client} (${money(i.due)})</option>`;
+    // only include invoices (not credit notes) and show due > 0 first
+    const sorted = invoicesData
+      .filter(i => i.type === "invoice")
+      .sort((a,b) => (b.due - a.due));
+    if (sorted.length === 0) {
+      sel.innerHTML = `<option value="">No invoices</option>`;
+      return;
+    }
+    sorted.forEach(i => {
+      sel.innerHTML += `<option value="${escapeHtml(i.id)}">${escapeHtml(i.id)} — ${escapeHtml(i.client)} (${money(i.due)})</option>`;
     });
   }
 
   document.getElementById("savePayment").addEventListener("click", () => {
     const id = document.getElementById("paymentInvoiceSelect").value;
-    const amount = Number(document.getElementById("paymentAmount").value);
+    const amount = Number(document.getElementById("paymentAmount").value) || 0;
 
     const inv = invoicesData.find(x => x.id === id);
-    if (!inv) return;
+    if (!inv) {
+      paymentModal.hide();
+      return;
+    }
 
-    inv.received += amount;
-    inv.due = inv.total - inv.received;
+    inv.received = Number(inv.received || 0) + amount;
+    inv.due = Number(inv.total || 0) - inv.received;
 
     if (inv.due <= 0) inv.status = "Fully paid";
+    else if (inv.due > 0 && inv.status === "Fully paid") inv.status = "Not paid";
 
     applyAllFiltersAndRender();
     paymentModal.hide();
@@ -356,56 +445,146 @@ document.addEventListener("DOMContentLoaded", () => {
   // EDIT / DELETE / ADD PAYMENT inside dropdown + NEW CLICK NAVIGATION
   document.addEventListener("click", (e) => {
 
-    if (e.target.classList.contains("btn-edit")) {
-      const id = e.target.dataset.id;
+    const t = e.target;
+
+    if (t.classList && t.classList.contains("btn-edit")) {
+      const id = t.dataset.id;
       const inv = invoicesData.find(i => i.id === id);
       if (inv) {
+        editingId = inv.id;
         document.getElementById("invoiceModalTitle").innerText = "Edit Invoice";
 
         document.getElementById("formId").value = inv.id;
         document.getElementById("formClient").value = inv.client;
         document.getElementById("formProject").value = inv.project;
-        document.getElementById("formBill").value = inv.bill_date;
-        document.getElementById("formDue").value = inv.due_date;
-        document.getElementById("formTotal").value = inv.total;
-        document.getElementById("formStatus").value = inv.status;
+        document.getElementById("formBill").value = inv.bill_date || "";
+        document.getElementById("formDue").value = inv.due_date || "";
+        document.getElementById("formTotal").value = inv.total || 0;
+        document.getElementById("formStatus").value = inv.status || "-";
 
         invoiceModal.show();
       }
+      return;
     }
 
-    if (e.target.classList.contains("btn-delete")) {
-      const id = e.target.dataset.id;
+    if (t.classList && t.classList.contains("btn-delete")) {
+      const id = t.dataset.id;
       if (confirm("Are you sure you want to delete this invoice?")) {
         invoicesData = invoicesData.filter(i => i.id !== id);
         applyAllFiltersAndRender();
       }
+      return;
     }
 
-    if (e.target.classList.contains("btn-add-payment")) {
-      const id = e.target.dataset.id;
+    if (t.classList && t.classList.contains("btn-add-payment")) {
+      const id = t.dataset.id;
       document.getElementById("paymentInvoiceSelect").value = id;
       paymentModal.show();
+      return;
     }
 
     // CLICKABLE INVOICE → OPEN PAGE
-    if (e.target.classList.contains("btn-view-invoice")) {
-      const id = e.target.dataset.id;
-      window.location.href = `invoice_view.php?id=${id}`;
+    if (t.classList && t.classList.contains("btn-view-invoice")) {
+      const id = t.dataset.id;
+      window.location.href = `invoice_view.php?id=${encodeURIComponent(id)}`;
+      return;
     }
 
     // CLICKABLE CLIENT → OPEN PAGE
-    if (e.target.classList.contains("btn-view-client")) {
-      const clientName = e.target.dataset.client;
+    if (t.classList && t.classList.contains("btn-view-client")) {
+      const clientName = t.dataset.client;
       window.location.href = `Client-View.php?client=${encodeURIComponent(clientName)}`;
+      return;
     }
 
     // CLICKABLE PROJECT → OPEN PAGE
-    if (e.target.classList.contains("btn-view-project")) {
-      const projectName = e.target.dataset.project;
+    if (t.classList && t.classList.contains("btn-view-project")) {
+      const projectName = t.dataset.project;
       window.location.href = `projects.php?project=${encodeURIComponent(projectName)}`;
+      return;
     }
 
   });
+
+  // =======================================================
+  //            TAB SWITCHING (LIST <-> RECURRING)
+  // =======================================================
+
+  document.querySelectorAll('#invoiceTabs .nav-link').forEach(tab => {
+    tab.addEventListener("click", function (e) {
+      e.preventDefault();
+      document.querySelectorAll('#invoiceTabs .nav-link').forEach(t => t.classList.remove("active"));
+      this.classList.add("active");
+
+      let target = this.getAttribute("data-tab");
+      // hide both known targets first
+      const listElem = document.getElementById("listTab");
+      const recElem = document.getElementById("recurringTab");
+
+      if (listElem) listElem.classList.add("d-none");
+      if (recElem) recElem.classList.add("d-none");
+
+      const targetEl = document.getElementById(target);
+      if (targetEl) targetEl.classList.remove("d-none");
+
+      if (target === "recurringTab") loadRecurringInvoices();
+      else applyAllFiltersAndRender();
+    });
+  });
+
+  // ensure list is shown initially
+  document.getElementById("listTab")?.classList.remove("d-none");
+
+  // =======================================================
+  //              LOAD RECURRING INVOICES
+  // =======================================================
+
+  function loadRecurringInvoices() {
+    // Use already-fetched invoicesData (no extra fetch) — fallback to empty
+    const data = invoicesData || [];
+    // filter recurring ones (expect invoice JSON to include recurring:true)
+    const recurring = data.filter(item => item.recurring === true);
+
+    const tbody = document.getElementById("recurringBody");
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    if (recurring.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-4">No recurring invoices found</td></tr>`;
+      document.getElementById("recurringTotal").innerText = money(0);
+      return;
+    }
+
+    let total = 0;
+
+    recurring.forEach(r => {
+      total += Number(r.total) || 0;
+
+      const nextRec = r.next_recurring ? formatDate(r.next_recurring) : "-";
+      tbody.innerHTML += `
+        <tr>
+          <td class="text-primary">${escapeHtml(r.id)}</td>
+          <td>${escapeHtml(r.client)}</td>
+          <td>${escapeHtml(r.project)}</td>
+          <td>${nextRec}</td>
+          <td>${escapeHtml(r.repeat_every || "-")}</td>
+          <td>${escapeHtml(r.cycles || "-")}</td>
+          <td>${getStatusBadge(r.status)}</td>
+          <td class="text-end">${money(r.total)}</td>
+          <td>
+              <button class="btn btn-light border rounded-circle">
+                  <i class="bi bi-three-dots"></i>
+              </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("recurringTotal").innerText = money(total);
+  }
+
+  // Auto-load list tab first
+  document.getElementById("listTab")?.classList.remove("d-none");
 
 });

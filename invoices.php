@@ -25,10 +25,14 @@
       </div>
 
       <!-- Tabs -->
-      <ul class="nav nav-tabs mb-3">
-        <li class="nav-item"><a class="nav-link active">List</a></li>
-        <li class="nav-item"><a class="nav-link">Recurring</a></li>
-      </ul>
+      <ul class="nav nav-tabs mb-3" id="invoiceTabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-tab="listTab">List</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-tab="recurringTab">Recurring</a>
+    </li>
+</ul>
 
       <!-- Action row -->
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -138,6 +142,39 @@
 
       </div>
       <!-- END PAGINATION -->
+       <!-- ======================== RECURRING TAB ======================== -->
+<div id="recurringTab" class="d-none">
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Client</th>
+                    <th>Project</th>
+                    <th>Next recurring</th>
+                    <th>Repeat every</th>
+                    <th>Cycles</th>
+                    <th>Status</th>
+                    <th>Total invoiced</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="recurringBody"></tbody>
+
+            <tfoot class="fw-bold">
+                <tr>
+                    <td colspan="7" class="text-end">Total</td>
+                    <td id="recurringTotal" class="text-end"></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+<!-- ==================== END RECURRING TAB ==================== -->
+
 
 
       <!-- Add / Edit Invoice Modal -->

@@ -2,6 +2,9 @@
 header("Content-Type: application/json");
 
 $data = [
+    // ------------------------------
+    // NORMAL INVOICES
+    // ------------------------------
     [
         "id" => "INV #28",
         "type" => "invoice",
@@ -98,7 +101,10 @@ $data = [
         "due" => 0,
         "status" => "Fully paid"
     ],
-    // Example credit note
+
+    // ------------------------------
+    // CREDIT NOTE
+    // ------------------------------
     [
         "id" => "CR #1",
         "type" => "credit",
@@ -110,7 +116,34 @@ $data = [
         "received" => 0,
         "due" => 0,
         "status" => "-"
+    ],
+
+    // ------------------------------
+    // RECURRING INVOICES (NEW)
+    // ------------------------------
+    [
+        "id" => "INV #19",
+        "type" => "recurring",
+        "client" => "Janice Quigley",
+        "project" => "E-commerce Website Design",
+        "next_recurring" => "28-12-2025",
+        "repeat_every" => "1 Month(s)",
+        "cycles" => "0/∞",
+        "status" => "Active",
+        "total_invoiced" => 90.00
+    ],
+    [
+        "id" => "INV #10",
+        "type" => "recurring",
+        "client" => "Demo Client",
+        "project" => "Product Photography and Cataloging",
+        "next_recurring" => "28-12-2025",
+        "repeat_every" => "1 Month(s)",
+        "cycles" => "0/∞",
+        "status" => "Active",
+        "total_invoiced" => 66.00
     ]
 ];
 
 echo json_encode($data);
+?>
