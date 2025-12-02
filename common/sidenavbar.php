@@ -47,13 +47,12 @@
               </a>
             </li>
 
-            <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+           <li class="side-nav-item">
+              <a class="side-nav-link text-decoration-none" href="leads.php">
                 <i class="fa-solid fa-box me-2"></i>
                 <span>Leads</span>
               </a>
             </li>
-
             <li class="side-nav-item">
               <a class="side-nav-link text-decoration-none" href="subscription.php">
                 <i class="fa-solid fa-arrows-rotate me-2"></i>
@@ -92,7 +91,7 @@
               </a>
               <div class="collapse" id="prospectMenu">
                 <ul class="nav flex-column ms-4">
-                  <li><a href="#" class="nav-link text-secondary">Estimate List</a></li>
+                  <li><a href="Estimate.php" class="nav-link text-secondary">Estimate List</a></li>
                   <li><a href="#" class="nav-link text-secondary">Estimate Request</a></li>
                   <li><a href="#" class="nav-link text-secondary">Estimate Forms</a></li>
                   <li><a href="#" class="nav-link text-secondary">Proposals</a></li>

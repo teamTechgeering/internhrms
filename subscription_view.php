@@ -311,3 +311,4 @@
 </div><!-- content-page -->
 
 <?php include 'common/footer.php'; ?>
+<script src="assets/js/subscription_view.js"></script>

@@ -534,3 +534,4 @@
 </div><!-- content-page -->
 
 <?php include 'common/footer.php'; ?>
+<script src="assets/js/tasks.js"></script>

@@ -333,12 +333,11 @@
     </div>
   </div>
 </div>
-
-
  </div>  <!-- CLOSE .content -->
     </div>    <!-- CLOSE .content-page -->
 
 
 <?php include 'common/footer.php'; ?>
+<script src="assets/js/project.js"></script>
   
 
