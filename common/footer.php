@@ -17,8 +17,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
 
-
-
 <script src="assets/js/vendor.min.js"></script>
 <script src="assets/js/app.min.js"></script>
 <!-- ALWAYS LAST -->
