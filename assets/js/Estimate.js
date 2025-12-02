@@ -437,7 +437,7 @@ function renderForms() {
         table.innerHTML += `
             <tr>
                 <td>
-    <a href="estimate-request-form-view.php?id=${form.id}" class="text-decoration-none">
+    <a href="Estimaterequestform.php?id=${form.id}" class="text-decoration-none">
         ${form.title}
     </a>
 </td>

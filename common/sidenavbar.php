@@ -94,7 +94,7 @@
                   <li><a href="Estimate.php" class="nav-link text-secondary">Estimate List</a></li>
                   <li><a href="#" class="nav-link text-secondary">Estimate Request</a></li>
                   <li><a href="#" class="nav-link text-secondary">Estimate Forms</a></li>
-                  <li><a href="#" class="nav-link text-secondary">Proposals</a></li>
+                  <li><a href="Proposals.php" class="nav-link text-secondary">Proposals</a></li>
                 </ul>
               </div>
             </li>
