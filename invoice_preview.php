@@ -113,6 +113,8 @@ $autoPrint = isset($_GET['print']) || isset($_GET['pdf']) || isset($_GET['downlo
 </div><!-- container -->
 
 <?php include 'common/footer.php'; ?>
+</body>
+</html>
 
 <script>
 // AUTO PRINT HANDLER

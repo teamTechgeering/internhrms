@@ -559,3 +559,5 @@
 
 <?php include 'common/footer.php'; ?>
 <script src="assets/js/Estimate.js"></script>
+</body>
+</html>

@@ -505,6 +505,8 @@
         </div>
     </div>
 </div>
+</body>
+</html>
 
 <!-- JS LOGIC -->
 <script>
