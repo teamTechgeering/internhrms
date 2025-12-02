@@ -276,3 +276,4 @@
 </div><!-- content-page -->
 
 <?php include 'common/footer.php'; ?>
+<script src="assets/js/invoices.js"></script>

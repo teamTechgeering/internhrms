@@ -318,7 +318,13 @@ document.addEventListener("DOMContentLoaded", () => {
      ${c.name}
   </a>
 </td>
-        <td>${c.primaryContact}</td>
+ <td>
+  <a href="Client-Contact.php?id=${c.id}" 
+     class="text-decoration-none text-primary fw-semibold">
+     ${c.primaryContact}
+  </a>
+</td>
+      
         <td>${c.phone}</td>
         <td>${c.clientGroup}</td>
         <td>${c.labels || ""}</td>

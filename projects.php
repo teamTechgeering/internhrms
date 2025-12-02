@@ -338,5 +338,6 @@
 
 
 <?php include 'common/footer.php'; ?>
+<script src="assets/js/project.js"></script>
   
 

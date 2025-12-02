@@ -1483,4 +1483,4 @@
 </div>  <!-- CLOSE .content -->
     </div>    <!-- CLOSE .content-page -->
 <?php include 'common/footer.php'; ?>
-</html>
+<script src="assets/js/project_detail.js"></script>
