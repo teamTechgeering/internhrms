@@ -185,5 +185,6 @@
 </div>
 
 <?php include 'common/footer.php'; ?>
+<script src="assets/js/Event.js"></script>
 </body>
 </html>

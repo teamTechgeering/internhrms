@@ -1,4 +1,3 @@
-
 let leads = [];
 let allLeads = [];
 
@@ -71,7 +70,7 @@ function renderKanban() {
     const stages = ["New", "Qualified", "Discussion"];
 
     stages.forEach(stage => {
-        const safeId = stage.replace(/\s+/g, ''); // remove spaces
+        const safeId = stage.replace(/\s+/g, '');
 
         const col = document.createElement("div");
         col.classList.add("col-md-4");
@@ -85,7 +84,10 @@ function renderKanban() {
     leads.forEach(l => {
         const safeStatus = l.status.replace(/\s+/g, '');
 
-       document.getElementById(`col-${safeStatus}`).innerHTML += `
+        const colBox = document.getElementById(`col-${safeStatus}`);
+        if (!colBox) return;
+
+        colBox.innerHTML += `
     <div class="p-3 mb-3 bg-white border rounded"
          style="cursor:pointer;"
          onclick="openLeadPage(${l.id})">
@@ -103,10 +105,10 @@ function renderKanban() {
 `;
     });
 }
+
 function openLeadPage(id) {
     window.location.href = "Client-View.php?id=" + id;
 }
-
 
 document.querySelectorAll(".filter-option, .quick-filter").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -149,12 +151,12 @@ function addLead() {
     setTimeout(() => {
         document.body.classList.remove("modal-open");
         document.body.style.overflow = "";
-        document.querySelector(".modal-backdrop")?.remove();
-
-        // SHOW success modal
-        new bootstrap.Modal(document.getElementById("successModal")).show();
-
+        document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
     }, 180);
+
+    setTimeout(() => {
+        new bootstrap.Modal(document.getElementById("successModal")).show();
+    }, 250);
 }
 
 // ---------------- SUCCESS MODAL OK → CLOSE + OPEN LIST TAB ----------------
@@ -166,10 +168,12 @@ document.getElementById("successOkBtn")?.addEventListener("click", () => {
     setTimeout(() => {
         document.body.classList.remove("modal-open");
         document.body.style.overflow = "";
-        document.querySelector(".modal-backdrop")?.remove();
+
+        // 🔥 FIX: Remove ALL leftover backdrops so NO BLUR appears
+        document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
+
     }, 150);
 
-    // SWITCH TO LIST TAB
     const listTab = document.querySelector('a[href="#listTab"]');
     const tab = new bootstrap.Tab(listTab);
     tab.show();
@@ -216,12 +220,13 @@ if (printBtn) {
         window.print();
     });
 }
+
 // -------------------- REFRESH BUTTON --------------------
 const refreshBtn = Array.from(document.querySelectorAll("button.btn-outline-secondary"))
     .find(btn => btn.querySelector(".bi-arrow-clockwise"));
 
 if (refreshBtn) {
     refreshBtn.addEventListener("click", () => {
-        location.reload(); // simple full page reload
+        location.reload();
     });
 }
