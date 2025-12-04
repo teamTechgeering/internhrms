@@ -74,9 +74,9 @@
                   <li><a href="invoices.php" class="nav-link text-secondary">Invoices</a></li>
                   <li><a href="orderlist.php" class="nav-link text-secondary">Order List</a></li>
                   <li><a href="store.php" class="nav-link text-secondary">Store</a></li>
-                  <li><a href="#" class="nav-link text-secondary">Payments</a></li>
-                  <li><a href="#" class="nav-link text-secondary">Items</a></li>
-                  <li><a href="#" class="nav-link text-secondary">Contracts</a></li>
+                  <li><a href="payment.php" class="nav-link text-secondary">Payments</a></li>
+                  <li><a href="item.php" class="nav-link text-secondary">Items</a></li>
+                  <li><a href="contract.php" class="nav-link text-secondary">Contracts</a></li>
                 </ul>
               </div>
             </li>
