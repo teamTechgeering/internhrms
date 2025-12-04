@@ -109,7 +109,83 @@
         </div>
     </div>
 </div>
-         
+   <!-- EDIT PROPOSAL MODAL -->
+<div class="modal fade" id="editProposalModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Edit proposal</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" id="editProposalId">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Proposal date</label>
+                        <input id="editPDate" type="date" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Valid until</label>
+                        <input id="editPValid" type="date" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Client/Lead</label>
+                        <input id="editPClient" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Status</label>
+                        <select id="editPStatus" class="form-select">
+                            <option>Accepted</option>
+                            <option>Draft</option>
+                            <option>Declined</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Note</label>
+                        <textarea id="editPNote" class="form-control"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" onclick="updateProposal()">Update</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteProposalModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Proposal</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+               Are you sure you want to delete this proposal?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger btn-sm" id="confirmDeleteProposal">Delete</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+      
         
       </div>  <!-- CLOSE .content -->
     </div>    <!-- CLOSE .content-page -->

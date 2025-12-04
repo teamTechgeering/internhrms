@@ -103,7 +103,20 @@ function renderProposalTable(filter = "all") {
             <td>
                 <span class="badge bg-${getStatusColor(p.status)}">${p.status}</span>
             </td>
-            <td><i class="bi bi-eye text-secondary"></i></td>
+           <td>
+           
+                <a class="" href="#" onclick="openEditProposal(${p.id})">
+                    <i class="fa fa-edit "></i>Edit
+                </a>
+           
+</td>
+           <td>
+                <a class="text-danger" href="#" onclick="openDeleteProposal(${p.id})">
+                    <i class="fa fa-trash "></i>Delete
+                </a>
+          
+</td>
+
         `;
 
         tbody.appendChild(tr);
@@ -182,4 +195,67 @@ function exportExcel() {
 document.addEventListener("hidden.bs.modal", () => {
     document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
     document.body.classList.remove("modal-open");
+});
+
+// ============================================================
+// EDIT PROPOSAL
+// ============================================================
+function openEditProposal(id) {
+
+    let p = proposals.find(x => x.id == id);
+
+    // Fill modal fields
+    document.getElementById("editProposalId").value = p.id;
+    document.getElementById("editPDate").value = p.proposal_date;
+    document.getElementById("editPValid").value = p.valid_until;
+    document.getElementById("editPClient").value = p.client;
+    document.getElementById("editPStatus").value = p.status;
+    document.getElementById("editPNote").value = p.note;
+
+    new bootstrap.Modal(document.getElementById("editProposalModal")).show();
+}
+
+
+// ============================================================
+// UPDATE PROPOSAL (SAVE CHANGES)
+// ============================================================
+function updateProposal() {
+
+    let id = document.getElementById("editProposalId").value;
+
+    let index = proposals.findIndex(p => p.id == id);
+
+    proposals[index].proposal_date = document.getElementById("editPDate").value;
+    proposals[index].valid_until = document.getElementById("editPValid").value;
+    proposals[index].client = document.getElementById("editPClient").value;
+    proposals[index].status = document.getElementById("editPStatus").value;
+    proposals[index].note = document.getElementById("editPNote").value;
+
+    saveLS();
+    renderProposalTable();
+
+    bootstrap.Modal.getInstance(document.getElementById("editProposalModal")).hide();
+}
+
+
+
+// ============================================================
+// DELETE PROPOSAL
+// ============================================================
+let deleteProposalId = null;
+
+function openDeleteProposal(id) {
+    deleteProposalId = id;
+    new bootstrap.Modal(document.getElementById("deleteProposalModal")).show();
+}
+
+
+document.getElementById("confirmDeleteProposal").addEventListener("click", function () {
+
+    proposals = proposals.filter(p => p.id != deleteProposalId);
+
+    saveLS();
+    renderProposalTable();
+
+    bootstrap.Modal.getInstance(document.getElementById("deleteProposalModal")).hide();
 });

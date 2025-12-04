@@ -566,4 +566,253 @@ function showFormSuccess(msg) {
 
 // INITIAL LOAD
 renderForms();
+// -------------------------------------------
+// SEARCH FOR REQUEST TAB
+// -------------------------------------------
+if (document.getElementById("searchRequests")) {
 
+    document.getElementById("searchRequests").addEventListener("keyup", function () {
+
+        const keyword = this.value.toLowerCase();
+
+        const filtered = requestsData.filter(req =>
+            (req.client || "").toLowerCase().includes(keyword) ||
+            (req.title || "").toLowerCase().includes(keyword) ||
+            (req.status || "").toLowerCase().includes(keyword)
+        );
+
+        renderRequestsFiltered(filtered);
+    });
+
+
+    function renderRequestsFiltered(list) {
+        let table = document.getElementById("requestsTable");
+        table.innerHTML = "";
+
+        list.forEach(req => {
+            table.innerHTML += `
+                <tr>
+                    <td>ER #${req.id}</td>
+                    <td>${req.client}</td>
+                    <td>${req.title}</td>
+                    <td>${req.assigned || "-"}</td>
+                    <td>${req.date}</td>
+                    <td><span class="badge bg-info">${req.status}</span></td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-light" onclick="openEditRequest(${req.id})">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light text-danger" onclick="openDeleteRequest(${req.id})">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+}
+
+
+
+// -------------------------------------------
+// EXCEL EXPORT FOR REQUEST TAB
+// -------------------------------------------
+if (document.getElementById("excelRequests")) {
+
+    document.getElementById("excelRequests").addEventListener("click", function () {
+
+        let csv = "ID,Client,Title,Assigned,Date,Status\n";
+
+        requestsData.forEach(req => {
+            csv += `${req.id},${req.client},${req.title},${req.assigned || "-"},${req.date},${req.status}\n`;
+        });
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Estimate_Requests.csv";
+        a.click();
+    });
+}
+
+
+
+// -------------------------------------------
+// PRINT FOR REQUEST TAB
+// -------------------------------------------
+if (document.getElementById("printRequests")) {
+
+    document.getElementById("printRequests").addEventListener("click", function () {
+
+        let printWindow = window.open("", "", "width=900,height=600");
+
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Estimate Requests</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                </head>
+                <body>
+                    <h3 class="text-center mb-3">Estimate Requests</h3>
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Client</th>
+                                <th>Title</th>
+                                <th>Assigned</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${requestsData.map(req => `
+                                <tr>
+                                    <td>ER #${req.id}</td>
+                                    <td>${req.client}</td>
+                                    <td>${req.title}</td>
+                                    <td>${req.assigned || "-"}</td>
+                                    <td>${req.date}</td>
+                                    <td>${req.status}</td>
+                                </tr>
+                            `).join("")}
+                        </tbody>
+                    </table>
+                </body>
+            </html>
+        `);
+
+        printWindow.document.close();
+        printWindow.print();
+    });
+}
+// ========================================================
+// FORMS TAB - SEARCH
+// ========================================================
+const searchForms = document.getElementById("searchForms");
+if (searchForms) {
+
+    searchForms.addEventListener("keyup", function () {
+        const keyword = this.value.toLowerCase();
+
+        const filtered = formsData.filter(f =>
+            (f.title || "").toLowerCase().includes(keyword) ||
+            (f.status || "").toLowerCase().includes(keyword) ||
+            (f.public || "").toLowerCase().includes(keyword)
+        );
+
+        renderFormsFiltered(filtered);
+    });
+
+
+    function renderFormsFiltered(list) {
+        let table = document.getElementById("formsTable");
+        table.innerHTML = "";
+
+        list.forEach(form => {
+            table.innerHTML += `
+                <tr>
+                    <td>${form.title}</td>
+                    <td>${form.public}</td>
+                    <td>${form.embed}</td>
+                    <td>${form.status}</td>
+                    <td class="text-end">
+                        <div class="dropdown">
+                            <button class="btn btn-light" data-bs-toggle="dropdown">
+                                <i class="fa fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="openEditForm(${form.id})">
+                                        <i class="fa fa-edit me-2"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="#" onclick="openDeleteForm(${form.id})">
+                                        <i class="fa fa-trash me-2"></i> Delete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+}
+
+
+// ========================================================
+// FORMS TAB - EXCEL EXPORT
+// ========================================================
+const excelFormsBtn = document.getElementById("excelForms");
+if (excelFormsBtn) {
+    excelFormsBtn.addEventListener("click", function () {
+
+        let csv = "ID,Title,Public,Embed,Status\n";
+
+        formsData.forEach(f => {
+            csv += `${f.id},${f.title},${f.public},${f.embed},${f.status}\n`;
+        });
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Estimate_Request_Forms.csv";
+        a.click();
+    });
+}
+
+
+// ========================================================
+// FORMS TAB - PRINT
+// ========================================================
+const printFormsBtn = document.getElementById("printForms");
+if (printFormsBtn) {
+
+    printFormsBtn.addEventListener("click", function () {
+
+        let printWindow = window.open("", "", "width=900,height=600");
+
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Estimate Request Forms</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                </head>
+                <body>
+                    <h3 class="text-center mb-3">Estimate Request Forms</h3>
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Public</th>
+                                <th>Embed</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${formsData.map(f => `
+                                <tr>
+                                    <td>${f.title}</td>
+                                    <td>${f.public}</td>
+                                    <td>${f.embed}</td>
+                                    <td>${f.status}</td>
+                                </tr>
+                            `).join("")}
+                        </tbody>
+                    </table>
+                </body>
+            </html>
+        `);
+
+        printWindow.document.close();
+        printWindow.print();
+    });
+}

@@ -5,7 +5,7 @@
 <div class="content">
 
 <?php
-$id = isset($_GET['id']) ? intval($_GET['id']) : 26;
+$id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 $autoPrint = isset($_GET['print']) || isset($_GET['pdf']) || isset($_GET['download']);
 ?>
 
@@ -17,95 +17,43 @@ $autoPrint = isset($_GET['print']) || isset($_GET['pdf']) || isset($_GET['downlo
     </div>
 
     <!-- INVOICE WRAPPER -->
-    <div class="mx-auto bg-white p-4 rounded shadow-sm" style="max-width: 1000px;">
+   
+            <!-- MAIN PROPOSAL BODY -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold">
+                    <button class="btn btn-light btn-sm"><i class="fa-solid fa-circle-check"></i> Proposal Accepted
+</button>
+                
+                </div>
 
-        <!-- CANCELLED RIBBON (Bootstrap only) -->
-        <div class="position-relative mb-3">
-            <div class="position-absolute top-0 start-0 translate-middle-y bg-danger text-white px-4 py-1 fw-bold"
-                 style="transform: rotate(-45deg) translate(-40px, -20px);">
-                Cancelled
+                <div class="card-body">
+                    <div id="editorToolbar" class="mb-2">
+                        <!-- WYSIWYG Tools here (icons) -->
+                    </div>
+
+                    <div id="proposalContent" class="p-3" style="min-height:300px; background:#fff;">
+                        <h2>Web Design Proposal</h2>
+                        <img src="assets/images/notebook.png" class="img-fluid mb-3">
+                        <p>In response to the growing demands...</p>
+
+                        <h3>Our Best Offer</h3>
+                        <p>We aim to deliver best value...</p>
+
+                        <h3>Our Objective</h3>
+                        <img src="assets/images/home4.png" class="img-fluid mb-3">
+                        <p>Our objective is to align...</p>
+
+                        <h3>Our Portfolio</h3>
+                        <img src="assets/images/content.jpg" class="img-fluid mb-3">
+
+                        <h3 class="mt-4">Let's Connect</h3>
+                        <p>We are excited about the chance to collaborate...</p>
+                    </div>
+
+                    
+                </div>
             </div>
-        </div>
 
-        <!-- HEADER SECTION -->
-        <div class="row">
-            <div class="col-md-6">
-
-                <img src="assets/images/tech-logo21.webp" class="img-fluid mb-2" style="max-height: 80px;">
-
-                <p class="fw-semibold mb-1">Awesome Demo Company</p>
-                <p class="mb-1">86935 Greenholt Forges</p>
-                <p class="mb-1">Florida, 5626</p>
-                <p class="mb-1">Phone: +12345678888</p>
-                <p class="mb-1">Email: info@demo.company</p>
-                <p class="mb-1">Website: https://fairsketch.com</p>
-            </div>
-
-            <div class="col-md-6 text-end">
-
-                <span class="bg-dark text-white px-3 py-1 fw-bold d-inline-block">
-                    ESTIMATE #<?php echo $id; ?>
-                </span>
-
-                <p class="mt-3 mb-1">Bill date: 18-10-2025</p>
-                <p class="mb-3">Due date: 01-11-2025</p>
-
-                <p class="fw-bold mb-1">Bill To</p>
-                <p class="mb-1">Adrain Ondricka</p>
-                <p class="mb-1">308 Thad Row</p>
-                <p class="mb-1">Lake Macmouth</p>
-                <p class="mb-1">Tennessee</p>
-                <p class="mb-1">Andorra</p>
-
-            </div>
-        </div>
-
-        <hr>
-
-        <!-- ITEMS TABLE -->
-        <h6 class="fw-bold mb-3">Items</h6>
-
-        <div class="table-responsive mb-3">
-            <table class="table">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Rate</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>
-                            Custom app development<br>
-                            <small class="text-muted">App for your business</small>
-                        </td>
-                        <td>2 PC</td>
-                        <td>$1,000.00</td>
-                        <td>$2,000.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- TOTALS -->
-        <div class="row justify-content-end">
-            <div class="col-md-4">
-
-                <table class="table">
-                    <tr>
-                        <td>Sub Total</td>
-                        <td class="text-end">$2,000.00</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-semibold">Balance Due</td>
-                        <td class="fw-semibold text-end">$2,000.00</td>
-                    </tr>
-                </table>
-
-            </div>
         </div>
 
     </div><!-- wrapper end -->

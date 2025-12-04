@@ -33,13 +33,14 @@
                 <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="bi bi-filter"></i> My leads
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item filter-option" data-filter="mine">My leads</a></li>
-                    <li><a class="dropdown-item filter-option" data-filter="all">All leads</a></li>
-                    <li><a class="dropdown-item filter-option" data-filter="50">50%</a></li>
-                    <li><a class="dropdown-item filter-option" data-filter="90">90%</a></li>
-                    <li><a class="dropdown-item filter-option" data-filter="call">Call this week</a></li>
-                </ul>
+               <ul class="dropdown-menu">
+    <li><a href="#" class="dropdown-item filter-option" data-filter="mine">My leads</a></li>
+    <li><a href="#" class="dropdown-item filter-option" data-filter="all">All leads</a></li>
+    <li><a href="#" class="dropdown-item filter-option" data-filter="50">50%</a></li>
+    <li><a href="#" class="dropdown-item filter-option" data-filter="90">90%</a></li>
+    <li><a href="#" class="dropdown-item filter-option" data-filter="call">Call this week</a></li>
+</ul>
+
             </div>
 
             <!-- Plus button -->

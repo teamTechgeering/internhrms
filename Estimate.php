@@ -103,7 +103,19 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5></h5>
+<div class="d-flex">
+            <!-- Excel -->
+            <button class="btn btn-light border me-2" id="excelRequests">Excel</button>
 
+            <!-- Print -->
+            <button class="btn btn-light border me-2" id="printRequests">Print</button>
+
+            <!-- Search -->
+            <div class="input-group">
+                <input type="text" id="searchRequests" class="form-control" placeholder="Search">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
+        </div>
                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRequestModal">
     <i class="fa fa-plus"></i> Create estimate request
 </button>
@@ -269,6 +281,20 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5></h5>
+                <div class="d-flex">
+    <!-- Excel -->
+    <button class="btn btn-light border me-2" id="excelForms">Excel</button>
+
+    <!-- Print -->
+    <button class="btn btn-light border me-2" id="printForms">Print</button>
+
+    <!-- Search -->
+    <div class="input-group">
+        <input type="text" id="searchForms" class="form-control" placeholder="Search">
+        <span class="input-group-text"><i class="fa fa-search"></i></span>
+    </div>
+</div>
+
 
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFormModal">
     <i class="fa fa-plus"></i> Add form
