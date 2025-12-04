@@ -65,11 +65,25 @@
           <!-- footer -->
           <div class="d-flex justify-content-between align-items-center mt-4">
             <div>
-              <button class="btn btn-outline-secondary"><i class="bi bi-upload"></i> Upload File</button>
-              <button class="btn btn-outline-secondary ms-2"><i class="bi bi-mic"></i></button>
+              <button id="uploadBtn" class="btn btn-outline-secondary">
+                <i class="bi bi-upload"></i> Upload File
+              </button>
+
+              <!-- hidden input (not removed, required for file choosing) -->
+              <input type="file" id="uploadInput" style="display:none;">
+
+               <button class="btn btn-outline-secondary ms-2"><i class="bi bi-mic"></i></button>
+
+              <!-- result preview -->
+              <div id="uploadResult" class="mt-2 small"></div>
+
+             
             </div>
+
             <div>
-              <button id="placeOrderBtn" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Place order</button>
+              <button id="placeOrderBtn" class="btn btn-primary">
+                <i class="bi bi-check2-circle"></i> Place order
+              </button>
             </div>
           </div>
 
@@ -141,8 +155,10 @@
   </div>
 </div>
 
+
 <!-- BOOTSTRAP JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
 const $ = id => document.getElementById(id);
@@ -273,12 +289,52 @@ $('placeOrderBtn').addEventListener('click', function(){
     alert('No items to place order.');
     return;
   }
-  // For demo: clear cart and show success
-  alert('Order placed. (Demo) — cart cleared.');
+  alert('Order placed! (demo)');
   localStorage.removeItem('cart');
   renderCartTable();
 });
 
+
+////////////////////////////////////////////////////////////////////////////////////
+// ⭐ UPLOAD BUTTON — CLIENT-SIDE ONLY (NO NEW FILE, NO SERVER)                   //
+////////////////////////////////////////////////////////////////////////////////////
+
+document.getElementById("uploadBtn").addEventListener("click", function () {
+    document.getElementById("uploadInput").click();
+});
+
+document.getElementById("uploadInput").addEventListener("change", function () {
+
+    const file = this.files[0];
+    if (!file) return;
+
+    let html = `
+        <div class="mt-2 p-2 border rounded bg-light">
+            <strong>Selected File:</strong><br>
+            Name: ${file.name}<br>
+            Size: ${(file.size / 1024).toFixed(1)} KB
+        </div>
+    `;
+
+    if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            html += `
+                <div class="mt-2">
+                    <img src="${e.target.result}" style="max-width:150px;border:1px solid #ddd;border-radius:5px;">
+                </div>
+            `;
+            document.getElementById("uploadResult").innerHTML = html;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        document.getElementById("uploadResult").innerHTML = html;
+    }
+});
+
+
 /* init */
 renderCartTable();
 </script>
+
+<?php include 'common/footer.php'; ?>
