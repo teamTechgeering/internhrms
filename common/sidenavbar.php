@@ -106,7 +106,7 @@
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="message.php">
                 <i class="fa-solid fa-envelope me-2"></i>
                 <span>Messages</span>
               </a>
