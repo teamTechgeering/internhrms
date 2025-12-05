@@ -297,6 +297,23 @@
                       </thead>
                       <tbody id="clientsTableBody"></tbody>
                     </table>
+                    <!-- CLIENTS PAGINATION -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+
+    <select id="clientsRowsPerPage" class="form-select" style="width: 90px;" onchange="changeClientsRows()">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+    </select>
+
+    <div class="d-flex align-items-center gap-3">
+        <span id="clientsPageText">1–10 / 10</span>
+
+        <div id="clientsPaginationNumbers" class="pagination gap-2"></div>
+    </div>
+
+</div>
+
                   </div>
                 </div>
               </div>
@@ -477,13 +494,30 @@
                         </tr>
                     </thead>
                     <tbody id="contactsBody"></tbody>
+                    
                 </table>
+                <!-- CONTACTS PAGINATION -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+
+    <select id="contactsRowsPerPage" class="form-select" style="width: 90px;" onchange="changeContactsRows()">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+    </select>
+
+    <div class="d-flex align-items-center gap-3">
+        <span id="contactsPageText">1–10 / 10</span>
+
+        <div id="contactsPaginationNumbers" class="pagination gap-2"></div>
+    </div>
+
+</div>
+
             </div>
 
         </div>
 
-    </div>
-</div>
+
 <!-- ADD CONTACT MODAL -->
 <div class="modal fade" id="addContactModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">

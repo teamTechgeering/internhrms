@@ -221,6 +221,7 @@ if (printBtn) {
     });
 }
 
+
 // -------------------- REFRESH BUTTON --------------------
 const refreshBtn = Array.from(document.querySelectorAll("button.btn-outline-secondary"))
     .find(btn => btn.querySelector(".bi-arrow-clockwise"));
@@ -230,3 +231,4 @@ if (refreshBtn) {
         location.reload();
     });
 }
+

@@ -111,6 +111,31 @@
                     </thead>
                     <tbody id="leadsTable"></tbody>
                 </table>
+                <!-- PAGINATION -->
+<div class="d-flex justify-content-between align-items-center mt-3">
+
+    <!-- Left: Rows per page -->
+    <div>
+        <select id="leadsRowsPerPage" class="form-select form-select-sm" style="width: 80px;"
+                onchange="changeLeadsRows()">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+        </select>
+    </div>
+
+    <!-- Right: Pagination controls -->
+    <div class="d-flex align-items-center gap-2">
+
+        <button class="btn btn-light btn-sm" onclick="prevLeadPage()">&#8249;</button>
+
+        <div id="leadsPaginationNumbers" class="d-flex align-items-center gap-1"></div>
+
+        <button class="btn btn-light btn-sm" onclick="nextLeadPage()">&#8250;</button>
+
+    </div>
+</div>
+
             </div>
 
             <!-- KANBAN TAB -->
@@ -179,5 +204,6 @@
 
 <?php include 'common/footer.php'; ?>
 <script src="assets/js/leads.js"></script>
+
 </body>
 </html>
