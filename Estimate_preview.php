@@ -3,7 +3,7 @@
 
 <div class="content-page">
 <div class="content">
-
+ <?php include 'common/topnavbar.php'; ?>
 <?php
 $id = isset($_GET['id']) ? intval($_GET['id']) : 26;
 $autoPrint = isset($_GET['print']) || isset($_GET['pdf']) || isset($_GET['download']);

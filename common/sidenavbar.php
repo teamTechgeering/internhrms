@@ -98,7 +98,7 @@
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="Notes.php">
                 <i class="fa-solid fa-note-sticky me-2"></i>
                 <span>Notes</span>
               </a>

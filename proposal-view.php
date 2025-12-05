@@ -3,7 +3,7 @@
 
 <div class="content-page">
     <div class="content">
-
+ <?php include 'common/topnavbar.php'; ?>
         <div class="container-fluid p-4" style="max-width:1300px">
 
             <!-- TOP BAR -->
