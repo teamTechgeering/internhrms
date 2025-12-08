@@ -132,19 +132,19 @@
             </li>
 
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="tickets.php">
                 <i class="fa-solid fa-ticket"></i>
                 <span>Tickets</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="knowledgebase.php">
                 <i class="fa-solid fa-gear"></i>
                 <span>Knowledge base</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="Files.php">
                 <i class="fa-solid fa-folder"></i>
                 <span>Files</span>
               </a>
