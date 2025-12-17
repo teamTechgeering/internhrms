@@ -124,7 +124,7 @@
                   <li><a href="team_member.php" class="nav-link text-secondary">Team Members</a></li>
                   <li><a href="timecard.php" class="nav-link text-secondary">Time Cards</a></li>
                   <li><a href="leave.php" class="nav-link text-secondary">Leave</a></li>
-                  <li><a href="#" class="nav-link text-secondary">Timeline</a></li>
+                  <li><a href="timeline.php" class="nav-link text-secondary">Timeline</a></li>
                   <li><a href="#" class="nav-link text-secondary">Announcements</a></li>
                   <li><a href="#" class="nav-link text-secondary">Help</a></li>
                 </ul>
