@@ -147,9 +147,9 @@
 let products = [
   {id:1,name:"Logo Design",price:100,unit:"/PC",desc:"Logo design for your brand.",img:"assets/images/logo.jpg",category:"Design", added:false},
   {id:2,name:"10GB Hosting",price:100,unit:"/PC",desc:"Cloud Hosting service 10GB space.",img:"assets/images/hosting.jpg",category:"Hosting", added:false},
-  {id:3,name:"Art Pictures",price:40,unit:"/PC",desc:"Hand art pictures for your website.",img:"assets/images/art.jpg",category:"Design", added:false},
+  {id:3,name:"Art Pictures",price:40,unit:"/PC",desc:"Hand art pictures for your website.",img:"assets/images/art.webp",category:"Design", added:false},
   {id:4,name:"Content Writing",price:15,unit:"/Hour",desc:"We write content for different types.",img:"assets/images/content.jpg",category:"Writing", added:false},
-  {id:5,name:"Custom App Development",price:1000,unit:"/PC",desc:"Custom app development services.",img:"assets/images/CAD.png",category:"Design", added:false},
+  {id:5,name:"Custom App Development",price:1000,unit:"/PC",desc:"Custom app development services.",img:"assets/images/CAD.jpg",category:"Design", added:false},
   {id:6,name:"Domain .com",price:11,unit:"/PC",desc:"Get your .com domain instantly.",img:"assets/images/domain.webp",category:"Hosting", added:false},
   {id:7,name:"SEO",price:10,unit:"/Hour",desc:"Boost search rankings for your site.",img:"assets/images/seo.jpg",category:"SEO", added:false},
   {id:8,name:"Website Design",price:20,unit:"/Hour",desc:"Website design for personal use.",img:"assets/images/web design.avif",category:"Design", added:false}

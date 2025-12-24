@@ -1,598 +1,624 @@
+
 <?php include 'common/header.php'; ?>
 <?php include 'common/sidenavbar.php'; ?>
 
 <div class="content-page">
   <div class="content">
 
-    <?php include 'common/topnavbar.php'; ?>
+<?php include 'common/topnavbar.php'; ?>
 
-    <div class="container-fluid p-4"></div>
+<div class="container-fluid p-4"></div>
 
-    <div class="container-fluid p-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
+<div class="container-fluid p-4">
 
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h4 class="mb-0">Leave</h4>
-
-            <div class="d-flex gap-2">
-              <button id="btnImport" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#importModal">⤓ Import leaves</button>
-              <button id="btnApply" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#applyModal">➕ Apply leave</button>
-              <button id="btnAssign" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#assignModal">➕ Assign leave</button>
-            </div>
-          </div>
-
-          <ul class="nav nav-tabs" id="leaveTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending approval</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#allapps" type="button" role="tab">All applications</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary</button>
-            </li>
-          </ul>
-
-          <div class="tab-content pt-3">
-
-            <!-- TABLE AREA -->
-            <div class="tab-pane fade show active" id="pending" role="tabpanel">
-
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
-                  <button id="toggleColumns" class="btn btn-sm btn-light border">☰</button>
-                </div>
-
-                <div class="d-flex gap-2 align-items-center">
-                  <button id="btnExcel" class="btn btn-sm btn-outline-secondary">Excel</button>
-                  <button id="btnPrint" class="btn btn-sm btn-outline-secondary">Print</button>
-                  <div class="input-group input-group-sm" style="width:240px">
-                    <input id="searchInput" type="search" class="form-control" placeholder="Search">
-                    <button id="clearSearch" class="btn btn-outline-secondary">🔍</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="table-responsive">
-                <table id="leaveTable" class="table table-borderless align-middle">
-                  <thead>
-                    <tr class="text-muted small">
-                      <th>Applicant</th>
-                      <th>Leave type</th>
-                      <th>Date</th>
-                      <th>Duration</th>
-                      <th>Status</th>
-                      <th class="text-end"> </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="d-flex align-items-center gap-2">
-                  <select id="pageSize" class="form-select form-select-sm" style="width:75px">
-                    <option>5</option>
-                    <option selected>10</option>
-                    <option>25</option>
-                  </select>
-                  <small id="pagerInfo" class="text-muted">0-0 / 0</small>
-                </div>
-                <nav>
-                  <ul id="pagination" class="pagination pagination-sm mb-0"></ul>
-                </nav>
-              </div>
-
-            </div>
-
-            <!-- ALL APPLICATIONS TAB -->
-            <div class="tab-pane fade" id="allapps" role="tabpanel">
-              <div class="mt-2 text-muted">All applications list (includes approved & rejected).</div>
-              <div class="table-responsive mt-2">
-                <table id="leaveTableAll" class="table table-borderless align-middle">
-                  <thead>
-                    <tr class="text-muted small">
-                      <th>Applicant</th>
-                      <th>Leave type</th>
-                      <th>Date</th>
-                      <th>Duration</th>
-                      <th>Status</th>
-                      <th class="text-end"> </th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- SUMMARY TAB -->
-            <div class="tab-pane fade" id="summary" role="tabpanel">
-              <div class="mt-2">
-                <div id="summaryCards" class="row gy-3"></div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- IMPORT MODAL -->
-    <div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Import leaves</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div id="dropZone" class="border rounded p-5 text-center">
-              <div class="text-muted">Drag-and-drop documents here<br><small class="text-muted">(or click to browse...)</small></div>
-              <input id="fileInput" type="file" accept=".csv" class="form-control form-control-sm mt-3" />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button id="downloadSample" class="btn btn-light">⤓ Download sample file</button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">✕ Close</button>
-            <button id="importNext" type="button" class="btn btn-primary">Next</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- APPLY MODAL -->
-    <div class="modal fade" id="applyModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Apply leave</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="row g-3">
-              <div class="col-4">Leave type
-                <select id="applyLeaveType" class="form-select">
-                  <option>-</option>
-                  <option>Casual</option>
-                  <option>Sick</option>
-                  <option>Work from Home</option>
-                </select>
-              </div>
-              <div class="col-8">Duration<br>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="applyDuration" id="applySingle" value="Single day" checked>
-                  <label class="form-check-label" for="applySingle">Single day</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="applyDuration" id="applyMultiple" value="Multiple days">
-                  <label class="form-check-label" for="applyMultiple">Multiple days</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="applyDuration" id="applyHours" value="Hours">
-                  <label class="form-check-label" for="applyHours">Hours</label>
-                </div>
-              </div>
-
-              <div class="col-12">Date<br>
-                <input id="applyDate" type="date" class="form-control">
-              </div>
-
-              <div class="col-12">Reason<br>
-                <textarea id="applyReason" class="form-control" rows="4" placeholder="Reason"></textarea>
-              </div>
-
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="me-auto">
-              <button id="applyUpload" class="btn btn-outline-secondary">📎 Upload File</button>
-              <button class="btn btn-outline-secondary">🎤</button>
-            </div>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">✕ Close</button>
-            <button id="applySubmit" type="button" class="btn btn-primary">Apply leave</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ASSIGN MODAL -->
-    <div class="modal fade" id="assignModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Assign leave</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="row g-3">
-              <div class="col-6">Team member
-                <select id="assignMember" class="form-select">
-                  <option>-</option>
-                  <option>Alice</option>
-                  <option>Bob</option>
-                  <option>Charlie</option>
-                </select>
-              </div>
-              <div class="col-6">Leave type
-                <select id="assignLeaveType" class="form-select">
-                  <option>-</option>
-                  <option>Casual</option>
-                  <option>Sick</option>
-                  <option>Work from Home</option>
-                </select>
-              </div>
-
-              <div class="col-12">Duration<br>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="assignDuration" id="assignSingle" value="Single day" checked>
-                  <label class="form-check-label" for="assignSingle">Single day</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="assignDuration" id="assignMultiple" value="Multiple days">
-                  <label class="form-check-label" for="assignMultiple">Multiple days</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="assignDuration" id="assignHours" value="Hours">
-                  <label class="form-check-label" for="assignHours">Hours</label>
-                </div>
-              </div>
-
-              <div class="col-12">Date<br>
-                <input id="assignDate" type="date" class="form-control">
-              </div>
-
-              <div class="col-12">Reason<br>
-                <textarea id="assignReason" class="form-control" rows="4" placeholder="Reason"></textarea>
-              </div>
-
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="me-auto">
-              <button id="assignUpload" class="btn btn-outline-secondary">📎 Upload File</button>
-              <button class="btn btn-outline-secondary">🎤</button>
-            </div>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">✕ Close</button>
-            <button id="assignSubmit" type="button" class="btn btn-primary">Assign leave</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-semibold mb-0">Leave</h4>
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+      <i class="bi bi-upload"></i> Import leaves
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#applyModal">
+      <i class="bi bi-plus-circle"></i> Apply leave
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#assignModal">
+      <i class="bi bi-plus-circle"></i> Assign leave
+    </button>
   </div>
+</div>
+
+<!-- TABS -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <button class="nav-link active" onclick="switchTab('pending', this)">Pending approval</button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" onclick="switchTab('all', this)">All applications</button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" onclick="switchTab('summary', this)">Summary</button>
+  </li>
+</ul>
+
+<!-- ================= PENDING APPROVAL ================= -->
+<div id="tab-pending">
+
+<div class="card">
+<div class="card-body p-0">
+
+<table class="table align-middle mb-0">
+<thead class="table-light">
+<tr>
+  <th>Applicant</th>
+  <th>Leave type</th>
+  <th>Date</th>
+  <th>Duration</th>
+  <th>Status</th>
+  <th></th>
+</tr>
+</thead>
+<tbody id="leaveBody">
+<tr>
+  <td colspan="6" class="text-center text-muted py-4">No record found.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<div class="d-flex justify-content-between align-items-center p-3">
+  <select class="form-select form-select-sm w-auto">
+    <option>10</option>
+  </select>
+  <span class="small text-muted" id="countText">0-0 / 0</span>
+  <div>
+    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-chevron-left"></i></button>
+    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-chevron-right"></i></button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ================= ALL APPLICATIONS ================= -->
+<div id="tab-all" class="d-none">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="d-flex align-items-center gap-2">
+    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-left"></i></button>
+    <span class="fw-semibold">December 2025</span>
+    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-right"></i></button>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-secondary btn-sm">Excel</button>
+    <button class="btn btn-outline-secondary btn-sm">Print</button>
+    <div class="input-group input-group-sm">
+      <input class="form-control" placeholder="Search">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+<div class="card-body p-0">
+<table class="table align-middle mb-0">
+<thead class="table-light">
+<tr>
+  <th>Applicant</th>
+  <th>Leave type</th>
+  <th>Date</th>
+  <th>Duration</th>
+  <th>Status</th>
+</tr>
+</thead>
+<tbody id="allBody">
+<tr>
+  <td colspan="5" class="text-center text-muted py-4">No record found.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<!-- ================= SUMMARY ================= -->
+<div id="tab-summary" class="d-none">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="d-flex gap-2">
+    <select class="form-select form-select-sm">
+      <option>- Leave type -</option>
+      <option>Casual Leave</option>
+      <option>Sick Leave</option>
+    </select>
+
+    <select class="form-select form-select-sm">
+      <option>- Team member -</option>
+      <option>Mark Thomas</option>
+      <option>John Doe</option>
+    </select>
+
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-left"></i></button>
+      <span class="fw-semibold">2025</span>
+      <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-chevron-right"></i></button>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-secondary btn-sm">Excel</button>
+    <button class="btn btn-outline-secondary btn-sm">Print</button>
+    <div class="input-group input-group-sm">
+      <input class="form-control" placeholder="Search">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+<div class="card-body p-0">
+<table class="table align-middle mb-0">
+<thead class="table-light">
+<tr>
+  <th>Applicant</th>
+  <th>Leave type</th>
+  <th>Total Leave (Yearly)</th>
+</tr>
+</thead>
+<tbody id="summaryBody">
+<tr>
+  <td colspan="3" class="text-center text-muted py-4">No record found.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= APPLY LEAVE MODAL ================= -->
+<div class="modal" id="applyModal">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header">
+  <h6 class="fw-semibold mb-0">Apply leave</h6>
+  <button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<div class="mb-3">
+<label class="form-label small">Leave type</label>
+<select class="form-select" id="applyType">
+<option>-</option>
+<option>Casual Leave</option>
+<option>Sick Leave</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label class="form-label small d-block">Duration</label>
+<div class="d-flex gap-4">
+<div class="form-check">
+<input class="form-check-input" type="radio" name="applyDuration" checked>
+<label class="form-check-label small">Single day</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="applyDuration">
+<label class="form-check-label small">Multiple days</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="applyDuration">
+<label class="form-check-label small">Hours</label>
+</div>
+</div>
+</div>
+
+<div class="mb-3">
+<label class="form-label small">Date</label>
+<input class="form-control" id="applyDate" placeholder="Date">
+</div>
+
+<div>
+<label class="form-label small">Reason</label>
+<textarea class="form-control" rows="3" placeholder="Reason"></textarea>
+</div>
+
+</div>
+
+<div class="modal-footer justify-content-between">
+<div class="d-flex gap-2">
+<button class="btn btn-outline-secondary"><i class="bi bi-paperclip"></i> Upload File</button>
+<button class="btn btn-outline-secondary"><i class="bi bi-mic"></i></button>
+</div>
+<div class="d-flex gap-2">
+<button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+<button class="btn btn-primary" onclick="addLeave('Pending')">
+<i class="bi bi-check-circle"></i> Apply leave
+</button>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= ASSIGN LEAVE MODAL ================= -->
+<div class="modal" id="assignModal">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header">
+<h6 class="fw-semibold mb-0">Assign leave</h6>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<div class="mb-3">
+<label class="form-label small">Team member</label>
+<select class="form-select" id="assignUser">
+<option>-</option>
+<option>Mark Thomas</option>
+<option>John Doe</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label class="form-label small">Leave type</label>
+<select class="form-select" id="assignType">
+<option>-</option>
+<option>Casual Leave</option>
+<option>Sick Leave</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label class="form-label small d-block">Duration</label>
+<div class="d-flex gap-4">
+<div class="form-check">
+<input class="form-check-input" type="radio" name="assignDuration" checked>
+<label class="form-check-label small">Single day</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="assignDuration">
+<label class="form-check-label small">Multiple days</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" name="assignDuration">
+<label class="form-check-label small">Hours</label>
+</div>
+</div>
+</div>
+
+<div class="mb-3">
+<label class="form-label small">Date</label>
+<input class="form-control" id="assignDate" placeholder="Date">
+</div>
+
+<div>
+<label class="form-label small">Reason</label>
+<textarea class="form-control" rows="3" placeholder="Reason"></textarea>
+</div>
+
+</div>
+
+<div class="modal-footer justify-content-between">
+<div class="d-flex gap-2">
+<button class="btn btn-outline-secondary"><i class="bi bi-paperclip"></i> Upload File</button>
+<button class="btn btn-outline-secondary"><i class="bi bi-mic"></i></button>
+</div>
+<div class="d-flex gap-2">
+<button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+<button class="btn btn-primary" onclick="addLeave('Approved')">
+<i class="bi bi-check-circle"></i> Assign leave
+</button>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= IMPORT MODAL ================= -->
+<div class="modal" id="importModal">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header">
+<h6 class="fw-semibold">Import leaves</h6>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+<div id="importBox"
+     class="border rounded text-center py-5 text-muted"
+     style="cursor:pointer">
+  Drag-and-drop documents here<br>(or click to browse...)
+  <input type="file" id="importFile" accept=".xlsx,.xls,.csv" hidden>
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-outline-secondary btn-sm">
+<i class="bi bi-download"></i> Download sample file
+</button>
+<button class="btn btn-info btn-sm text-white">Next</button>
+</div>
+
+</div>
+</div>
 </div>
 
 <?php include 'common/footer.php'; ?>
 
 <script>
-  // ============================
-  // START WITH NO DATA
-  // ============================
-  let leaves = [];   // EMPTY ARRAY
-  let nextId = 1;
+/* ======================================================
+   COMPLETE FRONTEND LEAVE SYSTEM (NO BACKEND)
+====================================================== */
 
-  // Pagination & filtering state
-  let currentPage = 1;
-  let pageSize = parseInt(document.getElementById('pageSize').value || '10');
-  let searchTerm = '';
+let leaves = JSON.parse(localStorage.getItem("leaves_data") || "[]");
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 
-  function formatRow(l){
-    return `
-          <tr data-id="${l.id}">
-            <td>${escapeHtml(l.applicant)}</td>
-            <td>${escapeHtml(l.type)}</td>
-            <td>${escapeHtml(l.date)}</td>
-            <td>${escapeHtml(l.duration)}</td>
-            <td>${statusBadge(l.status)}</td>
-            <td class="text-end">
-              <div class="btn-group">
-                <button class="btn btn-sm btn-outline-secondary viewBtn">View</button>
-                ${l.status === 'Pending' ? '<button class="btn btn-sm btn-success approveBtn">Approve</button><button class="btn btn-sm btn-danger rejectBtn">Reject</button>' : ''}
-                <button class="btn btn-sm btn-outline-secondary deleteBtn">Delete</button>
-              </div>
-            </td>
-          </tr>
-        `;
+/* ================= UTIL ================= */
+function save(){ localStorage.setItem("leaves_data", JSON.stringify(leaves)); }
+function formatMonth(y,m){ return new Date(y,m).toLocaleString("default",{month:"long",year:"numeric"}); }
+
+/* ================= ADD / ASSIGN ================= */
+function addLeave(status){
+  const type = document.getElementById("applyType")?.value || document.getElementById("assignType").value;
+  const date = document.getElementById("applyDate")?.value || document.getElementById("assignDate").value;
+  const name = status==="Approved" ? document.getElementById("assignUser").value : "Mark Thomas";
+
+  if(type==="-" || !date || !name){
+    alert("Fill all fields");
+    return;
   }
 
-  function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-  function statusBadge(s){
-    if(s==='Approved') return '<span class="badge bg-success">Approved</span>';
-    if(s==='Rejected') return '<span class="badge bg-danger">Rejected</span>';
-    return '<span class="badge bg-secondary">Pending</span>';
-  }
-
-  function renderTables(){
-    const tbody = document.querySelector('#leaveTable tbody');
-    const pending = leaves.filter(l=> l.status === 'Pending' && matchesSearch(l));
-    renderPaged(tbody, pending);
-
-    const tbodyAll = document.querySelector('#leaveTableAll tbody');
-    const all = leaves.filter(l=> matchesSearch(l));
-    tbodyAll.innerHTML = all.map(formatRow).join('') || '<tr><td colspan="6" class="text-center text-muted">No record found.</td></tr>';
-
-    attachRowHandlers();
-    renderSummary();
-  }
-
-  function matchesSearch(l){
-    if(!searchTerm) return true;
-    const s = searchTerm.toLowerCase();
-    return (l.applicant||'').toLowerCase().includes(s)
-      || (l.type||'').toLowerCase().includes(s)
-      || (l.status||'').toLowerCase().includes(s)
-      || (l.date||'').toLowerCase().includes(s);
-  }
-
-  function renderPaged(tbody, items){
-    pageSize = parseInt(document.getElementById('pageSize').value || '10');
-    const total = items.length;
-    const pages = Math.max(1, Math.ceil(total / pageSize));
-    if(currentPage > pages) currentPage = pages;
-
-    const start = (currentPage-1)*pageSize;
-    const end = start + pageSize;
-    const pageItems = items.slice(start, end);
-
-    tbody.innerHTML = pageItems.map(formatRow).join('') 
-      || '<tr><td colspan="6" class="text-center text-muted">No record found.</td></tr>';
-
-    document.getElementById('pagerInfo').textContent =
-      `${Math.min(total, start+1)}-${Math.min(total, end)} / ${total}`;
-
-    const pagination = document.getElementById('pagination');
-    pagination.innerHTML = '';
-    for(let p=1; p<=pages; p++){
-      const li = document.createElement('li');
-      li.className = 'page-item ' + (p===currentPage?'active':'');
-      li.innerHTML = `<a class="page-link" href="#">${p}</a>`;
-      li.addEventListener('click', (e)=>{ 
-        e.preventDefault(); 
-        currentPage = p; 
-        renderTables(); 
-      });
-      pagination.appendChild(li);
-    }
-  }
-
-  function attachRowHandlers(){
-    document.querySelectorAll('.approveBtn').forEach(b=> b.onclick = () => updateStatus(rowId(b),'Approved'));
-    document.querySelectorAll('.rejectBtn').forEach(b=> b.onclick = () => updateStatus(rowId(b),'Rejected'));
-    document.querySelectorAll('.deleteBtn').forEach(b=> b.onclick = () => deleteRow(rowId(b)));
-    document.querySelectorAll('.viewBtn').forEach(b=> b.onclick = () => viewRow(rowId(b)));
-  }
-
-  function rowId(btn){ return parseInt(btn.closest('tr').dataset.id); }
-
-  function updateStatus(id, status){
-    const it = leaves.find(l=> l.id===id);
-    if(!it) return;
-    it.status = status;
-    renderTables();
-  }
-
-  function deleteRow(id){
-    if(!confirm('Delete this leave?')) return;
-    leaves = leaves.filter(l=> l.id!==id);
-    renderTables();
-  }
-
-  function viewRow(id){
-    const l = leaves.find(x=>x.id===id);
-    if(!l) return alert("Not found");
-    alert(
-      `Applicant: ${l.applicant}\nType: ${l.type}\nDate: ${l.date}\nDuration: ${l.duration}\nStatus: ${l.status}\nReason: ${l.reason}`
-    );
-  }
-
-  function renderSummary(){
-    const container = document.getElementById('summaryCards');
-    if(leaves.length === 0){
-      container.innerHTML = '<div class="text-muted">No data</div>';
-      return;
-    }
-
-    const types = {};
-    leaves.forEach(l=> { types[l.type] = (types[l.type]||0) + 1; });
-
-    const statuses = { Pending:0, Approved:0, Rejected:0 };
-    leaves.forEach(l=> { statuses[l.status] = (statuses[l.status]||0) + 1; });
-
-    let html = '';
-    for(const t in types){
-      html += `
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <h6 class="mb-0">${t}</h6>
-              <div class="text-muted">Total: ${types[t]}</div>
-            </div>
-          </div>
-        </div>`;
-    }
-
-    html += `
-      <div class="col-12">
-        <div class="card mt-2">
-          <div class="card-body small text-muted">
-            Statuses: Pending ${statuses.Pending} • Approved ${statuses.Approved} • Rejected ${statuses.Rejected}
-          </div>
-        </div>
-      </div>`;
-
-    container.innerHTML = html;
-  }
-
-  // Search
-  document.getElementById('searchInput').addEventListener('input', (e)=>{
-    searchTerm = e.target.value.trim(); 
-    currentPage = 1; 
-    renderTables();
+  leaves.push({
+    id: Date.now(),
+    name,
+    type,
+    date,
+    status,
+    duration:"1.00 Day (8.00 Hours)"
   });
 
-  document.getElementById('clearSearch').addEventListener('click', ()=>{
-    document.getElementById('searchInput').value='';
-    searchTerm='';
-    renderTables();
-  });
+  save();
+  renderAll();
+  bootstrap.Modal.getInstance(document.querySelector(".modal.show")).hide();
+}
 
-  // Page size change
-  document.getElementById('pageSize').addEventListener('change', ()=>{
-    currentPage = 1;
-    renderTables();
-  });
+/* ================= TAB ================= */
+function switchTab(tab,el){
+  document.querySelectorAll(".nav-link").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  ["pending","all","summary"].forEach(t=>document.getElementById("tab-"+t).classList.add("d-none"));
+  document.getElementById("tab-"+tab).classList.remove("d-none");
+  renderAll();
+}
 
-  // Excel Export
-  document.getElementById('btnExcel').addEventListener('click', ()=>{
-    const rows = leaves.map(l=> [l.applicant,l.type,l.date,l.duration,l.status,l.reason]);
-    const csv = [
-      'Applicant,Leave type,Date,Duration,Status,Reason',
-      ...rows.map(r=> r.map(cell=> `"${String(cell||'').replace(/"/g,'""')}"`).join(','))
-    ].join('\n');
-    downloadBlob(csv, 'leaves.csv', 'text/csv');
-  });
+/* ================= RENDER ================= */
+function renderAll(){
+  renderPending();
+  renderAllTable();
+  renderSummary();
+}
 
-  // Print
-  document.getElementById('btnPrint').addEventListener('click', ()=>{ 
-    window.print(); 
-  });
+/* ================= PENDING ================= */
+function renderPending(){
+  const body = leaveBody;
+  body.innerHTML="";
+  const list = leaves.filter(l=>l.status==="Pending");
 
-  // Import logic
-  document.getElementById('downloadSample').addEventListener('click', ()=>{
-    const sample =
-      'Applicant,Leave type,Date,Duration,Status,Reason\n' +
-      'Alice,Casual,2025-12-25,Single day,Pending,Family';
-    downloadBlob(sample, 'leaves_sample.csv', 'text/csv');
-  });
-
-  const dropZone = document.getElementById('dropZone');
-  dropZone.addEventListener('click', ()=> document.getElementById('fileInput').click());
-  dropZone.addEventListener('dragover', (e)=>{ e.preventDefault(); });
-  dropZone.addEventListener('drop', (e)=>{
-    e.preventDefault(); 
-    handleFile(e.dataTransfer.files[0]);
-  });
-
-  document.getElementById('fileInput').addEventListener('change', (e)=> 
-    handleFile(e.target.files[0])
-  );
-
-  let importedFile = null;
-
-  function handleFile(f){
-    if(!f) return;
-    importedFile = f;
-    dropZone.querySelector('.text-muted').textContent = `Selected: ${f.name}`;
+  if(!list.length){
+    body.innerHTML=`<tr><td colspan="6" class="text-center text-muted py-4">No record found.</td></tr>`;
+    countText.innerText="0-0 / 0";
+    return;
   }
 
-  document.getElementById('importNext').addEventListener('click', ()=>{
-    if(!importedFile){ alert('Please choose a CSV file first.'); return; }
+  list.forEach(l=>{
+    body.innerHTML+=`
+    <tr>
+      <td>${l.name}</td>
+      <td>${l.type}</td>
+      <td>${l.date}</td>
+      <td>${l.duration}</td>
+      <td><span class="badge bg-warning">Pending</span></td>
+      <td class="text-end">
+        <i class="bi bi-check-circle text-success me-2" onclick="approve(${l.id})"></i>
+        <i class="bi bi-x-circle text-danger" onclick="reject(${l.id})"></i>
+      </td>
+    </tr>`;
+  });
 
-    const reader = new FileReader();
-    reader.onload = function(){
-      parseCSV(reader.result).forEach(row=>{
-        if(row.length>=3){
-          leaves.push({
-            id: nextId++,
-            applicant: row[0]||'Unknown',
-            type: row[1]||'-',
-            date: row[2]||'',
-            duration: row[3]||'Single day',
-            status: row[4]||'Pending',
-            reason: row[5]||''
-          });
-        }
-      });
+  countText.innerText=`1-${list.length} / ${list.length}`;
+}
 
-      importedFile = null;
-      document.getElementById('fileInput').value='';
+function approve(id){
+  leaves.find(l=>l.id===id).status="Approved";
+  save(); renderAll();
+}
+function reject(id){
+  leaves = leaves.filter(l=>l.id!==id);
+  save(); renderAll();
+}
 
-      bootstrap.Modal.getInstance(document.getElementById('importModal')).hide();
-      renderTables();
+/* ================= ALL ================= */
+function renderAllTable(){
+  allBody.innerHTML="";
+  let list = leaves.filter(l=>{
+    const d=new Date(l.date);
+    return d.getMonth()===currentMonth && d.getFullYear()===currentYear;
+  });
+
+  if(!list.length){
+    allBody.innerHTML=`<tr><td colspan="5" class="text-center text-muted py-4">No record found.</td></tr>`;
+    return;
+  }
+
+  list.forEach(l=>{
+    allBody.innerHTML+=`
+    <tr>
+      <td>${l.name}</td>
+      <td>${l.type}</td>
+      <td>${l.date}</td>
+      <td>${l.duration}</td>
+      <td><span class="badge ${l.status==="Approved"?"bg-success":"bg-warning"}">${l.status}</span></td>
+    </tr>`;
+  });
+
+  document.querySelector("#tab-all .fw-semibold").innerText = formatMonth(currentYear,currentMonth);
+}
+
+/* ================= SUMMARY ================= */
+function renderSummary(){
+  summaryBody.innerHTML="";
+  if(!leaves.length){
+    summaryBody.innerHTML=`<tr><td colspan="3" class="text-center text-muted py-4">No record found.</td></tr>`;
+    return;
+  }
+
+  const map={};
+  leaves.forEach(l=>{
+    const key=l.name+l.type;
+    map[key]=(map[key]||{name:l.name,type:l.type,count:0});
+    map[key].count++;
+  });
+
+  Object.values(map).forEach(r=>{
+    summaryBody.innerHTML+=`
+    <tr>
+      <td>${r.name}</td>
+      <td>${r.type}</td>
+      <td>${r.count} Days</td>
+    </tr>`;
+  });
+}
+
+/* ================= SEARCH ================= */
+document.querySelectorAll("input[placeholder='Search']").forEach(i=>{
+  i.addEventListener("keyup",e=>{
+    const v=e.target.value.toLowerCase();
+    e.target.closest(".card, #tab-summary, #tab-all")
+      .querySelectorAll("tbody tr")
+      .forEach(r=>r.style.display=r.innerText.toLowerCase().includes(v)?"":"none");
+  });
+});
+
+/* ================= EXCEL ================= */
+document.querySelectorAll("button").forEach(b=>{
+  if(b.innerText==="Excel"){
+    b.onclick=()=>{
+      let csv="Name,Type,Date,Duration,Status\n";
+      leaves.forEach(l=>csv+=`${l.name},${l.type},${l.date},${l.duration},${l.status}\n`);
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(new Blob([csv]));
+      a.download="leaves.csv";
+      a.click();
     };
+  }
+});
 
-    reader.readAsText(importedFile);
-  });
+/* ================= PRINT ================= */
+document.querySelectorAll("button").forEach(b=>{
+  if(b.innerText==="Print"){ b.onclick=()=>window.print(); }
+});
 
-  function parseCSV(text){
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const out = [];
-    for(let i=1; i<lines.length; i++){
-      const parts = lines[i].split(',').map(s=> s.replace(/^"|"$/g,'').trim());
-      out.push(parts);
-    }
-    return out;
+/* ================= MONTH NAV ================= */
+document.querySelectorAll(".bi-chevron-left").forEach(b=>{
+  b.onclick=()=>{currentMonth--; if(currentMonth<0){currentMonth=11;currentYear--;} renderAll();}
+});
+document.querySelectorAll(".bi-chevron-right").forEach(b=>{
+  b.onclick=()=>{currentMonth++; if(currentMonth>11){currentMonth=0;currentYear++;} renderAll();}
+});
+
+renderAll();
+
+/* ======================================================
+   IMPORT EXCEL 
+====================================================== */
+
+const importBox = document.getElementById("importBox");
+const importFile = document.getElementById("importFile");
+
+/* CLICK TO UPLOAD */
+importBox.addEventListener("click", () => importFile.click());
+
+/* FILE PICK */
+importFile.addEventListener("change", e => handleFile(e.target.files[0]));
+
+/* DRAG EVENTS */
+importBox.addEventListener("dragover", e => {
+  e.preventDefault();
+  importBox.classList.add("bg-light");
+});
+
+importBox.addEventListener("dragleave", () => {
+  importBox.classList.remove("bg-light");
+});
+
+importBox.addEventListener("drop", e => {
+  e.preventDefault();
+  importBox.classList.remove("bg-light");
+  handleFile(e.dataTransfer.files[0]);
+});
+
+/* HANDLE FILE */
+function handleFile(file){
+  if(!file) return;
+
+  const allowed = ["xlsx","xls","csv"];
+  const ext = file.name.split(".").pop().toLowerCase();
+
+  if(!allowed.includes(ext)){
+    alert("Only Excel files allowed (.xlsx, .xls, .csv)");
+    return;
   }
 
-  // Apply leave
-  document.getElementById('applySubmit').addEventListener('click', ()=>{
-    const type = document.getElementById('applyLeaveType').value;
-    const duration = document.querySelector('input[name="applyDuration"]:checked').value;
-    const date = document.getElementById('applyDate').value;
-    const reason = document.getElementById('applyReason').value;
+  const reader = new FileReader();
 
-    if(!date){ alert('Please select a date'); return; }
+  reader.onload = e => {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet);
 
-    leaves.push({
-      id: nextId++,
-      applicant: 'You',
-      type: type==='-'?'Other':type,
-      date,
-      duration,
-      status: 'Pending',
-      reason
-    });
-
-    bootstrap.Modal.getInstance(document.getElementById('applyModal')).hide();
-    renderTables();
-  });
-
-  // Assign leave
-  document.getElementById('assignSubmit').addEventListener('click', ()=>{
-    const member = document.getElementById('assignMember').value;
-    const type = document.getElementById('assignLeaveType').value;
-    const duration = document.querySelector('input[name="assignDuration"]:checked').value;
-    const date = document.getElementById('assignDate').value;
-    const reason = document.getElementById('assignReason').value;
-
-    if(member==='-' || !date){
-      alert('Select member and date');
+    if(!rows.length){
+      alert("Empty Excel file");
       return;
     }
 
-    leaves.push({
-      id: nextId++,
-      applicant: member,
-      type: type==='-'?'Other':type,
-      date,
-      duration,
-      status: 'Pending',
-      reason
+    rows.forEach(r=>{
+      if(!r.Name || !r.Date || !r.Type) return;
+
+      leaves.push({
+        id: Date.now()+Math.random(),
+        name: r.Name,
+        type: r.Type,
+        date: r.Date,
+        duration: r.Duration || "1.00 Day (8.00 Hours)",
+        status: r.Status || "Pending"
+      });
     });
 
-    bootstrap.Modal.getInstance(document.getElementById('assignModal')).hide();
-    renderTables();
-  });
+    localStorage.setItem("leaves_data", JSON.stringify(leaves));
+    renderAll();
 
-  // Helper
-  function downloadBlob(content, filename, mime){
-    const blob = new Blob([content], { type: mime });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; 
-    a.download = filename; 
-    document.body.appendChild(a); 
-    a.click(); 
-    a.remove(); 
-    URL.revokeObjectURL(url);
-  }
+    alert("Leaves imported successfully");
+    bootstrap.Modal.getInstance(document.getElementById("importModal")).hide();
+  };
 
-  // INITIAL RENDER
-  renderTables();
+  reader.readAsArrayBuffer(file);
+}
 </script>
 
-  </body>
+</body>
 </html>
