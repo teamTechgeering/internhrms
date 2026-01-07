@@ -150,19 +150,19 @@
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="Expenses.php">
                 <i class="fa-regular fa-circle-right"></i>
                 <span>Expenses</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="Report.php">
                 <i class="fa-solid fa-chart-bar"></i>
                 <span>Reports</span>
               </a>
             </li>
             <li class="side-nav-item">
-              <a class="side-nav-link text-decoration-none" href="#">
+              <a class="side-nav-link text-decoration-none" href="Settings.php">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
               </a>

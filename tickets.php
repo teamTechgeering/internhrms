@@ -908,7 +908,7 @@ function loadTemplates() {
         html += `
             <tr>
                <td>
-    <a href="knowledgebase.php?id=${realIndex}"
+    <a href="knowledge_articles.php?id=${realIndex}"
        class="text-primary text-decoration-none"
        style="cursor:pointer;">
        ${t.name}
