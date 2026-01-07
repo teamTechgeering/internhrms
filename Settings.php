@@ -140,6 +140,11 @@
 
 <?php include 'common/footer.php'; ?>
 <script>
+ 
+let remindersSettings = {
+  earlyReminder: "-"
+};
+
 /* ===============================
    STATE (SIMULATED BACKEND)
 ================================ */
@@ -407,6 +412,29 @@ let itemCategories = [
 let categoryPage = 1;
 let categoryLimit = 10;
 let editingCategoryId = null;
+/* ===============================
+   LEAVE TYPES STATE
+================================ */
+let leaveTypes = [
+  { id: 1, title: "Casual Leave", description: "-", color: "#20c997", status: "Active" },
+  { id: 2, title: "Maternity Leave", description: "-", color: "#f1c40f", status: "Active" },
+  { id: 3, title: "Paternity leave", description: "-", color: "#f39c12", status: "Active" },
+  { id: 4, title: "Sick Leave", description: "-", color: "#d63384", status: "Active" }
+];
+
+let editingLeaveId = null;
+/* ===============================
+   CLIENT GROUPS STATE
+================================ */
+let clientGroups = [
+  { id: 1, title: "Gold" },
+  { id: 2, title: "Silver" },
+  { id: 3, title: "VIP" }
+];
+
+let clientGroupPage = 1;
+let clientGroupLimit = 10;
+let editingClientGroupId = null;
 let teamMembers = [
   { id: 1, name: "John Doe", role: "Web Developer" },
   { id: 2, name: "Michael Wood", role: "Web Developer" },
@@ -483,14 +511,192 @@ let paymentMethods = [
 let paymentPage = 1;
 let paymentLimit = 10;
 let editingPaymentId = null;
+/* ===============================
+   TASK STATE
+================================ */
 
+let activeTaskTab = "settings";
+
+let taskSettings = {
+  recurring: true,
+  createBefore: "-",
+  preReminder: "1 Day",
+  dayReminder: true,
+  overdueReminder: "-",
+  pointRange: "1-5",
+  showKanban: ["ID"],
+  showTime: false,
+  showStatusCheckbox: true,
+  projectOnlyGlobal: false
+};
+
+let taskStatuses = [
+  { id: 1, title: "Open" },
+  { id: 2, title: "In Progress" },
+  { id: 3, title: "Completed" }
+];
+
+let editingTaskStatusId = null;
+/* ===============================
+   CUSTOM FIELDS STATE
+================================ */
+
+let customFieldTabs = [
+  "Clients","Client contacts","Companies","Contracts","Estimates","Events",
+  "Expenses","Invoices","Items","Leads","Lead contacts","Orders","Projects",
+  "Project files","Proposals","Subscriptions","Tasks","Team members","Tickets","Timesheets"
+];
+
+let activeCustomTab = "Lead contacts";
+
+let customFields = {
+  "Lead contacts": [
+    {
+      id: 1,
+      title: "hjjkj",
+      type: "Text",
+      required: false,
+      showInTable: false,
+      showInOrder: false,
+      adminOnly: false,
+      hideFromClients: false
+    }
+  ]
+};
+let eventSettings = {
+  earlyReminder: "-"
+};
+let expenseCategories = [
+  { id: 1, title: "Advertising" },
+  { id: 2, title: "Electricity" },
+  { id: 3, title: "Miscellaneous" },
+  { id: 4, title: "Office Rent" },
+  { id: 5, title: "Salary" },
+  { id: 6, title: "Software Licenses" },
+  { id: 7, title: "Utilities" }
+];
+
+let expensePage = 1;
+let expenseLimit = 10;
+let editingExpenseId = null;
+/* ===============================
+   PROJECT STATE
+================================ */
+
+let activeProjectTab = "settings";
+
+let projectSettings = {
+  tabOrder: ""
+};
+
+let projectStatuses = [
+  { id: 1, title: "Open", icon: "fa-th-large" },
+  { id: 2, title: "Completed", icon: "fa-check-circle" }
+];
+
+let editingProjectStatusId = null;
+let editingCustomFieldId = null;
 let taxes = [
   { id: 1, name: "Tax", percentage: 10 }
 ];
-
+/* ===============================
+   TIMESHEET STATE
+================================ */
+let timesheetSettings = {
+  multipleTimers: false,
+  totalHoursOnly: false
+};
 let taxPage = 1;
 let taxLimit = 10;
 let editingTaxId = null;
+/* ===============================
+   TICKET STATE
+================================ */
+let ticketTab = "types";
+
+let ticketTypes = [
+  { id: 1, name: "Bug Reports" },
+  { id: 2, name: "General Support" },
+  { id: 3, name: "Sales Inquiry" }
+];
+/* ===============================
+   LEADS STATE
+================================ */
+let leadTab = "status";
+
+let leadStatuses = [
+  { id: 1, title: "New", color: "#f1c40f" },
+  { id: 2, title: "Qualified", color: "#3498db" },
+  { id: 3, title: "Discussion", color: "#20c997" },
+  { id: 4, title: "Negotiation", color: "#d6b3ff" },
+  { id: 5, title: "Won", color: "#8bc34a" },
+  { id: 6, title: "Lost", color: "#e74c3c" }
+];
+
+let leadSources = [
+  { id: 1, title: "Google" },
+  { id: 2, title: "Facebook" },
+  { id: 3, title: "Twitter" },
+  { id: 4, title: "Youtube" },
+  { id: 5, title: "Elsewhere" },
+  { id: 6, title: "Site" },
+  { id: 7, title: "Google ads" }
+];
+
+let leadSettings = {
+  publicForm: false,
+  embeddedForm: false,
+  hiddenFields: ""
+};
+
+let editingLeadId = null;
+let editingLeadSourceId = null;
+
+const leadColors = [
+  "#8bc34a","#20c997","#3498db","#95a5a6",
+  "#f1c40f","#f39c12","#e74c3c","#d63384",
+  "#9b59b6","#0dcaf0","#2c3e50",
+  "#e0b0ff","#4f83ff"
+];
+/* ===============================
+   GDPR STATE
+================================ */
+let gdprSettings = {
+  enabled: false
+};
+const BASE_PAGE_URL = "http://localhost/internhrms/index.php/about/";
+
+let pages = [
+  {
+    id: 1,
+    title: "Custom Page Example",
+    slug: "custom-page-example",
+    content: "<p>Sample content</p>",
+    status: "Active",
+    hideTopbar: false
+  },
+  {
+    id: 2,
+    title: "Terms and conditions",
+    slug: "terms-and-conditions",
+    content: "<p>Terms content</p>",
+    status: "Active",
+    hideTopbar: false
+  }
+];
+
+let editingPageId = null;
+let ticketSettings = {
+  recentFirst: true,
+  projectReference: false,
+  prefix: "",
+  autoCloseDays: "",
+  autoReply: false,
+  embeddedForm: false
+};
+
+let ticketAutomations = [];
+let editingTicketTypeId = null;
 let teams = [
   { id: 1, title: "Developer", members: [1,2,3] },
   { id: 2, title: "Management", members: [4,5] }
@@ -504,6 +710,7 @@ let editingUserId = null;
 let notifyPage = 1;
 let notifyLimit = 5;
 let editingNotifyIndex = null;
+
 /* ===============================
    LOAD PAGE
 ================================ */
@@ -575,6 +782,58 @@ if (page === "payment_methods") {
 }
 if (page === "plugins") {
   renderPlugins();
+  return;
+}
+if (page === "custom_fields") {
+  renderCustomFields();
+  return;
+}
+if (page === "client_groups") {
+  renderClientGroups();
+  return;
+}
+if (page === "tasks") {
+  renderTaskSection("settings");
+  return;
+}
+if (page === "projects") {
+  renderProjectSection("settings");
+  return;
+}
+if (page === "timesheets") {
+  renderTimesheetSettings();
+  return;
+}
+if (page === "events") {
+  renderEventSettings();
+  return;
+}
+ if (page === "reminders") {
+  renderRemindersSettings();
+  return;
+}
+if (page === "expense_categories") {
+  renderExpenseCategories();
+  return;
+}
+if (page === "leave_types") {
+  renderLeaveTypes();
+  return;
+}
+if (page === "tickets") {
+  renderTicketSection("types");
+  return;
+}
+if (page === "leads") {
+  renderLeadSection("status");
+  return;
+}
+if (page === "gdpr") {
+  renderGDPRSettings();
+  return;
+}
+if (page === "pages") {
+  renderPages();
   return;
 }
 
@@ -2655,8 +2914,2183 @@ function renderPluginPagination() {
     </div>
   `;
 }
+/* ===============================
+   CUSTOM FIELDS
+================================ */
 
+function renderCustomFields() {
+
+  let fields = customFields[activeCustomTab] || [];
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Custom fields</h4>
+      <button class="btn btn-outline-primary" onclick="openCustomFieldModal()">
+        <i class="fa fa-plus"></i> Add field
+      </button>
+    </div>
+
+    <div class="d-flex flex-wrap gap-3 border-bottom mb-4 pb-2">
+      ${customFieldTabs.map(t => `
+        <div style="cursor:pointer"
+          class="${activeCustomTab === t ? 'fw-semibold border-bottom border-2 pb-1' : ''}"
+          onclick="switchCustomTab('${t}')">
+          ${t}
+        </div>
+      `).join("")}
+    </div>
+
+    ${
+      fields.length === 0
+        ? `<div class="text-muted">No fields found.</div>`
+        : fields.map(f => `
+          <div class="border rounded p-3 mb-2 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+              <i class="fa fa-bars text-muted"></i>
+              <div class="fw-semibold">${f.title}</div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="editCustomField(${f.id})">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="deleteCustomField(${f.id})">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+          </div>
+        `).join("")
+    }
+  `;
+}
+
+function switchCustomTab(tab) {
+  activeCustomTab = tab;
+  renderCustomFields();
+}
+
+function openCustomFieldModal() {
+  editingCustomFieldId = null;
+
+  document.getElementById("customFieldModalTitle").innerText = "Add field";
+
+  document.querySelectorAll("#customFieldModal input").forEach(i => {
+    if (i.type === "checkbox") i.checked = false;
+    else i.value = "";
+  });
+
+  document.getElementById("cfType").value = "Text";
+
+  new bootstrap.Modal(
+    document.getElementById("customFieldModal")
+  ).show();
+}
+
+function editCustomField(id) {
+  let f = customFields[activeCustomTab].find(x => x.id === id);
+  editingCustomFieldId = id;
+
+  document.getElementById("customFieldModalTitle").innerText = "Edit field";
+
+  cfTitle.value = f.title;
+  cfType.value = f.type;
+  cfRequired.checked = f.required;
+  cfShowTable.checked = f.showInTable;
+  cfShowOrder.checked = f.showInOrder;
+  cfAdminOnly.checked = f.adminOnly;
+  cfHideClient.checked = f.hideFromClients;
+
+  new bootstrap.Modal(
+    document.getElementById("customFieldModal")
+  ).show();
+}
+
+function saveCustomField() {
+
+  if (!customFields[activeCustomTab]) {
+    customFields[activeCustomTab] = [];
+  }
+
+  const title = cfTitle.value.trim();
+  if (!title) return;
+
+  const obj = {
+    id: editingCustomFieldId || Date.now(),
+    title,
+    type: cfType.value,
+    required: cfRequired.checked,
+    showInTable: cfShowTable.checked,
+    showInOrder: cfShowOrder.checked,
+    adminOnly: cfAdminOnly.checked,
+    hideFromClients: cfHideClient.checked
+  };
+
+  if (editingCustomFieldId) {
+    const i = customFields[activeCustomTab]
+      .findIndex(x => x.id === editingCustomFieldId);
+    customFields[activeCustomTab][i] = obj;
+  } else {
+    customFields[activeCustomTab].push(obj);
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("customFieldModal")
+  ).hide();
+
+  renderCustomFields();
+}
+
+function deleteCustomField(id) {
+  customFields[activeCustomTab] =
+    customFields[activeCustomTab].filter(x => x.id !== id);
+  renderCustomFields();
+}
+function renderClientGroups() {
+
+  const start = (clientGroupPage - 1) * clientGroupLimit;
+  const rows = clientGroups.slice(start, start + clientGroupLimit);
+  const totalPages = Math.ceil(clientGroups.length / clientGroupLimit);
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Client groups</h4>
+
+      <button class="btn btn-outline-primary"
+        onclick="openClientGroupModal()">
+        <i class="fa fa-plus me-1"></i> Add client group
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-outline-secondary">
+        <i class="fa fa-table-columns"></i>
+      </button>
+
+      <input class="form-control w-25" placeholder="Search">
+    </div>
+
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th class="text-end">
+            <i class="fa fa-arrow-up me-3"></i>
+            <i class="fa fa-bars"></i>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${
+          rows.length === 0
+            ? `
+              <tr>
+                <td colspan="2" class="text-center text-muted py-4">
+                  No record found.
+                </td>
+              </tr>
+            `
+            : rows.map(g => `
+              <tr>
+                <td>${g.title}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-secondary me-1"
+                    onclick="editClientGroup(${g.id})">
+                    <i class="fa fa-pen"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary"
+                    onclick="deleteClientGroup(${g.id})">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </td>
+              </tr>
+            `).join("")
+        }
+      </tbody>
+    </table>
+
+    ${renderClientGroupPagination(totalPages)}
+  `;
+}
+function renderClientGroupPagination(totalPages) {
+
+  if (totalPages <= 1) {
+    return `
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <select class="form-select w-auto">
+          <option>10</option>
+        </select>
+
+        <div class="text-muted">
+          1-${clientGroups.length} / ${clientGroups.length}
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm">‹</button>
+          <button class="btn btn-outline-secondary btn-sm">1</button>
+          <button class="btn btn-outline-secondary btn-sm">›</button>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="d-flex justify-content-between align-items-center mt-3">
+
+      <select class="form-select w-auto"
+        onchange="clientGroupLimit=this.value; clientGroupPage=1; renderClientGroups()">
+        <option ${clientGroupLimit==10?'selected':''}>10</option>
+        <option ${clientGroupLimit==25?'selected':''}>25</option>
+      </select>
+
+      <div class="text-muted">
+        ${(clientGroupPage-1)*clientGroupLimit+1} -
+        ${Math.min(clientGroupPage*clientGroupLimit, clientGroups.length)}
+        / ${clientGroups.length}
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm"
+          ${clientGroupPage===1?'disabled':''}
+          onclick="clientGroupPage--; renderClientGroups()">‹</button>
+
+        <button class="btn btn-outline-secondary btn-sm">
+          ${clientGroupPage}
+        </button>
+
+        <button class="btn btn-outline-secondary btn-sm"
+          ${clientGroupPage===totalPages?'disabled':''}
+          onclick="clientGroupPage++; renderClientGroups()">›</button>
+      </div>
+    </div>
+  `;
+}
+function openClientGroupModal() {
+  editingClientGroupId = null;
+  clientGroupModalTitle.innerText = "Add client group";
+  clientGroupTitle.value = "";
+
+  new bootstrap.Modal(
+    document.getElementById("clientGroupModal")
+  ).show();
+}
+
+function editClientGroup(id) {
+  const g = clientGroups.find(x => x.id === id);
+  editingClientGroupId = id;
+
+  clientGroupModalTitle.innerText = "Edit client group";
+  clientGroupTitle.value = g.title;
+
+  new bootstrap.Modal(
+    document.getElementById("clientGroupModal")
+  ).show();
+}
+
+function saveClientGroup() {
+  const title = clientGroupTitle.value.trim();
+  if (!title) return;
+
+  if (editingClientGroupId) {
+    const g = clientGroups.find(x => x.id === editingClientGroupId);
+    g.title = title;
+  } else {
+    clientGroups.push({
+      id: Date.now(),
+      title
+    });
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("clientGroupModal")
+  ).hide();
+
+  renderClientGroups();
+}
+
+function deleteClientGroup(id) {
+  clientGroups = clientGroups.filter(x => x.id !== id);
+
+  const maxPage = Math.ceil(clientGroups.length / clientGroupLimit);
+  if (clientGroupPage > maxPage) clientGroupPage = maxPage || 1;
+
+  renderClientGroups();
+}
+function renderTaskSection(tab) {
+
+  activeTaskTab = tab;
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex gap-4 border-bottom pb-2">
+        ${taskTab("settings","Task settings")}
+        ${taskTab("status","Task Status")}
+        ${taskTab("priority","Task priority")}
+        ${taskTab("template","Checklist Template")}
+        ${taskTab("group","Checklist group")}
+      </div>
+
+      ${tab !== "settings"
+        ? `<button class="btn btn-outline-primary"
+             onclick="openTaskStatusModal()">
+             <i class="fa fa-plus"></i> Add ${tab === "status" ? "task status" : "item"}
+           </button>`
+        : ""
+      }
+    </div>
+
+    <div id="taskTabContent"></div>
+
+    ${tab === "settings"
+      ? `<button class="btn btn-primary mt-3" onclick="saveTaskSettings()">✓ Save</button>`
+      : ""
+    }
+  `;
+
+  if (tab === "settings") renderTaskSettings();
+  if (tab === "status") renderTaskStatus();
+}
+function taskTab(key,label){
+  return `
+    <div style="cursor:pointer"
+      class="${activeTaskTab===key?'fw-semibold border-bottom border-2 pb-1':''}"
+      onclick="renderTaskSection('${key}')">
+      ${label}
+    </div>
+  `;
+}
+function renderTaskSettings() {
+  document.getElementById("taskTabContent").innerHTML = `
+    ${taskToggle("Enable recurring option for tasks","recurring")}
+    ${taskSelect("Create recurring tasks before","createBefore",["-","1 Day","3 Days"])}
+    ${taskSelect("Send task deadline pre reminder","preReminder",["1 Day","2 Days"])}
+    ${taskToggle("Send task reminder on the day of deadline","dayReminder")}
+    ${taskSelect("Send task deadline overdue reminder","overdueReminder",["-","1 Day"])}
+    ${taskSelect("Task point range","pointRange",["1-5","1-10"])}
+    ${taskMulti("Show in kanban",["ID"])}
+    ${taskToggle("Show time with task start date and deadline","showTime")}
+    ${taskToggle("Show the status checkbox in tasks list","showStatusCheckbox")}
+    ${taskToggle("Create only the project related tasks from the global task creation modal","projectOnlyGlobal")}
+  `;
+}
+
+function taskToggle(label,key){
+  return `
+    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+      <span>${label}</span>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox"
+          ${taskSettings[key]?"checked":""}
+          onchange="taskSettings['${key}']=this.checked">
+      </div>
+    </div>
+  `;
+}
+
+function taskSelect(label,key,options){
+  return `
+    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+      <span>${label}</span>
+      <select class="form-select w-25"
+        onchange="taskSettings['${key}']=this.value">
+        ${options.map(o=>`
+          <option ${taskSettings[key]===o?'selected':''}>${o}</option>
+        `).join("")}
+      </select>
+    </div>
+  `;
+}
+
+function taskMulti(label,values){
+  return `
+    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+      <span>${label}</span>
+      <span class="badge bg-light text-dark">× ${values[0]}</span>
+    </div>
+  `;
+}
+
+function saveTaskSettings(){
+  new bootstrap.Modal(
+    document.getElementById("saveSuccessModal")
+  ).show();
+}
+function renderTaskStatus() {
+
+  document.getElementById("taskTabContent").innerHTML = `
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th class="text-end">
+            <i class="fa fa-arrow-up me-3"></i>
+            <i class="fa fa-bars"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${taskStatuses.map(s=>`
+          <tr>
+            <td>${s.title}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-secondary me-1"
+                onclick="editTaskStatus(${s.id})">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="deleteTaskStatus(${s.id})">
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+function openTaskStatusModal(){
+  editingTaskStatusId = null;
+  taskStatusModalTitle.innerText = "Add task status";
+  taskStatusTitle.value = "";
+
+  new bootstrap.Modal(
+    document.getElementById("taskStatusModal")
+  ).show();
+}
+
+function editTaskStatus(id){
+  const s = taskStatuses.find(x=>x.id===id);
+  editingTaskStatusId = id;
+
+  taskStatusModalTitle.innerText = "Edit task status";
+  taskStatusTitle.value = s.title;
+
+  new bootstrap.Modal(
+    document.getElementById("taskStatusModal")
+  ).show();
+}
+
+function saveTaskStatus(){
+  const title = taskStatusTitle.value.trim();
+  if (!title) return;
+
+  if (editingTaskStatusId){
+    taskStatuses.find(x=>x.id===editingTaskStatusId).title = title;
+  } else {
+    taskStatuses.push({ id: Date.now(), title });
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("taskStatusModal")
+  ).hide();
+
+  renderTaskStatus();
+}
+
+function deleteTaskStatus(id){
+  taskStatuses = taskStatuses.filter(x=>x.id!==id);
+  renderTaskStatus();
+}
+function renderProjectSection(tab) {
+
+  activeProjectTab = tab;
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+      <div class="d-flex gap-4 border-bottom pb-2">
+        ${projectTab("settings","Project settings")}
+        ${projectTab("status","Project Status")}
+      </div>
+
+      ${tab === "status"
+        ? `<button class="btn btn-outline-primary"
+             onclick="openProjectStatusModal()">
+             <i class="fa fa-plus"></i> Add project status
+           </button>`
+        : ""
+      }
+    </div>
+
+    <div id="projectTabContent"></div>
+
+    ${tab === "settings"
+      ? `<button class="btn btn-primary mt-3"
+           onclick="saveProjectSettings()">✓ Save</button>`
+      : ""
+    }
+  `;
+
+  if (tab === "settings") renderProjectSettings();
+  if (tab === "status") renderProjectStatus();
+}
+
+function projectTab(key,label){
+  return `
+    <div style="cursor:pointer"
+      class="${activeProjectTab===key?'fw-semibold border-bottom border-2 pb-1':''}"
+      onclick="renderProjectSection('${key}')">
+      ${label}
+    </div>
+  `;
+}
+function renderProjectSettings() {
+
+  document.getElementById("projectTabContent").innerHTML = `
+    <div class="row mb-3 align-items-center">
+      <div class="col-md-4 text-muted">
+        Set project tab order
+      </div>
+
+      <div class="col-md-6">
+        <input class="form-control"
+          placeholder="Project tab order"
+          value="${projectSettings.tabOrder}"
+          onchange="projectSettings.tabOrder=this.value">
+      </div>
+    </div>
+
+    <div class="text-muted">
+      <i class="fa fa-info-circle me-1"></i>
+      Please note that, this tabs will show as per user's permissions.
+    </div>
+  `;
+}
+
+function saveProjectSettings(){
+  new bootstrap.Modal(
+    document.getElementById("saveSuccessModal")
+  ).show();
+}
+function renderProjectStatus() {
+
+  document.getElementById("projectTabContent").innerHTML = `
+    <div class="list-group">
+
+      ${projectStatuses.map(s=>`
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+          <div class="d-flex align-items-center gap-3">
+            <i class="fa ${s.icon} text-muted"></i>
+            <span>${s.title}</span>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary"
+              onclick="editProjectStatus(${s.id})">
+              <i class="fa fa-pen"></i>
+            </button>
+
+            ${s.id > 2 ? `
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="deleteProjectStatus(${s.id})">
+                <i class="fa fa-times"></i>
+              </button>
+            ` : ``}
+          </div>
+
+        </div>
+      `).join("")}
+
+    </div>
+  `;
+}
+function openProjectStatusModal() {
+  editingProjectStatusId = null;
+  projectStatusModalTitle.innerText = "Add project status";
+  projectStatusTitle.value = "";
+
+  new bootstrap.Modal(
+    document.getElementById("projectStatusModal")
+  ).show();
+}
+
+function editProjectStatus(id) {
+  const s = projectStatuses.find(x => x.id === id);
+  editingProjectStatusId = id;
+
+  projectStatusModalTitle.innerText = "Edit project status";
+  projectStatusTitle.value = s.title;
+
+  new bootstrap.Modal(
+    document.getElementById("projectStatusModal")
+  ).show();
+}
+
+function saveProjectStatus() {
+
+  const title = projectStatusTitle.value.trim();
+  if (!title) return;
+
+  if (editingProjectStatusId) {
+    projectStatuses.find(x => x.id === editingProjectStatusId).title = title;
+  } else {
+    projectStatuses.push({
+      id: Date.now(),
+      title,
+      icon: "fa-calendar"
+    });
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("projectStatusModal")
+  ).hide();
+
+  renderProjectStatus();
+}
+
+function deleteProjectStatus(id) {
+  projectStatuses = projectStatuses.filter(x => x.id !== id);
+  renderProjectStatus();
+}
+/* ===============================
+   RENDER TIMESHEET SETTINGS
+================================ */
+function renderTimesheetSettings() {
+
+  document.getElementById("settingsContent").innerHTML = `
+    <h4 class="mb-4">Timesheet Settings</h4>
+
+    <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+      <span>Users can start multiple timers at a time</span>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox"
+          ${timesheetSettings.multipleTimers ? "checked" : ""}
+          onchange="timesheetSettings.multipleTimers = this.checked">
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+      <span>Users can input only total hours instead of period</span>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox"
+          ${timesheetSettings.totalHoursOnly ? "checked" : ""}
+          onchange="timesheetSettings.totalHoursOnly = this.checked">
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-4"
+      onclick="saveTimesheetSettings()">
+      ✓ Save
+    </button>
+  `;
+}
+
+/* ===============================
+   SAVE ACTION
+================================ */
+function saveTimesheetSettings() {
+
+  console.log("Saved Timesheet Settings:", timesheetSettings);
+
+  // later → send to backend or localStorage
+  // localStorage.setItem("timesheetSettings", JSON.stringify(timesheetSettings));
+
+  new bootstrap.Modal(
+    document.getElementById("saveSuccessModal")
+  ).show();
+}
+function renderEventSettings() {
+
+  document.getElementById("settingsContent").innerHTML = `
+    <h4 class="mb-4">Event settings</h4>
+
+    <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+      <div class="d-flex align-items-center gap-2">
+        <span>Send early reminder before</span>
+        <i class="fa fa-question-circle text-muted"></i>
+      </div>
+
+      <select class="form-select w-auto"
+        onchange="eventSettings.earlyReminder = this.value">
+        ${renderEventReminderOptions()}
+      </select>
+    </div>
+
+    <button class="btn btn-primary mt-4"
+      onclick="saveEventSettings()">
+      ✓ Save
+    </button>
+  `;
+}
+function renderEventReminderOptions() {
+
+  const options = [
+    "-",
+    "15 Minutes",
+    "30 Minutes",
+    "1 Hour",
+    "2 Hours",
+    "1 Day",
+    "2 Days"
+  ];
+
+  return options.map(o => `
+    <option ${eventSettings.earlyReminder === o ? "selected" : ""}>
+      ${o}
+    </option>
+  `).join("");
+}
+function saveEventSettings() {
+
+  console.log("Saved Event Settings:", eventSettings);
+
+  // optional future backend save
+  // localStorage.setItem("eventSettings", JSON.stringify(eventSettings));
+
+  new bootstrap.Modal(
+    document.getElementById("saveSuccessModal")
+  ).show();
+}
+function renderRemindersSettings() {
+
+  document.getElementById("settingsContent").innerHTML = `
+    <h4 class="mb-4">Reminders Settings</h4>
+
+    <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+      <div class="d-flex align-items-center gap-2">
+        <span>Send early reminder before</span>
+        <i class="fa fa-question-circle text-muted"></i>
+      </div>
+
+      <select class="form-select w-auto"
+        onchange="remindersSettings.earlyReminder = this.value">
+        ${renderReminderOptions()}
+      </select>
+    </div>
+
+    <button class="btn btn-primary mt-4"
+      onclick="saveRemindersSettings()">
+      ✓ Save
+    </button>
+  `;
+}
+function renderReminderOptions() {
+
+  const options = [
+    "-",
+    "15 Minutes",
+    "30 Minutes",
+    "1 Hour",
+    "2 Hours",
+    "1 Day",
+    "2 Days"
+  ];
+
+  return options.map(o => `
+    <option ${remindersSettings.earlyReminder === o ? "selected" : ""}>
+      ${o}
+    </option>
+  `).join("");
+}
+function saveRemindersSettings() {
+
+  console.log("Saved Reminders Settings:", remindersSettings);
+
+  // Optional future backend / localStorage save
+  // localStorage.setItem("remindersSettings", JSON.stringify(remindersSettings));
+
+  new bootstrap.Modal(
+    document.getElementById("saveSuccessModal")
+  ).show();
+}
+function renderExpenseCategories() {
+
+  const start = (expensePage - 1) * expenseLimit;
+  const rows = expenseCategories.slice(start, start + expenseLimit);
+  const totalPages = Math.ceil(expenseCategories.length / expenseLimit);
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Expense Categories</h4>
+
+      <button class="btn btn-outline-primary"
+        onclick="openExpenseCategoryModal()">
+        <i class="fa fa-plus me-1"></i> Add category
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-outline-secondary">
+        <i class="fa fa-table-columns"></i>
+      </button>
+
+      <input class="form-control w-25"
+        placeholder="Search"
+        oninput="filterExpenseCategories(this.value)">
+    </div>
+
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th class="text-end">
+            <i class="fa fa-arrow-up me-3"></i>
+            <i class="fa fa-bars"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(c => `
+          <tr>
+            <td>${c.title}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-secondary me-1"
+                onclick="editExpenseCategory(${c.id})">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="deleteExpenseCategory(${c.id})">
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+
+    ${renderExpensePagination(totalPages)}
+  `;
+}
+function renderExpensePagination(totalPages) {
+
+  if (totalPages <= 1) return "";
+
+  return `
+    <div class="d-flex justify-content-between align-items-center mt-3">
+
+      <select class="form-select w-auto"
+        onchange="expenseLimit=this.value; expensePage=1; renderExpenseCategories()">
+        <option ${expenseLimit==10?'selected':''}>10</option>
+        <option ${expenseLimit==25?'selected':''}>25</option>
+      </select>
+
+      <div class="text-muted">
+        ${(expensePage-1)*expenseLimit+1} -
+        ${Math.min(expensePage*expenseLimit, expenseCategories.length)}
+        / ${expenseCategories.length}
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-secondary"
+          ${expensePage===1?'disabled':''}
+          onclick="expensePage--; renderExpenseCategories()">‹</button>
+
+        <button class="btn btn-sm btn-outline-secondary">
+          ${expensePage}
+        </button>
+
+        <button class="btn btn-sm btn-outline-secondary"
+          ${expensePage===totalPages?'disabled':''}
+          onclick="expensePage++; renderExpenseCategories()">›</button>
+      </div>
+
+    </div>
+  `;
+}
+function openExpenseCategoryModal() {
+  editingExpenseId = null;
+  expenseCategoryModalTitle.innerText = "Add category";
+  expenseCategoryTitle.value = "";
+  new bootstrap.Modal(document.getElementById("expenseCategoryModal")).show();
+}
+
+function editExpenseCategory(id) {
+  editingExpenseId = id;
+  const c = expenseCategories.find(x => x.id === id);
+
+  expenseCategoryModalTitle.innerText = "Edit category";
+  expenseCategoryTitle.value = c.title;
+
+  new bootstrap.Modal(document.getElementById("expenseCategoryModal")).show();
+}
+
+function saveExpenseCategory() {
+  const title = expenseCategoryTitle.value.trim();
+  if (!title) return;
+
+  if (editingExpenseId) {
+    expenseCategories.find(x => x.id === editingExpenseId).title = title;
+  } else {
+    expenseCategories.push({
+      id: Date.now(),
+      title
+    });
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("expenseCategoryModal")
+  ).hide();
+
+  renderExpenseCategories();
+}
+
+function deleteExpenseCategory(id) {
+  expenseCategories = expenseCategories.filter(x => x.id !== id);
+
+  const maxPage = Math.ceil(expenseCategories.length / expenseLimit);
+  if (expensePage > maxPage) expensePage = maxPage || 1;
+
+  renderExpenseCategories();
+}
+
+function filterExpenseCategories(q) {
+  q = q.toLowerCase();
+  expenseCategories = expenseCategories.filter(c =>
+    c.title.toLowerCase().includes(q)
+  );
+  expensePage = 1;
+  renderExpenseCategories();
+}
+function renderLeaveTypes() {
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Leave types</h4>
+
+      <button class="btn btn-outline-primary"
+        onclick="openLeaveModal()">
+        <i class="fa fa-plus me-1"></i> Add leave type
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-outline-secondary">
+        <i class="fa fa-table-columns"></i>
+      </button>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary">Print</button>
+        <input class="form-control" style="width:200px" placeholder="Search">
+      </div>
+    </div>
+
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>
+            <i class="fa fa-arrow-up me-1"></i> Description
+          </th>
+          <th>Status</th>
+          <th class="text-end">
+            <i class="fa fa-bars"></i>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${leaveTypes.map(l => `
+          <tr>
+            <td>
+              <span class="me-2"
+                style="display:inline-block;width:14px;height:14px;
+                background:${l.color};border-radius:2px"></span>
+              ${l.title}
+            </td>
+
+            <td>${l.description || "-"}</td>
+
+            <td>${l.status}</td>
+
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-secondary me-1"
+                onclick="editLeave(${l.id})">
+                <i class="fa fa-pen"></i>
+              </button>
+
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="deleteLeave(${l.id})">
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+
+    <!-- PAGINATION (STATIC LIKE SCREENSHOT) -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <select class="form-select w-auto">
+        <option>10</option>
+      </select>
+
+      <div class="text-muted">
+        1-${leaveTypes.length} / ${leaveTypes.length}
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm">‹</button>
+        <button class="btn btn-outline-secondary btn-sm">1</button>
+        <button class="btn btn-outline-secondary btn-sm">›</button>
+      </div>
+    </div>
+  `;
+}
+function openLeaveModal() {
+  editingLeaveId = null;
+
+  leaveModalTitle.innerText = "Add leave type";
+  leaveTitle.value = "";
+  leaveDesc.value = "";
+  leaveColor.value = "#4f83ff";
+
+  document.querySelector(
+    "input[name='leaveStatus'][value='Active']"
+  ).checked = true;
+
+  renderLeaveColors("#4f83ff");
+
+  new bootstrap.Modal(
+    document.getElementById("leaveModal")
+  ).show();
+}
+
+
+function selectLeaveColor(c) {
+  leaveColor.value = c;
+}
+
+function editLeave(id) {
+  const l = leaveTypes.find(x => x.id === id);
+  editingLeaveId = id;
+
+  leaveModalTitle.innerText = "Edit leave type";
+  leaveTitle.value = l.title;
+  leaveDesc.value = l.description;
+  leaveColor.value = l.color;
+
+  document.querySelector(
+    `input[name='leaveStatus'][value='${l.status}']`
+  ).checked = true;
+
+  renderLeaveColors(l.color);
+
+  new bootstrap.Modal(
+    document.getElementById("leaveModal")
+  ).show();
+}
+
+
+function saveLeave() {
+  const obj = {
+    id: editingLeaveId || Date.now(),
+    title: leaveTitle.value.trim(),
+    description: leaveDesc.value,
+    color: leaveColor.value,
+    status: document.querySelector("input[name='leaveStatus']:checked").value
+  };
+
+  if (!obj.title) return;
+
+  if (editingLeaveId) {
+    const i = leaveTypes.findIndex(x => x.id === editingLeaveId);
+    leaveTypes[i] = obj;
+  } else {
+    leaveTypes.push(obj);
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("leaveModal")
+  ).hide();
+
+  renderLeaveTypes();
+}
+
+function deleteLeave(id) {
+  leaveTypes = leaveTypes.filter(x => x.id !== id);
+  renderLeaveTypes();
+}
+const leaveColors = [
+  "#8bc34a", "#20c997", "#3498db", "#95a5a6",
+  "#f1c40f", "#f39c12", "#e74c3c", "#d63384",
+  "#9b59b6", "#0dcaf0", "#2c3e50",
+  "#e0b0ff", "#4f83ff"
+];
+
+function renderLeaveColors(selected = "#4f83ff") {
+  document.getElementById("leaveColorPalette").innerHTML =
+    leaveColors.map(c => `
+      <span
+        onclick="selectLeaveColor('${c}')"
+        style="
+          width:22px;
+          height:22px;
+          border-radius:4px;
+          background:${c};
+          cursor:pointer;
+          border:${c === selected ? '2px solid #000' : '1px solid #ddd'};
+        ">
+      </span>
+    `).join("");
+}
+
+function selectLeaveColor(color) {
+  document.getElementById("leaveColor").value = color;
+  renderLeaveColors(color);
+}
+function renderTicketSection(tab) {
+  ticketTab = tab;
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex gap-4 border-bottom pb-2">
+        ${renderTicketTabs()}
+      </div>
+
+      ${renderTicketActionButton()}
+    </div>
+
+    <div id="ticketTabContent"></div>
+  `;
+
+  if (tab === "types") renderTicketTypes();
+  if (tab === "tickets") renderTicketSettings();
+  if (tab === "imap") renderIMAPSettings();
+  if (tab === "automation") renderAutomations();
+}
+
+function renderTicketTabs() {
+  const tabs = [
+    ["types","Ticket types"],
+    ["tickets","Tickets"],
+    ["imap","IMAP settings"],
+    ["automation","Automations"]
+  ];
+
+  return tabs.map(t => `
+    <div style="cursor:pointer"
+      class="${ticketTab===t[0]?'fw-semibold border-bottom border-2 pb-1':''}"
+      onclick="renderTicketSection('${t[0]}')">
+      ${t[1]}
+    </div>
+  `).join("");
+}
+
+function renderTicketActionButton() {
+  if (ticketTab === "types")
+    return `<button class="btn btn-outline-primary"
+      onclick="openTicketTypeModal()">+ Add ticket type</button>`;
+
+  if (ticketTab === "automation")
+    return `<button class="btn btn-outline-primary"
+      onclick="openAutomationModal()">+ Add automation</button>`;
+
+  return "";
+}
+function renderTicketTypes() {
+  document.getElementById("ticketTabContent").innerHTML = `
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-outline-secondary">
+        <i class="fa fa-table-columns"></i>
+      </button>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary">Print</button>
+        <input class="form-control" style="width:200px" placeholder="Search">
+      </div>
+    </div>
+
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th class="text-end">
+            <i class="fa fa-arrow-up me-2"></i>
+            <i class="fa fa-bars"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${ticketTypes.map(t=>`
+          <tr>
+            <td>${t.name}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-secondary me-1"
+                onclick="editTicketType(${t.id})">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary"
+                onclick="deleteTicketType(${t.id})">
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <select class="form-select w-auto"><option>10</option></select>
+      <div class="text-muted">1-${ticketTypes.length}/${ticketTypes.length}</div>
+      <div>
+        <button class="btn btn-sm btn-outline-secondary">‹</button>
+        <button class="btn btn-sm btn-outline-secondary">1</button>
+        <button class="btn btn-sm btn-outline-secondary">›</button>
+      </div>
+    </div>
+  `;
+}
+function openTicketTypeModal(){
+  editingTicketTypeId=null;
+  ticketTypeTitle.innerText="Add ticket type";
+  ticketTypeName.value="";
+  new bootstrap.Modal(ticketTypeModal).show();
+}
+
+function editTicketType(id){
+  editingTicketTypeId=id;
+  const t=ticketTypes.find(x=>x.id===id);
+  ticketTypeTitle.innerText="Edit ticket type";
+  ticketTypeName.value=t.name;
+  new bootstrap.Modal(ticketTypeModal).show();
+}
+
+function saveTicketType(){
+  const name=ticketTypeName.value.trim();
+  if(!name) return;
+
+  if(editingTicketTypeId){
+    ticketTypes.find(x=>x.id===editingTicketTypeId).name=name;
+  } else {
+    ticketTypes.push({id:Date.now(),name});
+  }
+
+  bootstrap.Modal.getInstance(ticketTypeModal).hide();
+  renderTicketTypes();
+}
+
+function deleteTicketType(id){
+  ticketTypes=ticketTypes.filter(x=>x.id!==id);
+  renderTicketTypes();
+}
+function renderTicketSettings(){
+  document.getElementById("ticketTabContent").innerHTML=`
+    ${ticketToggle("Show most recent ticket comments at the top","recentFirst")}
+    ${ticketToggle("Enable project reference","projectReference")}
+    ${ticketInput("Ticket prefix","prefix")}
+    ${ticketInput("Auto close ticket after","autoCloseDays","Days")}
+    ${ticketToggle("Auto reply to tickets","autoReply")}
+    ${ticketToggle("Enable embedded form to get tickets","embeddedForm")}
+
+    <button class="btn btn-primary mt-4"
+      onclick="saveTicketSettings()">✓ Save</button>
+  `;
+}
+
+function ticketToggle(label,key){
+  return `
+    <div class="d-flex justify-content-between py-3 border-bottom">
+      <span>${label}</span>
+      <input type="checkbox"
+        ${ticketSettings[key]?'checked':''}
+        onchange="ticketSettings.${key}=this.checked">
+    </div>`;
+}
+
+function ticketInput(label,key,suffix=""){
+  return `
+    <div class="d-flex justify-content-between py-3 border-bottom">
+      <span>${label}</span>
+      <div class="d-flex align-items-center gap-2">
+        <input class="form-control"
+          value="${ticketSettings[key]}"
+          oninput="ticketSettings.${key}=this.value">
+        ${suffix}
+      </div>
+    </div>`;
+}
+
+function saveTicketSettings(){
+  console.log(ticketSettings);
+  new bootstrap.Modal(saveSuccessModal).show();
+}
+function renderIMAPSettings(){
+  document.getElementById("ticketTabContent").innerHTML=`
+    <div class="text-muted py-4">IMAP settings content</div>
+  `;
+}
+function renderAutomations(){
+  document.getElementById("ticketTabContent").innerHTML=`
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th><i class="fa fa-arrow-down"></i> Event</th>
+          <th class="text-end"><i class="fa fa-bars"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${ticketAutomations.length===0?
+          `<tr><td colspan="3" class="text-center text-muted">No record found.</td></tr>`
+          : ticketAutomations.map(a=>`
+            <tr>
+              <td>${a.title}</td>
+              <td>${a.event}</td>
+              <td class="text-end"></td>
+            </tr>`).join("")
+        }
+      </tbody>
+    </table>
+  `;
+}
+function openAutomationModal() {
+  automationTitle.value = "";
+  automationEvent.value = "";
+
+  new bootstrap.Modal(
+    document.getElementById("automationModal")
+  ).show();
+}
+
+function saveAutomation() {
+  const title = automationTitle.value.trim();
+  const event = automationEvent.value;
+
+  if (!title || !event) return;
+
+  ticketAutomations.push({
+    id: Date.now(),
+    title,
+    event
+  });
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("automationModal")
+  ).hide();
+
+  renderAutomations();
+}
+function renderLeadSection(tab) {
+  leadTab = tab;
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex gap-4 border-bottom pb-2">
+        ${leadTabItem("status","Lead status")}
+        ${leadTabItem("source","Lead source")}
+        ${leadTabItem("settings","Leads")}
+      </div>
+
+      ${renderLeadActionButton()}
+    </div>
+
+    <div id="leadTabContent"></div>
+  `;
+
+  if (tab === "status") renderLeadStatus();
+  if (tab === "source") renderLeadSource();
+  if (tab === "settings") renderLeadSettings();
+}
+
+function leadTabItem(key,label){
+  return `
+    <div style="cursor:pointer"
+      class="${leadTab===key?'fw-semibold border-bottom border-2 pb-1':''}"
+      onclick="renderLeadSection('${key}')">
+      ${label}
+    </div>`;
+}
+
+function renderLeadActionButton(){
+  if (leadTab === "status")
+    return `<button class="btn btn-outline-primary"
+      onclick="openLeadStatusModal()">+ Add lead status</button>`;
+
+  if (leadTab === "source")
+    return `<button class="btn btn-outline-primary"
+      onclick="openLeadSourceModal()">+ Add lead source</button>`;
+
+  return "";
+}
+function renderLeadStatus() {
+  document.getElementById("leadTabContent").innerHTML = `
+    ${leadStatuses.map(s => `
+      <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+
+        <div class="d-flex align-items-center gap-3">
+          <i class="fa fa-bars text-muted"></i>
+          <span style="width:14px;height:14px;border-radius:2px;
+            background:${s.color};display:inline-block"></span>
+          ${s.title}
+        </div>
+
+        <div>
+          <button class="btn btn-sm btn-outline-secondary me-1"
+            onclick="editLeadStatus(${s.id})">
+            <i class="fa fa-pen"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-secondary"
+            onclick="deleteLeadStatus(${s.id})">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+
+      </div>
+    `).join("")}
+  `;
+}
+function renderLeadColors(selected) {
+  leadColorPalette.innerHTML = leadColors.map(c => `
+    <span onclick="selectLeadColor('${c}')"
+      style="width:22px;height:22px;border-radius:4px;
+      background:${c};cursor:pointer;
+      border:${c===selected?'2px solid #000':'1px solid #ddd'}">
+    </span>
+  `).join("");
+}
+
+function selectLeadColor(c){
+  leadStatusColor.value = c;
+  renderLeadColors(c);
+}
+
+function openLeadStatusModal(){
+  editingLeadId=null;
+  leadStatusTitle.innerText="Add lead status";
+  leadStatusName.value="";
+  leadStatusColor.value="#4f83ff";
+  renderLeadColors("#4f83ff");
+  new bootstrap.Modal(leadStatusModal).show();
+}
+
+function editLeadStatus(id){
+  const s=leadStatuses.find(x=>x.id===id);
+  editingLeadId=id;
+  leadStatusTitle.innerText="Edit lead status";
+  leadStatusName.value=s.title;
+  leadStatusColor.value=s.color;
+  renderLeadColors(s.color);
+  new bootstrap.Modal(leadStatusModal).show();
+}
+
+function saveLeadStatus(){
+  const obj={
+    id:editingLeadId||Date.now(),
+    title:leadStatusName.value.trim(),
+    color:leadStatusColor.value
+  };
+  if(!obj.title) return;
+
+  if(editingLeadId){
+    leadStatuses[leadStatuses.findIndex(x=>x.id===editingLeadId)] = obj;
+  } else {
+    leadStatuses.push(obj);
+  }
+
+  bootstrap.Modal.getInstance(leadStatusModal).hide();
+  renderLeadStatus();
+}
+
+function deleteLeadStatus(id){
+  leadStatuses = leadStatuses.filter(x=>x.id!==id);
+  renderLeadStatus();
+}
+function renderLeadSource(){
+  document.getElementById("leadTabContent").innerHTML = `
+    ${leadSources.map(s=>`
+      <div class="d-flex justify-content-between border-bottom py-3">
+        <div class="d-flex align-items-center gap-3">
+          <i class="fa fa-bars text-muted"></i>
+          ${s.title}
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-secondary me-1"
+            onclick="editLeadSource(${s.id})"><i class="fa fa-pen"></i></button>
+          <button class="btn btn-sm btn-outline-secondary"
+            onclick="deleteLeadSource(${s.id})"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+    `).join("")}
+  `;
+}
+function openLeadSourceModal(){
+  editingLeadSourceId=null;
+  leadSourceTitle.innerText="Add lead source";
+  leadSourceName.value="";
+  new bootstrap.Modal(leadSourceModal).show();
+}
+
+function editLeadSource(id){
+  editingLeadSourceId=id;
+  const s=leadSources.find(x=>x.id===id);
+  leadSourceTitle.innerText="Edit lead source";
+  leadSourceName.value=s.title;
+  new bootstrap.Modal(leadSourceModal).show();
+}
+
+function saveLeadSource(){
+  const title=leadSourceName.value.trim();
+  if(!title) return;
+
+  if(editingLeadSourceId){
+    leadSources.find(x=>x.id===editingLeadSourceId).title=title;
+  } else {
+    leadSources.push({id:Date.now(),title});
+  }
+
+  bootstrap.Modal.getInstance(leadSourceModal).hide();
+  renderLeadSource();
+}
+
+function deleteLeadSource(id){
+  leadSources=leadSources.filter(x=>x.id!==id);
+  renderLeadSource();
+}
+function renderLeadSettings(){
+  document.getElementById("leadTabContent").innerHTML=`
+    ${leadToggle("Can create lead from public form","publicForm")}
+    ${leadToggle("Enable embedded form to get leads","embeddedForm")}
+    <div class="d-flex justify-content-between py-3 border-bottom">
+      <span>Hide fields from lead embedded forms</span>
+      <input class="form-control w-50"
+        value="${leadSettings.hiddenFields}"
+        placeholder="Hidden client fields"
+        oninput="leadSettings.hiddenFields=this.value">
+    </div>
+
+    <button class="btn btn-primary mt-4"
+      onclick="saveLeadSettings()">✓ Save</button>
+  `;
+}
+
+function leadToggle(label,key){
+  return `
+    <div class="d-flex justify-content-between py-3 border-bottom">
+      <span>${label}</span>
+      <input type="checkbox"
+        ${leadSettings[key]?'checked':''}
+        onchange="leadSettings.${key}=this.checked">
+    </div>`;
+}
+
+function saveLeadSettings(){
+  console.log(leadSettings);
+  new bootstrap.Modal(saveSuccessModal).show();
+}
+function renderGDPRSettings() {
+
+  document.getElementById("settingsContent").innerHTML = `
+    <h4 class="mb-4">GDPR</h4>
+
+    <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+      <span>Enable GDPR</span>
+
+      <input type="checkbox"
+        ${gdprSettings.enabled ? "checked" : ""}
+        onchange="gdprSettings.enabled = this.checked">
+    </div>
+
+    <button class="btn btn-primary mt-4"
+      onclick="saveGDPRSettings()">
+      ✓ Save
+    </button>
+  `;
+}
+function saveGDPRSettings() {
+
+  console.log("Saved GDPR Settings:", gdprSettings);
+
+  // Optional later:
+  // localStorage.setItem("gdprSettings", JSON.stringify(gdprSettings));
+  // OR send to backend via AJAX
+
+  new bootstrap.Modal(
+    document.getElementById("saveSuccessModal")
+  ).show();
+}
+function renderPages() {
+
+  document.getElementById("settingsContent").innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Pages</h4>
+
+      <button class="btn btn-outline-primary"
+        onclick="openPageModal()">
+        <i class="fa fa-plus me-1"></i> Add page
+      </button>
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-outline-secondary">
+        <i class="fa fa-table-columns"></i>
+      </button>
+
+      <input class="form-control w-25" placeholder="Search">
+    </div>
+
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>
+            <i class="fa fa-arrow-up me-1"></i> URL
+          </th>
+          <th>Status</th>
+          <th>Options</th>
+          <th class="text-end">
+            <i class="fa fa-bars"></i>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${pages.map(p => `
+          <tr>
+            <td>${p.title}</td>
+            <td>
+              <a href="${BASE_PAGE_URL}${p.slug}" target="_blank">
+                ${BASE_PAGE_URL}${p.slug}
+              </a>
+            </td>
+            <td>
+              <span class="badge bg-primary">${p.status}</span>
+            </td>
+            <td>
+              <i class="fa fa-arrows-left-right"></i>
+            </td>
+            <td class="text-end">
+  <button class="btn btn-sm btn-outline-secondary gap-2 "
+    title="Edit"
+    onclick="editPage(${p.id})">
+    <i class="fa fa-pen"></i>
+  </button>
+
+  <button class="btn btn-sm btn-outline-secondary"
+    title="Delete"
+    onclick="deletePage(${p.id})">
+    <i class="fa fa-times"></i>
+  </button>
+</td>
+
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <select class="form-select w-auto"><option>10</option></select>
+      <div class="text-muted">1-${pages.length}/${pages.length}</div>
+      <div>
+        <button class="btn btn-sm btn-outline-secondary">‹</button>
+        <button class="btn btn-sm btn-outline-secondary">1</button>
+        <button class="btn btn-sm btn-outline-secondary">›</button>
+      </div>
+    </div>
+  `;
+}
+function openPageModal() {
+  editingPageId = null;
+
+  pageModalTitle.innerText = "Add page";
+  pageTitle.value = "";
+  pageContent.value = "";
+  pageSlug.value = "";
+  pageStatus.value = "Active";
+  pageHideTopbar.checked = false;
+
+  new bootstrap.Modal(pageModal).show();
+}
+
+function autoGenerateSlug(title) {
+  const slug = title.toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  pageSlug.value = slug;
+}
+
+function editPage(id) {
+  const p = pages.find(x => x.id === id);
+  editingPageId = id;
+
+  pageModalTitle.innerText = "Edit page";
+  pageTitle.value = p.title;
+  pageContent.value = p.content;
+  pageSlug.value = p.slug;
+  pageStatus.value = p.status;
+  pageHideTopbar.checked = p.hideTopbar;
+
+  new bootstrap.Modal(pageModal).show();
+}
+
+function savePage() {
+  const obj = {
+    id: editingPageId || Date.now(),
+    title: pageTitle.value.trim(),
+    slug: pageSlug.value,
+    content: pageContent.value,
+    status: pageStatus.value,
+    hideTopbar: pageHideTopbar.checked
+  };
+
+  if (!obj.title) return;
+
+  if (editingPageId) {
+    pages[pages.findIndex(x => x.id === editingPageId)] = obj;
+  } else {
+    pages.push(obj);
+  }
+
+  bootstrap.Modal.getInstance(pageModal).hide();
+  renderPages();
+}
+
+function deletePage(id) {
+  pages = pages.filter(x => x.id !== id);
+  renderPages();
+}
 </script>
+<div class="modal fade" id="pageModal">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="pageModalTitle">Add page</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input id="pageTitle" class="form-control" placeholder="Title"
+            oninput="autoGenerateSlug(this.value)">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Content</label>
+          <textarea id="pageContent" class="form-control"
+            style="height:250px"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Slug</label>
+          <input id="pageSlug" class="form-control"
+            placeholder="${BASE_PAGE_URL}[slug]" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Status</label>
+          <select id="pageStatus" class="form-select">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="pageHideTopbar">
+          <label class="form-check-label">Hide topbar</label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="savePage()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="leadSourceModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="leadSourceTitle">Add lead source</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label>Title</label>
+        <input id="leadSourceName" class="form-control" placeholder="Title">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveLeadSource()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="leadStatusModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="leadStatusTitle">Add lead status</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label>Title</label>
+          <input id="leadStatusName" class="form-control" placeholder="Title">
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex gap-2 flex-wrap" id="leadColorPalette"></div>
+          <input type="hidden" id="leadStatusColor">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveLeadStatus()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD AUTOMATION MODAL -->
+<div class="modal fade" id="automationModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="automationModalTitle">Add automation</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input id="automationTitle"
+            class="form-control"
+            placeholder="Title">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Event</label>
+          <select id="automationEvent" class="form-select">
+            <option value="">-</option>
+            <option value="Ticket created">Ticket created</option>
+            <option value="Ticket replied">Ticket replied</option>
+            <option value="Ticket closed">Ticket closed</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">
+          ✕ Close
+        </button>
+        <button class="btn btn-primary" onclick="saveAutomation()">
+          ✓ Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ticketTypeModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="ticketTypeTitle">Add ticket type</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">Title</label>
+        <input id="ticketTypeName" class="form-control" placeholder="Title">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" onclick="saveTicketType()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="leaveModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="leaveModalTitle">Add leave type</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- TITLE -->
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input id="leaveTitle" class="form-control" placeholder="Title">
+        </div>
+
+        <!-- COLOR PICKER -->
+        <div class="mb-3">
+          <div class="d-flex flex-wrap gap-2" id="leaveColorPalette"></div>
+          <input type="hidden" id="leaveColor" value="#4f83ff">
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea id="leaveDesc"
+            class="form-control"
+            placeholder="Description"></textarea>
+        </div>
+
+        <!-- STATUS -->
+        <div class="mb-3">
+          <label class="form-label">Status</label><br>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio"
+              name="leaveStatus" value="Active" checked>
+            <label class="form-check-label">Active</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio"
+              name="leaveStatus" value="Inactive">
+            <label class="form-check-label">Inactive</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveLeave()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="expenseCategoryModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="expenseCategoryModalTitle">Add category</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row align-items-center">
+          <div class="col-md-3 text-muted">Title</div>
+          <div class="col-md-9">
+            <input id="expenseCategoryTitle"
+              class="form-control"
+              placeholder="Title">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveExpenseCategory()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="projectStatusModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="projectStatusModalTitle">Add project status</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input id="projectStatusTitle"
+            class="form-control"
+            placeholder="Title">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">
+            Title Language Key
+            <i class="fa fa-question-circle text-muted"></i>
+          </label>
+          <input class="form-control"
+            placeholder="Keep it blank if you don't use translation">
+        </div>
+
+        <!-- ICON GRID (UI ONLY) -->
+        <div class="border rounded p-3 text-muted text-center">
+          Icon picker UI (static like screenshot)
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">
+          ✕ Close
+        </button>
+        <button class="btn btn-primary" onclick="saveProjectStatus()">
+          ✓ Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="taskStatusModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="taskStatusModalTitle">Add task status</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="form-label">Title</label>
+        <input id="taskStatusTitle" class="form-control" placeholder="Title">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveTaskStatus()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="clientGroupModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="clientGroupModalTitle">Add client group</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="form-label">Title</label>
+        <input id="clientGroupTitle"
+          class="form-control"
+          placeholder="Title">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">
+          ✕ Close
+        </button>
+        <button class="btn btn-primary" onclick="saveClientGroup()">
+          ✓ Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="customFieldModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 id="customFieldModalTitle">Add field</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input id="cfTitle" class="form-control" placeholder="Title">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">
+            Title Language Key
+            <i class="fa fa-question-circle text-muted"></i>
+          </label>
+          <input class="form-control"
+            placeholder="Keep it blank if you don't use translation">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Placeholder</label>
+          <input class="form-control" placeholder="Placeholder">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">
+            Placeholder Language Key
+            <i class="fa fa-question-circle text-muted"></i>
+          </label>
+          <input class="form-control"
+            placeholder="Keep it blank if you don't use translation">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Template variable name</label>
+          <input class="form-control" placeholder="VARIABLE_NAME">
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Field Type</label>
+          <select id="cfType" class="form-select">
+            <option value="Text">Text</option>
+            <option value="Number">Number</option>
+            <option value="Date">Date</option>
+            <option value="Textarea">Textarea</option>
+          </select>
+        </div>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="cfRequired">
+          <label class="form-check-label">Required</label>
+        </div>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="cfShowTable">
+          <label class="form-check-label">Show in table</label>
+        </div>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="cfShowOrder">
+          <label class="form-check-label">Show in order</label>
+        </div>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="cfAdminOnly">
+          <label class="form-check-label">Visible to admins only</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="cfHideClient">
+          <label class="form-check-label">Hide from clients</label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-light" data-bs-dismiss="modal">✕ Close</button>
+        <button class="btn btn-primary" onclick="saveCustomField()">✓ Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="paymentModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
