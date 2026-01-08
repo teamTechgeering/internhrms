@@ -340,6 +340,6 @@
 <?php include 'common/footer.php'; ?>
 </body>
 </html>
-<script src="assets/js/project.js"></script>
+
   
 

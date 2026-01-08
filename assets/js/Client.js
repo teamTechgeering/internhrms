@@ -473,4 +473,251 @@ document.getElementById("addContactForm").addEventListener("submit", function (e
     let successModal = new bootstrap.Modal(document.getElementById("successModal"));
     successModal.show();
 });
+/* ================= CLIENT & CONTACT MODULE (SAFE WRAPPED) ================= */
+(function () {
+
+  /* ---------- SAFE HELPERS ---------- */
+  const $ = (id) => document.getElementById(id);
+  const on = (id, ev, fn) => {
+    const el = $(id);
+    if (el) el.addEventListener(ev, fn);
+  };
+
+  function showModal(id) {
+    const el = $(id);
+    if (el && window.bootstrap)
+      bootstrap.Modal.getOrCreateInstance(el).show();
+  }
+
+  function hideModal(id) {
+    const el = $(id);
+    const inst = el ? bootstrap.Modal.getInstance(el) : null;
+    if (inst) inst.hide();
+  }
+
+  /* ================= INIT ON DOM READY ================= */
+  document.addEventListener("DOMContentLoaded", () => {
+
+    /* ================= DASHBOARD CARDS ================= */
+    on("card-total-clients", "click", () => {
+      const tab = $("clients-tab");
+      if (!tab) return;
+      new bootstrap.Tab(tab).show();
+
+      setTimeout(() => {
+        $("clientsTableBody")?.querySelector("tr")?.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+    });
+
+    on("card-total-contacts", "click", () => {
+      const tab = $("contacts-tab");
+      if (tab) new bootstrap.Tab(tab).show();
+    });
+
+    /* ================= CLIENTS ================= */
+    const clientsTableBody = $("clientsTableBody");
+    if (clientsTableBody) {
+
+      let clients = JSON.parse(localStorage.getItem("clientsData")) || [];
+      let editIndex = null;
+      let deleteIndex = null;
+
+      const totalClientsEl = document.querySelector("#card-total-clients .h4");
+
+      function saveClients() {
+        localStorage.setItem("clientsData", JSON.stringify(clients));
+        if (totalClientsEl) totalClientsEl.textContent = clients.length;
+      }
+
+      function renderClients() {
+        clientsTableBody.innerHTML = "";
+
+        clients.forEach((c, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${c.id}</td>
+            <td><a href="Client-View.php?id=${c.id}" class="fw-semibold text-primary text-decoration-none">${c.name}</a></td>
+            <td><a href="Client-Contact.php?id=${c.id}" class="fw-semibold text-primary text-decoration-none">${c.primaryContact}</a></td>
+            <td>${c.phone}</td>
+            <td>${c.clientGroup || ""}</td>
+            <td>${c.labels || ""}</td>
+            <td>${c.projects || ""}</td>
+            <td>$${c.totalInvoiced || 0}</td>
+            <td>$${c.paymentReceived || 0}</td>
+            <td>$${c.due || 0}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary editBtn"><i class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-sm btn-outline-danger deleteBtn"><i class="bi bi-trash"></i></button>
+            </td>
+          `;
+          clientsTableBody.appendChild(row);
+
+          row.querySelector(".editBtn").onclick = () => {
+            editIndex = index;
+            $("editClientName").value = c.name;
+            $("editPrimaryContact").value = c.primaryContact;
+            $("editPhone").value = c.phone;
+            $("editClientGroup").value = c.clientGroup;
+            showModal("editClientModal");
+          };
+
+          row.querySelector(".deleteBtn").onclick = () => {
+            deleteIndex = index;
+            showModal("deleteConfirmModal");
+          };
+        });
+
+        saveClients();
+      }
+
+      /* ----- ADD CLIENT ----- */
+      on("clientName", "input", function () {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, "");
+      });
+
+      on("phone", "input", function () {
+        this.value = this.value.replace(/[^0-9\-]/g, "");
+      });
+
+      on("saveClient", "click", () => {
+        const name = $("clientName")?.value.trim();
+        const contact = $("primaryContact")?.value.trim();
+        const phone = $("phone")?.value.trim();
+
+        if (!name || !contact || !phone) return;
+
+        clients.push({
+          id: clients.length + 1,
+          name,
+          primaryContact: contact,
+          phone,
+          clientGroup: $("clientGroup")?.value,
+          labels: $("labels")?.value,
+          projects: $("projects")?.value,
+          totalInvoiced: $("totalInvoiced")?.value,
+          paymentReceived: $("paymentReceived")?.value,
+          due: $("due")?.value
+        });
+
+        renderClients();
+        $("addClientForm")?.reset();
+        hideModal("addClientModal");
+        showModal("successModal");
+      });
+
+      /* ----- EDIT CLIENT ----- */
+      on("editClientName", "input", function () {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, "");
+      });
+
+      on("editPhone", "input", function () {
+        this.value = this.value.replace(/[^0-9\-]/g, "");
+      });
+
+      on("saveEditChanges", "click", () => {
+        if (editIndex === null) return;
+
+        clients[editIndex].name = $("editClientName").value.trim();
+        clients[editIndex].primaryContact = $("editPrimaryContact").value.trim();
+        clients[editIndex].phone = $("editPhone").value.trim();
+        clients[editIndex].clientGroup = $("editClientGroup").value.trim();
+
+        renderClients();
+        hideModal("editClientModal");
+        showModal("successModal");
+      });
+
+      /* ----- DELETE CLIENT ----- */
+      on("confirmDelete", "click", () => {
+        if (deleteIndex === null) return;
+        clients.splice(deleteIndex, 1);
+        renderClients();
+        hideModal("deleteConfirmModal");
+        showModal("successModal");
+      });
+
+      /* ----- SEARCH ----- */
+      on("searchClient", "keyup", (e) => {
+        const q = e.target.value.toLowerCase();
+        document.querySelectorAll("#clientsTableBody tr").forEach(row => {
+          row.style.display = row.innerText.toLowerCase().includes(q) ? "" : "none";
+        });
+      });
+
+      /* ----- EXPORT ----- */
+      on("exportExcel", "click", () => {
+        if (!window.XLSX) return;
+        const data = JSON.parse(localStorage.getItem("clientsData")) || [];
+        if (!data.length) return alert("No clients to export");
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Clients");
+        XLSX.writeFile(wb, "Clients_List.xlsx");
+      });
+
+      renderClients();
+    }
+
+    /* ================= CONTACTS ================= */
+    const contactsBody = $("contactsBody");
+    if (contactsBody) {
+
+      function updateStatsCard() {
+        const count = JSON.parse(localStorage.getItem("contacts")) || [];
+        $("totalContactsCount") && ($("totalContactsCount").innerText = count.length);
+      }
+
+      function renderContacts(data) {
+        contactsBody.innerHTML = "";
+
+        data.forEach((c, i) => {
+          contactsBody.insertAdjacentHTML("beforeend", `
+            <tr>
+              <td><img src="assets/images/users/avatar-6.jpg" width="32" class="rounded-circle"></td>
+              <td><a href="Client-Contact.php?id=${c.id}" class="fw-semibold text-primary">${c.name}</a></td>
+              <td><a href="Client-View.php?id=${c.id}" class="fw-semibold text-primary">${c.client_name}</a></td>
+              <td>${c.job_title}</td>
+              <td>${c.email}</td>
+              <td>${c.phone}</td>
+              <td>${c.skype}</td>
+              <td><i class="bi bi-x-lg text-danger delete-btn" data-index="${i}" style="cursor:pointer"></i></td>
+            </tr>
+          `);
+        });
+
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.onclick = () => {
+            let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+            contacts.splice(btn.dataset.index, 1);
+            localStorage.setItem("contacts", JSON.stringify(contacts));
+            renderContacts(contacts);
+            updateStatsCard();
+          };
+        });
+      }
+
+      function loadContacts() {
+        let stored = JSON.parse(localStorage.getItem("contacts"));
+        if (stored?.length) {
+          renderContacts(stored);
+          updateStatsCard();
+          return;
+        }
+
+        fetch("contacts.php")
+          .then(r => r.json())
+          .then(d => {
+            localStorage.setItem("contacts", JSON.stringify(d));
+            renderContacts(d);
+            updateStatsCard();
+          });
+      }
+
+      loadContacts();
+    }
+
+  });
+
+})();
 

@@ -203,7 +203,5 @@
 
 
 <?php include 'common/footer.php'; ?>
-<script src="assets/js/leads.js"></script>
-
 </body>
 </html>

@@ -313,4 +313,3 @@
 <?php include 'common/footer.php'; ?>
 </body>
 </html>
-<script src="assets/js/subscription_view.js"></script>

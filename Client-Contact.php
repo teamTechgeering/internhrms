@@ -187,71 +187,7 @@
 
 <?php include 'common/footer.php'; ?>
 <script>
-fetch("client.php")
-    .then(r => r.json())
-    .then(d => {
 
-        document.getElementById("client-name").innerText = d.first_name + " " + d.last_name;
-        document.getElementById("right-name").innerText = d.first_name + " " + d.last_name;
-        document.getElementById("job-title").innerText = d.job_title;
-        document.getElementById("email").innerText = d.email;
-        document.getElementById("phone").innerText = d.phone;
-
-        document.getElementById("full-address").innerText =
-            `${d.address}, ${d.city}, ${d.state}, ${d.country}`;
-
-        document.getElementById("first-name").innerText = d.first_name;
-        document.getElementById("last-name").innerText = d.last_name;
-        document.getElementById("gen-phone").innerText = d.phone;
-        document.getElementById("gender").innerText = d.gender;
-        document.getElementById("gen-job-title").innerText = d.job_title;
-
-        document.getElementById("owner").innerText = d.owner;
-        document.getElementById("address").innerText = d.address;
-        document.getElementById("city").innerText = d.city;
-        document.getElementById("state").innerText = d.state;
-        document.getElementById("country").innerText = d.country;
-        document.getElementById("groups").innerText = d.groups.join(", ");
-        document.getElementById("labels").innerText = d.labels.join(", ");
-
-        // FIXED PART ↓↓↓
-        document.getElementById("facebook").href = d.social_links.facebook;
-        document.getElementById("facebook").textContent = d.social_links.facebook;
-
-        document.getElementById("twitter").href = d.social_links.twitter;
-        document.getElementById("twitter").textContent = d.social_links.twitter;
-
-        document.getElementById("linkedin").href = d.social_links.linkedin;
-        document.getElementById("linkedin").textContent = d.social_links.linkedin;
-
-        document.getElementById("website").href = d.social_links.website;
-        document.getElementById("website").textContent = d.social_links.website;
-        document.getElementById("acc-email").innerText = d.email;
-document.getElementById("acc-status").innerText = d.account_settings.account_status;
-document.getElementById("acc-language").innerText = d.account_settings.language;
-document.getElementById("acc-timezone").innerText = d.account_settings.timezone;
-document.getElementById("acc-created").innerText = d.account_settings.created_on;
-document.getElementById("acc-last-login").innerText = d.account_settings.last_login;
-// Role
-document.getElementById("role").innerText = d.permissions.role;
-
-// Permissions Table
-const tbody = document.getElementById("permissions-table");
-tbody.innerHTML = "";
-
-d.permissions.access.forEach(p => {
-    const row = `
-        <tr>
-            <td>${p.module}</td>
-            <td class="text-center">${p.view ? "✔️" : "❌"}</td>
-            <td class="text-center">${p.edit ? "✔️" : "❌"}</td>
-            <td class="text-center">${p.delete ? "✔️" : "❌"}</td>
-        </tr>
-    `;
-    tbody.innerHTML += row;
-});
-
-    });
     </script>
 
 </body>

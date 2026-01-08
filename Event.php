@@ -31,9 +31,6 @@
 
           <div id="calendar"></div>
         </div>
-    <div id="calendar"></div>
-  </div>
-
   <!-- Modal -->
   <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -185,6 +182,6 @@
 </div>
 
 <?php include 'common/footer.php'; ?>
-<script src="assets/js/Event.js"></script>
+
 </body>
 </html>

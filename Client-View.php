@@ -1747,7 +1747,7 @@
 <script>
 
 </script>
-<script src="assets/js/Client-View.js"></script>
+
 
   </body>
 

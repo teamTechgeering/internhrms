@@ -118,20 +118,6 @@ $autoPrint = isset($_GET['print']) || isset($_GET['pdf']) || isset($_GET['downlo
 
 <script>
 // AUTO PRINT HANDLER
-(function() {
-    const auto = <?php echo $autoPrint ? 'true' : 'false'; ?>;
 
-    if (auto) {
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                window.print();
-
-                <?php if (isset($_GET['download'])): ?>
-                setTimeout(() => { window.close(); }, 500);
-                <?php endif; ?>
-            }, 400);
-        });
-    }
-})();
 </script>
 
