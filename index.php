@@ -8,32 +8,34 @@
 
    <div class="container-fluid py-3">
 
-<!-- HEADER -->
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h5 class="mb-0 fw-semibold">Dashboard</h5>
-  <div class="d-flex align-items-center gap-3">
-    <i class="bi bi-search"></i>
-    <i class="bi bi-bell position-relative">
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1</span>
-    </i>
-    <span class="fw-medium">John Doe</span>
-  </div>
-</div>
 
 <!-- TOP CARDS -->
 <div class="row g-3 mb-4">
 
-<a href="clock.php" class="col-md-3 text-decoration-none text-dark">
-  <div class="card h-100">
-    <div class="card-body d-flex align-items-center gap-3">
-      <i class="bi bi-clock fs-3 text-primary"></i>
-      <div>
-        <div class="small text-muted">Clock started at</div>
-        <div class="fw-semibold">10:31:59 am</div>
+  <!-- ================= CLOCK CARD (UPDATED) ================= -->
+  <div class="col-md-3">
+    <div class="card h-100">
+      <div class="card-body d-flex align-items-center justify-content-between">
+
+        <div class="d-flex align-items-center gap-3">
+          <i class="bi bi-clock fs-3 text-primary"></i>
+          <div>
+            <div id="clockText" class="small text-muted">
+              You are currently clocked out
+            </div>
+            <div id="clockTime" class="fw-semibold d-none"></div>
+          </div>
+        </div>
+
+        <button id="clockBtn"
+                class="btn btn-outline-primary btn-sm"
+                onclick="handleClockAction()">
+          Clock In
+        </button>
+
       </div>
     </div>
   </div>
-</a>
 
 <a href="tasks.php" class="col-md-3 text-decoration-none text-dark">
   <div class="card h-100">
@@ -705,6 +707,120 @@
 
   </div>
 </div>
+</div>
+</div>
+<!-- Next Section -->
+<!-- ================= MY TASKS + STICKY NOTE ================= -->
+<div class="container-fluid py-4">
+  <div class="row g-3 align-items-stretch" style="height:55vh">
+
+    <!-- ================= MY TASKS ================= -->
+    <div class="col-lg-8 h-100">
+      <div class="card h-100 d-flex flex-column">
+
+        <!-- HEADER -->
+        <div class="card-header bg-white fw-semibold d-flex justify-content-between align-items-center">
+          <span><i class="bi bi-list-task me-2"></i> My Tasks</span>
+
+          <div class="input-group input-group-sm w-25">
+            <input class="form-control" placeholder="Search">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i> 
+            </span>
+          </div>     
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body p-0 flex-grow-1 overflow-hidden">
+
+          <!-- SCROLL AREA -->
+          <div class="h-100 overflow-auto">
+            <table class="table align-middle mb-0">
+              <thead class="table-light position-sticky top-0">
+                <tr>
+                  <th class="ps-4">
+                    <input class="form-check-input" type="checkbox">
+                  </th>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Start date</th>
+                  <th>Deadline</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="taskTableBody">
+                <!-- MANY ROWS → SCROLLBAR APPEARS HERE -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= STICKY NOTE ================= -->
+    <div class="col-lg-4 h-100">
+      <div class="card h-100 d-flex flex-column">
+
+        <div class="card-header bg-white fw-semibold">
+          <i class="bi bi-journal-text me-2"></i> Sticky Note (Private)
+        </div>
+
+        <div class="card-body bg-warning bg-opacity-25 flex-grow-1 overflow-auto">
+          <textarea
+            class="form-control border-0 bg-transparent h-100"
+            placeholder="My quick notes here..."></textarea>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= CLOCK OUT MODAL ================= -->
+<div class="modal fade" id="clockOutModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Clock Out</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="fw-semibold mb-2">Note</label>
+
+        <!-- Toolbar (UI only) -->
+        <div class="border rounded mb-2 p-2 d-flex gap-3 text-muted">
+          <i class="bi bi-type-bold"></i>
+          <i class="bi bi-type-italic"></i>
+          <i class="bi bi-type-underline"></i>
+          <i class="bi bi-list-ul"></i>
+          <i class="bi bi-list-ol"></i>
+          <i class="bi bi-table"></i>
+          <i class="bi bi-link-45deg"></i>
+          <i class="bi bi-code-slash"></i>
+        </div>
+
+        <textarea class="form-control" rows="6"
+                  placeholder="Write your note here..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button class="btn btn-primary" onclick="saveClockOut()">
+          <i class="bi bi-check-circle me-1"></i> Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <!-- TASK MODAL -->
@@ -804,6 +920,136 @@
   </div>
 </div>
 
+ <!-- ================= MY TASK MODAL ================= -->
+<div class="modal fade" id="myTaskModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 id="myTaskModalTitle" class="modal-title"></h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <div class="row">
+
+          <!-- LEFT SIDE -->
+          <div class="col-md-8">
+
+            <p id="myTaskModalDesc" class="fw-semibold"></p>
+
+            <p>
+              <strong>Project:</strong>
+              <a id="myTaskModalProject" href="#" class="text-decoration-none"></a>
+            </p>
+
+            <p><strong>Checklist</strong> 0/0</p>
+            <input class="form-control mb-3" placeholder="Add item">
+
+            <p><strong>Sub tasks</strong></p>
+            <input class="form-control mb-2" placeholder="Create a sub task">
+
+            <div class="dropdown mb-3">
+              <button class="btn btn-outline-secondary dropdown-toggle"
+                      data-bs-toggle="dropdown">
+                Add dependency
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">This task is blocked by</a></li>
+                <li><a class="dropdown-item" href="#">This task is blocking</a></li>
+              </ul>
+            </div>
+
+            <!-- COMMENT BOX -->
+            <div class="mb-3">
+              <textarea
+                class="form-control mb-2"
+                id="myTaskCommentInput"
+                placeholder="Write a comment..."></textarea>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="btn btn-light btn-sm mb-0">
+                  Upload File <input type="file" hidden>
+                </label>
+                <button class="btn btn-primary btn-sm"
+                        onclick="addMyTaskComment()">
+                  Post Comment
+                </button>
+              </div>
+            </div>
+
+            <!-- COMMENTS -->
+            <div id="myTaskCommentsList" class="mb-4">
+              <div>
+                <strong>Emily Smith</strong>
+                <small class="text-muted">Today at 09:57:33 am</small>
+                <p>We need to discuss about this.</p>
+              </div>
+            </div>
+
+            <!-- ACTIVITY -->
+            <h6 class="fw-bold mt-4">Activity</h6>
+
+            <div class="mb-2">
+              <span class="badge bg-warning text-dark">Updated</span>
+              Task marked as Done
+            </div>
+
+          </div>
+
+          <!-- RIGHT SIDE -->
+          <div class="col-md-4 border-start ps-3">
+
+            <div class="d-flex align-items-center mb-3">
+              <img id="myTaskModalUserImg"
+                   src=""
+                   width="40"
+                   class="rounded-circle me-2">
+
+              <div>
+                <strong id="myTaskModalUser"></strong><br>
+                <span id="myTaskModalStatus" class="badge"></span>
+              </div>
+            </div>
+
+            <p><strong>Milestone:</strong> <span id="myTaskModalMilestone">-</span></p>
+            <p><strong>Start date:</strong> <span id="myTaskModalStart">-</span></p>
+            <p><strong>Deadline:</strong> <span id="myTaskModalDeadline">-</span></p>
+            <p><strong>Priority:</strong> -</p>
+            <p><strong>Label:</strong> <span class="badge bg-danger">Bug</span></p>
+            <p><strong>Collaborators:</strong> <span id="myTaskModalCollaborators">-</span></p>
+
+            <button class="btn btn-outline-primary btn-sm mb-2 w-100">
+              Start timer
+            </button>
+
+            <p class="text-muted small text-center mb-0">
+              No record found.
+            </p>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button class="btn btn-outline-secondary">Clone</button>
+        <button class="btn btn-outline-primary">Edit</button>
+        <button class="btn btn-outline-danger" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
 
 
 <?php include 'common/footer.php'; ?>
@@ -811,6 +1057,59 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+let isClockedIn = false;
+let clockStartTime = '';
+
+function handleClockAction() {
+
+  if (!isClockedIn) {
+    // CLOCK IN
+    const now = new Date();
+    clockStartTime = now.toLocaleTimeString();
+
+    document.getElementById('clockText').innerText =
+      'Clock started at';
+    document.getElementById('clockTime').innerText =
+      clockStartTime;
+
+    document.getElementById('clockTime').classList.remove('d-none');
+
+    const btn = document.getElementById('clockBtn');
+    btn.innerText = 'Clock Out';
+    btn.classList.remove('btn-outline-primary');
+    btn.classList.add('btn-outline-danger');
+
+    isClockedIn = true;
+
+  } else {
+    // CLOCK OUT → OPEN MODAL
+    new bootstrap.Modal(
+      document.getElementById('clockOutModal')
+    ).show();
+  }
+}
+
+function saveClockOut() {
+
+  // RESET TO CLOCK IN
+  document.getElementById('clockText').innerText =
+    'You are currently clocked out';
+
+  document.getElementById('clockTime').classList.add('d-none');
+
+  const btn = document.getElementById('clockBtn');
+  btn.innerText = 'Clock In';
+  btn.classList.remove('btn-outline-danger');
+  btn.classList.add('btn-outline-primary');
+
+  isClockedIn = false;
+
+  bootstrap.Modal
+    .getInstance(document.getElementById('clockOutModal'))
+    .hide();
+}
+
+// Charts
 new Chart(invoiceChart, {
   type: 'line',
   data: {
@@ -1074,8 +1373,126 @@ function deleteTodo(el) {
   const item = el.closest('.list-group-item');
   item.remove();
 }
+// ================= MY TASKS + STICKY NOTE =================
+document.addEventListener('DOMContentLoaded', function () {
+
+  let tasksData = [];
+
+  /* ================= LOAD TASKS ================= */
+  fetch('tasks_json.php')
+    .then(res => res.json())
+    .then(data => {
+      tasksData = data;
+      renderTaskTable();
+    });
+
+  /* ================= RENDER TABLE ================= */
+  function renderTaskTable() {
+    const tbody = document.getElementById('taskTableBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    tasksData.forEach(task => {
+      let statusBadge = '';
+
+      if (task.status === 'To do') {
+        statusBadge = '<span class="badge bg-warning text-dark">To do</span>';
+      } else if (task.status === 'In progress') {
+        statusBadge = '<span class="badge bg-primary">In progress</span>';
+      } else if (task.status === 'Review') {
+        statusBadge = '<span class="badge bg-secondary">Review</span>';
+      } else if (task.status === 'Done') {
+        statusBadge = '<span class="badge bg-success">Done</span>';
+      }
+
+      tbody.innerHTML += `
+        <tr>
+          <td class="ps-4">
+            <input class="form-check-input" type="checkbox">
+          </td>
+
+          <td>${task.id}</td>
+
+          <td>
+            <a href="#"
+               class="fw-semibold text-decoration-none"
+               onclick="openMyTaskModal(event, ${task.id})">
+              ${task.title}
+            </a>
+          </td>
+
+          <td>${task.start_date}</td>
+
+          <td class="text-danger fw-semibold">
+            ${task.deadline}
+          </td>
+
+          <td>${statusBadge}</td>
+        </tr>
+      `;
+    });
+  }
+
+  /* ================= OPEN MY TASK MODAL ================= */
+  window.openMyTaskModal = function (e, taskId) {
+    e.preventDefault();
+
+    const task = tasksData.find(t => t.id == taskId);
+    if (!task) return;
+
+    /* LEFT SIDE */
+    document.getElementById('myTaskModalTitle').innerText = task.title;
+    document.getElementById('myTaskModalDesc').innerText = task.title;
+
+    const projectEl = document.getElementById('myTaskModalProject');
+    projectEl.innerText = task.related_to;
+    projectEl.href =
+      'projects.php?name=' + encodeURIComponent(task.related_to);
+
+    /* RIGHT SIDE */
+    document.getElementById('myTaskModalUser').innerText = task.assigned_to;
+    document.getElementById('myTaskModalUserImg').src =
+      'assets/images/users/avatar-6.jpg';
+
+    document.getElementById('myTaskModalMilestone').innerText = task.milestone;
+    document.getElementById('myTaskModalStart').innerText = task.start_date;
+    document.getElementById('myTaskModalDeadline').innerText = task.deadline;
+    document.getElementById('myTaskModalCollaborators').innerText =
+      task.collaborators;
+
+    const statusBadge = document.getElementById('myTaskModalStatus');
+    statusBadge.className = 'badge';
+    statusBadge.innerText = task.status;
+
+    if (task.status === 'To do') statusBadge.classList.add('bg-warning', 'text-dark');
+    else if (task.status === 'In progress') statusBadge.classList.add('bg-primary');
+    else if (task.status === 'Review') statusBadge.classList.add('bg-secondary');
+    else if (task.status === 'Done') statusBadge.classList.add('bg-success');
+
+    /* SHOW MODAL */
+    const modalEl = document.getElementById('myTaskModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  };
+
+  /* ================= COMMENTS ================= */
+  window.addMyTaskComment = function () {
+    const text = document.getElementById('myTaskCommentInput');
+    if (!text.value.trim()) return;
+
+    const div = document.createElement('div');
+    div.className = 'mb-2';
+    div.innerHTML = `<strong>You</strong><p>${text.value}</p>`;
+
+    document.getElementById('myTaskCommentsList').prepend(div);
+    text.value = '';
+  };
+
+});
 
 </script>
+
 
 </body>
 </html>
