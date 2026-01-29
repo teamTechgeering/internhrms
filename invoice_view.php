@@ -510,6 +510,4 @@
 
 <!-- JS LOGIC -->
 <script>
-
-
 </script>

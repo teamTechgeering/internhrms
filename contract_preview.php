@@ -42,153 +42,153 @@ $autoPrint = isset($_GET["print"]) || isset($_GET["pdf"]) || isset($_GET["downlo
 <?php include 'common/footer.php'; ?>
 
 <script>
-/*******************************************************
-    CONTRACT PREVIEW PAGE (contract_preview.php)
-    Fetch contract by ID → Render → Handle print
-*******************************************************/
+// /*******************************************************
+//     CONTRACT PREVIEW PAGE (contract_preview.php)
+//     Fetch contract by ID → Render → Handle print
+// *******************************************************/
 
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
 
-    const params = new URLSearchParams(window.location.search);
-    const contractId = Number(params.get("id")) || 0;
-    const auto = <?php echo $autoPrint ? "true" : "false"; ?>;
+//     const params = new URLSearchParams(window.location.search);
+//     const contractId = Number(params.get("id")) || 0;
+//     const auto = <?php echo $autoPrint ? "true" : "false"; ?>;
 
-    let contracts = [];
-    let contract = null;
+//     let contracts = [];
+//     let contract = null;
 
-    // Load JSON + localStorage merged
-    function loadContracts() {
-        return fetch("contract_json.php")
-            .then(res => res.json())
-            .then(initial => {
-                const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//     // Load JSON + localStorage merged
+//     function loadContracts() {
+//         return fetch("contract_json.php")
+//             .then(res => res.json())
+//             .then(initial => {
+//                 const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
 
-                const map = new Map();
-                initial.forEach(i => map.set(i.id, i));
-                saved.forEach(s => map.set(s.id, s)); // saved overrides JSON
+//                 const map = new Map();
+//                 initial.forEach(i => map.set(i.id, i));
+//                 saved.forEach(s => map.set(s.id, s)); // saved overrides JSON
 
-                contracts = Array.from(map.values());
-                contract = contracts.find(c => c.id === contractId);
-            });
-    }
+//                 contracts = Array.from(map.values());
+//                 contract = contracts.find(c => c.id === contractId);
+//             });
+//     }
 
-    function renderPreview() {
+//     function renderPreview() {
 
-        if (!contract) {
-            document.getElementById("previewContainer").innerHTML =
-                "<div class='alert alert-danger'>Contract not found.</div>";
-            return;
-        }
+//         if (!contract) {
+//             document.getElementById("previewContainer").innerHTML =
+//                 "<div class='alert alert-danger'>Contract not found.</div>";
+//             return;
+//         }
 
-        // STATUS BADGE
-        const badge = document.getElementById("statusBadge");
-        badge.innerHTML = `
-            <i class="fa-solid fa-circle-check"></i> ${contract.status}
-        `;
-        badge.className = `btn btn-sm btn-${contract.status_color || "secondary"}`;
+//         // STATUS BADGE
+//         const badge = document.getElementById("statusBadge");
+//         badge.innerHTML = `
+//             <i class="fa-solid fa-circle-check"></i> ${contract.status}
+//         `;
+//         badge.className = `btn btn-sm btn-${contract.status_color || "secondary"}`;
 
-        // ITEMS
-        let itemsHtml = "";
-        let subtotal = 0;
+//         // ITEMS
+//         let itemsHtml = "";
+//         let subtotal = 0;
 
-        let items = contract.items;
+//         let items = contract.items;
 
-        // fallback if contract has no items stored
-        if (!Array.isArray(items) || items.length === 0) {
-            items = [{
-                name: contract.title || "Service",
-                desc: "Service included",
-                qty: 1,
-                rate: Number(contract.amount) || 0
-            }];
-        }
+//         // fallback if contract has no items stored
+//         if (!Array.isArray(items) || items.length === 0) {
+//             items = [{
+//                 name: contract.title || "Service",
+//                 desc: "Service included",
+//                 qty: 1,
+//                 rate: Number(contract.amount) || 0
+//             }];
+//         }
 
-        items.forEach(it => {
-            const qty = Number(it.qty || 0);
-            const rate = Number(it.rate || 0);
-            const total = qty * rate;
-            subtotal += total;
+//         items.forEach(it => {
+//             const qty = Number(it.qty || 0);
+//             const rate = Number(it.rate || 0);
+//             const total = qty * rate;
+//             subtotal += total;
 
-            itemsHtml += `
-                <tr>
-                    <td><b>${it.name}</b><br><small>${it.desc || ""}</small></td>
-                    <td>${qty} PC</td>
-                    <td>$${rate.toFixed(2)}</td>
-                    <td>$${total.toFixed(2)}</td>
-                </tr>
-            `;
-        });
+//             itemsHtml += `
+//                 <tr>
+//                     <td><b>${it.name}</b><br><small>${it.desc || ""}</small></td>
+//                     <td>${qty} PC</td>
+//                     <td>$${rate.toFixed(2)}</td>
+//                     <td>$${total.toFixed(2)}</td>
+//                 </tr>
+//             `;
+//         });
 
-        // LONG BODY TEMPLATE
-        const longHTML = contract.content_html || `
-            <h2>${contract.title}</h2>
-            <p>This contract outlines the agreed services between <b>${contract.client}</b> and your company.</p>
+//         // LONG BODY TEMPLATE
+//         const longHTML = contract.content_html || `
+//             <h2>${contract.title}</h2>
+//             <p>This contract outlines the agreed services between <b>${contract.client}</b> and your company.</p>
 
-            <h4>Service Overview</h4>
-            <p>Details of work and expectations...</p>
+//             <h4>Service Overview</h4>
+//             <p>Details of work and expectations...</p>
 
-            <h4>Terms</h4>
-            <p>All standard terms and policies apply.</p>
-        `;
+//             <h4>Terms</h4>
+//             <p>All standard terms and policies apply.</p>
+//         `;
 
-        // RENDER FINAL PREVIEW
-        document.getElementById("contractContent").innerHTML = `
+//         // RENDER FINAL PREVIEW
+//         document.getElementById("contractContent").innerHTML = `
 
-            <h4 class="fw-bold mb-3">${contract.contract_no}</h4>
-            <p class="text-muted">Contract Date: ${contract.contract_date}</p>
-            <p class="text-muted">Valid Until: ${contract.valid_until}</p>
-            <hr>
+//             <h4 class="fw-bold mb-3">${contract.contract_no}</h4>
+//             <p class="text-muted">Contract Date: ${contract.contract_date}</p>
+//             <p class="text-muted">Valid Until: ${contract.valid_until}</p>
+//             <hr>
 
-            <h5 class="fw-semibold">Client Details</h5>
-            <p><b>${contract.client}</b></p>
-            <hr>
+//             <h5 class="fw-semibold">Client Details</h5>
+//             <p><b>${contract.client}</b></p>
+//             <hr>
 
-            <h5 class="fw-semibold">Contract Items</h5>
-            <table class="table align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Item</th><th>Qty</th><th>Rate</th><th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${itemsHtml}
-                </tbody>
-            </table>
+//             <h5 class="fw-semibold">Contract Items</h5>
+//             <table class="table align-middle">
+//                 <thead class="table-light">
+//                     <tr>
+//                         <th>Item</th><th>Qty</th><th>Rate</th><th>Total</th>
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                     ${itemsHtml}
+//                 </tbody>
+//             </table>
 
-            <h5 class="text-end mt-3">Subtotal: $${subtotal.toFixed(2)}</h5>
-            <h4 class="text-end fw-bold">Total: $${subtotal.toFixed(2)}</h4>
+//             <h5 class="text-end mt-3">Subtotal: $${subtotal.toFixed(2)}</h5>
+//             <h4 class="text-end fw-bold">Total: $${subtotal.toFixed(2)}</h4>
 
-            <hr>
+//             <hr>
 
-            <div class="mt-4">
-                ${longHTML}
-            </div>
-        `;
-    }
+//             <div class="mt-4">
+//                 ${longHTML}
+//             </div>
+//         `;
+//     }
 
-    // Auto print handler
-    function autoPrintTrigger() {
-        if (!auto) return;
+//     // Auto print handler
+//     function autoPrintTrigger() {
+//         if (!auto) return;
 
-        window.addEventListener("load", () => {
-            setTimeout(() => {
-                window.print();
+//         window.addEventListener("load", () => {
+//             setTimeout(() => {
+//                 window.print();
 
-                // auto-close after saving PDF
-                <?php if (isset($_GET["download"])): ?>
-                    setTimeout(() => { window.close(); }, 600);
-                <?php endif; ?>
+//                 // auto-close after saving PDF
+//                 <?php if (isset($_GET["download"])): ?>
+//                     setTimeout(() => { window.close(); }, 600);
+//                 <?php endif; ?>
 
-            }, 400);
-        });
-    }
+//             }, 400);
+//         });
+//     }
 
-    loadContracts().then(() => {
-        renderPreview();
-        autoPrintTrigger();
-    });
+//     loadContracts().then(() => {
+//         renderPreview();
+//         autoPrintTrigger();
+//     });
 
-});
+// });
 </script>
 
 </body>
