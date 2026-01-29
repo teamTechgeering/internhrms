@@ -736,7 +736,7 @@
           <!-- SCROLL AREA -->
           <div class="h-100 overflow-auto">
             <table class="table align-middle mb-0">
-              <thead class="table-light position-sticky top-0">
+              <thead class="table-light position-sticky top-0``">
                 <tr>
                   <th class="ps-4">
                     <input class="form-check-input" type="checkbox">

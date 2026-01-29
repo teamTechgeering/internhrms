@@ -1,4 +1,3 @@
-
 /* =====================================================
    GLOBAL SAFE WRAPPER (DO NOT TOUCH AGAIN)
 ===================================================== */
@@ -1279,13 +1278,13 @@ document.getElementById("role").innerText = d.permissions.role;
 
 // Permissions Table
 const tbody = document.getElementById("permissions-table");
-tbody.innerHTML = "";
 
+tbody.innerHTML = "";
 d.permissions.access.forEach(p => {
     const row = `
         <tr>
             <td>${p.module}</td>
-            <td class="text-center">${p.view ? "✔️" : "❌"}</td>
+            <td class="text-center">${p.view ? "✔️" : "❌"}
             <td class="text-center">${p.edit ? "✔️" : "❌"}</td>
             <td class="text-center">${p.delete ? "✔️" : "❌"}</td>
         </tr>
@@ -1298,9 +1297,9 @@ d.permissions.access.forEach(p => {
 
 })();
 
+// Project
 document.addEventListener("DOMContentLoaded", () => {
   
-
     // state
     let projects = [];
     let filtered = [];
@@ -1695,10 +1694,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadProjects();
-
+g 
 });
-document.addEventListener("DOMContentLoaded", function () {
 
+// Project Detail  
+document.addEventListener("DOMContentLoaded", function () {
+        
 /* =======================================================
       🔵 GET PROJECT ID FROM URL
 ======================================================= */
@@ -3727,7 +3728,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let rowData = [];
 
       cols.forEach(col => {
-        let text = col.innerText.replace(/,/g, " "); // CSV safe
+        let text = col.innerText.replace(/,/g, " "); 
         rowData.push(`"${text}"`);
       });
 
@@ -3746,6 +3747,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+// Invoices 
 document.addEventListener("DOMContentLoaded", () => {
 
   let invoicesData = [];
@@ -3754,7 +3757,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeFilter = "all";
   let currentPage = 1;
   let pageSize = 10;
-  let editingId = null; // <-- track when editing
+  let editingId = null;
 
   const invoiceBody = document.getElementById("invoiceBody");
   const totalInvoicedEl = document.getElementById("totalInvoiced");
@@ -10784,3 +10787,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
+
+  
