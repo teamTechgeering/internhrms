@@ -238,293 +238,293 @@
 <?php include 'common/footer.php'; ?>
 
 <script>
-/* ============================================================
-  contract_view.php — loads ID-wise from contract_json.php
-  Items should be stored in the JSON under `items` (optional).
-  If items not present, we use a default sample item.
-============================================================ */
+// /* ============================================================
+//   contract_view.php — loads ID-wise from contract_json.php
+//   Items should be stored in the JSON under `items` (optional).
+//   If items not present, we use a default sample item.
+// ============================================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
 
-  // READ ID FROM URL
-  const params = new URLSearchParams(window.location.search);
-  const contractId = Number(params.get("id")) || 20; // fallback 20
+//   // READ ID FROM URL
+//   const params = new URLSearchParams(window.location.search);
+//   const contractId = Number(params.get("id")) || 20; // fallback 20
 
-  let contracts = [];
-  let contract = null;
+//   let contracts = [];
+//   let contract = null;
 
-  // Load contracts from JSON + merge with localStorage modifications (if any)
-  function loadContracts() {
-    return fetch("contract_json.php")
-      .then(res => res.json())
-      .then(list => {
-        const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
-        const map = new Map();
-        list.forEach(i => map.set(i.id, i));
-        saved.forEach(s => map.set(s.id, s)); // saved override
-        contracts = Array.from(map.values()).sort((a,b)=>b.id-a.id);
-        contract = contracts.find(c => c.id === contractId);
-      });
-  }
+//   // Load contracts from JSON + merge with localStorage modifications (if any)
+//   function loadContracts() {
+//     return fetch("contract_json.php")
+//       .then(res => res.json())
+//       .then(list => {
+//         const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//         const map = new Map();
+//         list.forEach(i => map.set(i.id, i));
+//         saved.forEach(s => map.set(s.id, s)); // saved override
+//         contracts = Array.from(map.values()).sort((a,b)=>b.id-a.id);
+//         contract = contracts.find(c => c.id === contractId);
+//       });
+//   }
 
-  // Render contract fields
-  function renderContract() {
-    if (!contract) {
-      document.getElementById("contractContainer").innerHTML = "<div class='alert alert-danger'>Contract not found.</div>";
-      return;
-    }
+//   // Render contract fields
+//   function renderContract() {
+//     if (!contract) {
+//       document.getElementById("contractContainer").innerHTML = "<div class='alert alert-danger'>Contract not found.</div>";
+//       return;
+//     }
 
-    // Header & status
-    document.getElementById("invoiceNumber").innerText = contract.contract_no || ("CONTRACT #" + contract.id);
-    document.getElementById("invoiceStatus").innerText = contract.status || "Draft";
-    document.getElementById("invoiceStatus").className = "badge bg-" + (contract.status_color || (contract.status === "Accepted" ? "primary" : "secondary"));
-    document.getElementById("contractDateText").innerText = contract.contract_date || "";
+//     // Header & status
+//     document.getElementById("invoiceNumber").innerText = contract.contract_no || ("CONTRACT #" + contract.id);
+//     document.getElementById("invoiceStatus").innerText = contract.status || "Draft";
+//     document.getElementById("invoiceStatus").className = "badge bg-" + (contract.status_color || (contract.status === "Accepted" ? "primary" : "secondary"));
+//     document.getElementById("contractDateText").innerText = contract.contract_date || "";
 
-    // Sidebar info
-    document.getElementById("infoContractDate").innerText = contract.contract_date || "";
-    document.getElementById("infoValidUntil").innerText = contract.valid_until || "";
-    document.getElementById("clientName").innerText = contract.client || "";
-    document.getElementById("sidebarClientLink").innerText = contract.client || "";
-    document.getElementById("sidebarClientLink").href = "Client-View.php?id=" + (contract.client_id || "");
+//     // Sidebar info
+//     document.getElementById("infoContractDate").innerText = contract.contract_date || "";
+//     document.getElementById("infoValidUntil").innerText = contract.valid_until || "";
+//     document.getElementById("clientName").innerText = contract.client || "";
+//     document.getElementById("sidebarClientLink").innerText = contract.client || "";
+//     document.getElementById("sidebarClientLink").href = "Client-View.php?id=" + (contract.client_id || "");
 
-    // Signer placeholder
-    document.getElementById("signerName").innerText = contract.client || "—";
-    document.getElementById("signerEmail").innerText = contract.client_email || "—";
+//     // Signer placeholder
+//     document.getElementById("signerName").innerText = contract.client || "—";
+//     document.getElementById("signerEmail").innerText = contract.client_email || "—";
 
-    // Content (if contract has HTML content)
-    document.getElementById("proposalContent").innerHTML = contract.content_html || `
-        <h5 class="fw-semibold">${contract.title || ""}</h5>
-        <p>Contract between ${contract.client || "Client"} and your company describing the services and terms.</p>
-    `;
+//     // Content (if contract has HTML content)
+//     document.getElementById("proposalContent").innerHTML = contract.content_html || `
+//         <h5 class="fw-semibold">${contract.title || ""}</h5>
+//         <p>Contract between ${contract.client || "Client"} and your company describing the services and terms.</p>
+//     `;
 
-    // Set preview URL
-    const urlBtn = document.getElementById("proposalUrl");
-    urlBtn.href = "contract_preview.php?id=" + contract.id;
+//     // Set preview URL
+//     const urlBtn = document.getElementById("proposalUrl");
+//     urlBtn.href = "contract_preview.php?id=" + contract.id;
 
-    // Render items (from JSON if present)
-    if (!Array.isArray(contract.items) || contract.items.length === 0) {
-      // fallback sample items
-      contract.items = [{
-        name: contract.title || "Service",
-        desc: "Service provided",
-        qty: 1,
-        rate: Number(contract.amount) || 0
-      }];
-    }
+//     // Render items (from JSON if present)
+//     if (!Array.isArray(contract.items) || contract.items.length === 0) {
+//       // fallback sample items
+//       contract.items = [{
+//         name: contract.title || "Service",
+//         desc: "Service provided",
+//         qty: 1,
+//         rate: Number(contract.amount) || 0
+//       }];
+//     }
 
-    renderItems();
-    calculateTotals();
-  }
+//     renderItems();
+//     calculateTotals();
+//   }
 
-  // Render items into table
-  function renderItems() {
-    const tbody = document.getElementById("itemRows");
-    tbody.innerHTML = "";
+//   // Render items into table
+//   function renderItems() {
+//     const tbody = document.getElementById("itemRows");
+//     tbody.innerHTML = "";
 
-    contract.items.forEach((it, idx) => {
-      const qty = Number(it.qty || 0);
-      const rate = Number(it.rate || 0);
-      const total = qty * rate;
+//     contract.items.forEach((it, idx) => {
+//       const qty = Number(it.qty || 0);
+//       const rate = Number(it.rate || 0);
+//       const total = qty * rate;
 
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><div class="fw-semibold">${escapeHtml(it.name || it.item || "")}</div><div class="text-muted small">${escapeHtml(it.desc || "")}</div></td>
-        <td>${qty} ${it.unit || "PC"}</td>
-        <td>$${rate.toFixed(2)}</td>
-        <td>$${total.toFixed(2)}</td>
-        <td>
-            <button class="btn btn-sm btn-light" onclick="editItem(${idx})"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-sm btn-light text-danger" onclick="deleteItem(${idx})"><i class="bi bi-trash"></i></button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+//       const tr = document.createElement("tr");
+//       tr.innerHTML = `
+//         <td><div class="fw-semibold">${escapeHtml(it.name || it.item || "")}</div><div class="text-muted small">${escapeHtml(it.desc || "")}</div></td>
+//         <td>${qty} ${it.unit || "PC"}</td>
+//         <td>$${rate.toFixed(2)}</td>
+//         <td>$${total.toFixed(2)}</td>
+//         <td>
+//             <button class="btn btn-sm btn-light" onclick="editItem(${idx})"><i class="bi bi-pencil"></i></button>
+//             <button class="btn btn-sm btn-light text-danger" onclick="deleteItem(${idx})"><i class="bi bi-trash"></i></button>
+//         </td>
+//       `;
+//       tbody.appendChild(tr);
+//     });
+//   }
 
-  // Totals
-  function calculateTotals() {
-    const sub = contract.items.reduce((s, it) => s + (Number(it.qty || 0) * Number(it.rate || 0)), 0);
-    document.getElementById("subTotal").innerText = "$" + sub.toFixed(2);
-    document.getElementById("balanceDue").innerText = "$" + sub.toFixed(2);
-  }
+//   // Totals
+//   function calculateTotals() {
+//     const sub = contract.items.reduce((s, it) => s + (Number(it.qty || 0) * Number(it.rate || 0)), 0);
+//     document.getElementById("subTotal").innerText = "$" + sub.toFixed(2);
+//     document.getElementById("balanceDue").innerText = "$" + sub.toFixed(2);
+//   }
 
-  // Escape helper
-  function escapeHtml(s) {
-    if (!s && s !== 0) return "";
-    return String(s)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;");
-  }
+//   // Escape helper
+//   function escapeHtml(s) {
+//     if (!s && s !== 0) return "";
+//     return String(s)
+//       .replaceAll("&", "&amp;")
+//       .replaceAll("<", "&lt;")
+//       .replaceAll(">", "&gt;");
+//   }
 
-  // ------------------- item actions (global) -------------------
-  window.editItem = function(i) {
-    const it = contract.items[i];
-    if (!it) return;
-    document.getElementById("itemIndex").value = i;
-    document.getElementById("itemModalTitle").innerText = "Edit Item";
-    document.getElementById("itemTitle").value = it.name || it.item || "";
-    document.getElementById("itemDesc").value = it.desc || "";
-    document.getElementById("itemQty").value = it.qty || 1;
-    document.getElementById("itemRate").value = it.rate || 0;
-    new bootstrap.Modal(document.getElementById("addItemModal")).show();
-  };
+//   // ------------------- item actions (global) -------------------
+//   window.editItem = function(i) {
+//     const it = contract.items[i];
+//     if (!it) return;
+//     document.getElementById("itemIndex").value = i;
+//     document.getElementById("itemModalTitle").innerText = "Edit Item";
+//     document.getElementById("itemTitle").value = it.name || it.item || "";
+//     document.getElementById("itemDesc").value = it.desc || "";
+//     document.getElementById("itemQty").value = it.qty || 1;
+//     document.getElementById("itemRate").value = it.rate || 0;
+//     new bootstrap.Modal(document.getElementById("addItemModal")).show();
+//   };
 
-  window.deleteItem = function(i) {
-    if (!confirm("Delete item?")) return;
-    contract.items.splice(i,1);
-    renderItems();
-    calculateTotals();
-  };
+//   window.deleteItem = function(i) {
+//     if (!confirm("Delete item?")) return;
+//     contract.items.splice(i,1);
+//     renderItems();
+//     calculateTotals();
+//   };
 
-  document.getElementById("addItemBtn").addEventListener("click", () => {
-    document.getElementById("itemIndex").value = -1;
-    document.getElementById("itemModalTitle").innerText = "Add Item";
-    document.getElementById("itemTitle").value = "";
-    document.getElementById("itemDesc").value = "";
-    document.getElementById("itemQty").value = 1;
-    document.getElementById("itemRate").value = 0;
-    new bootstrap.Modal(document.getElementById("addItemModal")).show();
-  });
+//   document.getElementById("addItemBtn").addEventListener("click", () => {
+//     document.getElementById("itemIndex").value = -1;
+//     document.getElementById("itemModalTitle").innerText = "Add Item";
+//     document.getElementById("itemTitle").value = "";
+//     document.getElementById("itemDesc").value = "";
+//     document.getElementById("itemQty").value = 1;
+//     document.getElementById("itemRate").value = 0;
+//     new bootstrap.Modal(document.getElementById("addItemModal")).show();
+//   });
 
-  document.getElementById("saveItemBtn").addEventListener("click", () => {
-    const idx = Number(document.getElementById("itemIndex").value);
-    const obj = {
-      name: document.getElementById("itemTitle").value.trim(),
-      desc: document.getElementById("itemDesc").value.trim(),
-      qty: Number(document.getElementById("itemQty").value) || 0,
-      rate: Number(document.getElementById("itemRate").value) || 0
-    };
-    if (idx === -1) contract.items.push(obj);
-    else contract.items[idx] = obj;
+//   document.getElementById("saveItemBtn").addEventListener("click", () => {
+//     const idx = Number(document.getElementById("itemIndex").value);
+//     const obj = {
+//       name: document.getElementById("itemTitle").value.trim(),
+//       desc: document.getElementById("itemDesc").value.trim(),
+//       qty: Number(document.getElementById("itemQty").value) || 0,
+//       rate: Number(document.getElementById("itemRate").value) || 0
+//     };
+//     if (idx === -1) contract.items.push(obj);
+//     else contract.items[idx] = obj;
 
-    // persist to localStorage so new items show next load
-    const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
-    // update or push
-    const si = saved.findIndex(s => s.id === contract.id);
-    const copy = Object.assign({}, contract);
-    // store items in saved copy
-    if (si === -1) saved.push(copy);
-    else saved[si] = copy;
-    localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
+//     // persist to localStorage so new items show next load
+//     const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//     // update or push
+//     const si = saved.findIndex(s => s.id === contract.id);
+//     const copy = Object.assign({}, contract);
+//     // store items in saved copy
+//     if (si === -1) saved.push(copy);
+//     else saved[si] = copy;
+//     localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
 
-    new bootstrap.Modal(document.getElementById("addItemModal")).hide();
-    renderItems();
-    calculateTotals();
-  });
+//     new bootstrap.Modal(document.getElementById("addItemModal")).hide();
+//     renderItems();
+//     calculateTotals();
+//   });
 
-  // --------------- tasks ---------------
-  document.getElementById("addTaskBtn").addEventListener("click", () => {
-    new bootstrap.Modal(document.getElementById("taskModal")).show();
-  });
+//   // --------------- tasks ---------------
+//   document.getElementById("addTaskBtn").addEventListener("click", () => {
+//     new bootstrap.Modal(document.getElementById("taskModal")).show();
+//   });
 
-  document.getElementById("saveTaskBtn").addEventListener("click", () => {
-    const t = document.getElementById("taskInput").value.trim();
-    if (!t) return alert("Enter a task");
-    contract.tasks = contract.tasks || [];
-    contract.tasks.push(t);
-    renderTasks();
-    document.getElementById("taskInput").value = "";
-    bootstrap.Modal.getInstance(document.getElementById("taskModal")).hide();
+//   document.getElementById("saveTaskBtn").addEventListener("click", () => {
+//     const t = document.getElementById("taskInput").value.trim();
+//     if (!t) return alert("Enter a task");
+//     contract.tasks = contract.tasks || [];
+//     contract.tasks.push(t);
+//     renderTasks();
+//     document.getElementById("taskInput").value = "";
+//     bootstrap.Modal.getInstance(document.getElementById("taskModal")).hide();
 
-    // persist
-    const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
-    const si = saved.findIndex(s => s.id === contract.id);
-    const copy = Object.assign({}, contract);
-    if (si === -1) saved.push(copy); else saved[si] = copy;
-    localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
-  });
+//     // persist
+//     const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//     const si = saved.findIndex(s => s.id === contract.id);
+//     const copy = Object.assign({}, contract);
+//     if (si === -1) saved.push(copy); else saved[si] = copy;
+//     localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
+//   });
 
-  function renderTasks() {
-    const box = document.getElementById("taskList");
-    box.innerHTML = "";
-    (contract.tasks || []).forEach(t => {
-      const d = document.createElement("div");
-      d.className = "small mb-1";
-      d.textContent = "• " + t;
-      box.appendChild(d);
-    });
-  }
+//   function renderTasks() {
+//     const box = document.getElementById("taskList");
+//     box.innerHTML = "";
+//     (contract.tasks || []).forEach(t => {
+//       const d = document.createElement("div");
+//       d.className = "small mb-1";
+//       d.textContent = "• " + t;
+//       box.appendChild(d);
+//     });
+//   }
 
-  // --------------- reminders ---------------
-  document.getElementById("addReminderBtn").addEventListener("click", () => {
-    new bootstrap.Modal(document.getElementById("reminderModal")).show();
-  });
+//   // --------------- reminders ---------------
+//   document.getElementById("addReminderBtn").addEventListener("click", () => {
+//     new bootstrap.Modal(document.getElementById("reminderModal")).show();
+//   });
 
-  document.getElementById("saveReminderBtn").addEventListener("click", () => {
-    const text = document.getElementById("reminderInput").value.trim();
-    const date = document.getElementById("reminderDate").value;
-    if (!text || !date) return alert("Fill reminder");
-    contract.reminders = contract.reminders || [];
-    contract.reminders.push({ text, date });
-    renderReminders();
-    document.getElementById("reminderInput").value = "";
-    document.getElementById("reminderDate").value = "";
-    bootstrap.Modal.getInstance(document.getElementById("reminderModal")).hide();
+//   document.getElementById("saveReminderBtn").addEventListener("click", () => {
+//     const text = document.getElementById("reminderInput").value.trim();
+//     const date = document.getElementById("reminderDate").value;
+//     if (!text || !date) return alert("Fill reminder");
+//     contract.reminders = contract.reminders || [];
+//     contract.reminders.push({ text, date });
+//     renderReminders();
+//     document.getElementById("reminderInput").value = "";
+//     document.getElementById("reminderDate").value = "";
+//     bootstrap.Modal.getInstance(document.getElementById("reminderModal")).hide();
 
-    // persist
-    const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
-    const si = saved.findIndex(s => s.id === contract.id);
-    const copy = Object.assign({}, contract);
-    if (si === -1) saved.push(copy); else saved[si] = copy;
-    localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
-  });
+//     // persist
+//     const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//     const si = saved.findIndex(s => s.id === contract.id);
+//     const copy = Object.assign({}, contract);
+//     if (si === -1) saved.push(copy); else saved[si] = copy;
+//     localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
+//   });
 
-  function renderReminders() {
-    const box = document.getElementById("reminderList");
-    box.innerHTML = "";
-    (contract.reminders || []).forEach(r => {
-      const li = document.createElement("li");
-      li.className = "list-group-item d-flex justify-content-between align-items-center";
-      li.innerHTML = `<div><b>${escapeHtml(r.text)}</b><br><small>${escapeHtml(r.date)}</small></div>
-                      <button class="btn btn-sm btn-outline-danger" onclick="deleteReminderItem(${contract.reminders.indexOf(r)})"><i class="bi bi-trash"></i></button>`;
-      box.appendChild(li);
-    });
-  }
+//   function renderReminders() {
+//     const box = document.getElementById("reminderList");
+//     box.innerHTML = "";
+//     (contract.reminders || []).forEach(r => {
+//       const li = document.createElement("li");
+//       li.className = "list-group-item d-flex justify-content-between align-items-center";
+//       li.innerHTML = `<div><b>${escapeHtml(r.text)}</b><br><small>${escapeHtml(r.date)}</small></div>
+//                       <button class="btn btn-sm btn-outline-danger" onclick="deleteReminderItem(${contract.reminders.indexOf(r)})"><i class="bi bi-trash"></i></button>`;
+//       box.appendChild(li);
+//     });
+//   }
 
-  window.deleteReminderItem = function(i) {
-    contract.reminders.splice(i,1);
-    renderReminders();
-    // persist similar to above:
-    const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
-    const si = saved.findIndex(s => s.id === contract.id);
-    const copy = Object.assign({}, contract);
-    if (si === -1) saved.push(copy); else saved[si] = copy;
-    localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
-  };
+//   window.deleteReminderItem = function(i) {
+//     contract.reminders.splice(i,1);
+//     renderReminders();
+//     // persist similar to above:
+//     const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//     const si = saved.findIndex(s => s.id === contract.id);
+//     const copy = Object.assign({}, contract);
+//     if (si === -1) saved.push(copy); else saved[si] = copy;
+//     localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
+//   };
 
-  // --------------- preview / print / pdf ---------------
-  document.getElementById("previewBtn").addEventListener("click", () => {
-    window.open(`contract_preview.php?id=${contract.id}`, "_blank");
-  });
-  document.getElementById("printBtn").addEventListener("click", () => {
-    window.open(`contract_preview.php?id=${contract.id}&print=1`, "_blank");
-  });
-  document.getElementById("viewPdfBtn").addEventListener("click", () => {
-    window.open(`contract_preview.php?id=${contract.id}&pdf=1`, "_blank");
-  });
-  document.getElementById("downloadPdfBtn").addEventListener("click", () => {
-    window.open(`contract_preview.php?id=${contract.id}&download=1`, "_blank");
-  });
+//   // --------------- preview / print / pdf ---------------
+//   document.getElementById("previewBtn").addEventListener("click", () => {
+//     window.open(`contract_preview.php?id=${contract.id}`, "_blank");
+//   });
+//   document.getElementById("printBtn").addEventListener("click", () => {
+//     window.open(`contract_preview.php?id=${contract.id}&print=1`, "_blank");
+//   });
+//   document.getElementById("viewPdfBtn").addEventListener("click", () => {
+//     window.open(`contract_preview.php?id=${contract.id}&pdf=1`, "_blank");
+//   });
+//   document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+//     window.open(`contract_preview.php?id=${contract.id}&download=1`, "_blank");
+//   });
 
-  // Save & show (persist content_html if user edits)
-  document.getElementById("saveAndShowBtn").addEventListener("click", () => {
-    contract.content_html = document.getElementById("proposalContent").innerHTML;
-    const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
-    const si = saved.findIndex(s => s.id === contract.id);
-    if (si === -1) saved.push(contract); else saved[si] = contract;
-    localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
-    window.open(`contract_preview.php?id=${contract.id}`, "_blank");
-  });
+//   // Save & show (persist content_html if user edits)
+//   document.getElementById("saveAndShowBtn").addEventListener("click", () => {
+//     contract.content_html = document.getElementById("proposalContent").innerHTML;
+//     const saved = JSON.parse(localStorage.getItem("contracts_storage_v1") || "[]");
+//     const si = saved.findIndex(s => s.id === contract.id);
+//     if (si === -1) saved.push(contract); else saved[si] = contract;
+//     localStorage.setItem("contracts_storage_v1", JSON.stringify(saved));
+//     window.open(`contract_preview.php?id=${contract.id}`, "_blank");
+//   });
 
-  // INIT
-  loadContracts().then(() => {
-    renderContract();
-    renderTasks();
-    renderReminders();
-  });
+//   // INIT
+//   loadContracts().then(() => {
+//     renderContract();
+//     renderTasks();
+//     renderReminders();
+//   });
 
-}); // DOMContentLoaded
+// }); // DOMContentLoaded
 </script>
 </body>
 </html>

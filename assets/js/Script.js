@@ -989,6 +989,7 @@ on("addContactForm", "submit", function (e) {
   });
 
 })();
+
 document.addEventListener("DOMContentLoaded", () => {
 
   // Load JSON file
@@ -1297,9 +1298,9 @@ d.permissions.access.forEach(p => {
 
 })();
 
-// Project
 document.addEventListener("DOMContentLoaded", () => {
   
+
     // state
     let projects = [];
     let filtered = [];
@@ -2722,7 +2723,6 @@ function renderList() {
         </tr>`;
     });
 }
-
 
 function renderKanban() {
     const board = document.getElementById("kanbanBoard");
@@ -10787,5 +10787,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
-
-  

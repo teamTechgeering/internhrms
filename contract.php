@@ -196,7 +196,7 @@
 
 
 <?php include 'common/footer.php'; ?>
-<script src="assets/js/contract.js"></script>
+<!-- <script src="assets/js/contract.js"></script> -->
 
 
 </body>

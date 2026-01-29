@@ -8,14 +8,13 @@ if (!is_dir($uploadDir)) {
 }
 
 if (!isset($_FILES['file'])) {
-    echo json_encode(["success" => false, "message" => "No file received"]);
+    echo json_encode(["success" => false, "message" => "No file"]);
     exit;
 }
 
 $file = $_FILES['file'];
 
-/* Optional: allow only images */
-$allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+$allowed = ['jpg','jpeg','png','gif','webp'];
 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
 if (!in_array($ext, $allowed)) {
@@ -23,13 +22,13 @@ if (!in_array($ext, $allowed)) {
     exit;
 }
 
-$uniqueName = time() . "_" . basename($file['name']);
-$targetPath = $uploadDir . $uniqueName;
+$filename = time() . "_" . basename($file['name']);
+$target = $uploadDir . $filename;
 
-if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+if (move_uploaded_file($file['tmp_name'], $target)) {
     echo json_encode([
         "success" => true,
-        "name" => $uniqueName,
+        "name" => $filename,
         "size" => round($file['size'] / 1024) . " KB"
     ]);
 } else {
